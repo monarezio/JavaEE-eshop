@@ -1,0 +1,15 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+
+$primary: #3498db;
+$grey: darken(#7f8c8d, 10);
+$font-size-base: 0.9rem;
+
+/* change the primary theme color to red */
+$theme-colors: map_merge(
+                $theme-colors,
+                (
+                        'primary': $primary,
+                        'grey': $grey
+                )
+);
