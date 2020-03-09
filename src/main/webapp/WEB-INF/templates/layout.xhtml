@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:app="http://kodytek.cz/tags"
+>
+<h:head>
+    <title>Shop</title>
+    <h:outputStylesheet name="bundle.css" library="css"/>
+    <base href="/Shop/"/>
+</h:head>
+<h:body>
+    <h:form>
+        <div class="position-fixed w-100">
+            <div class="navbar navbar-expand-lg navbar-light shadow-sm">
+                <h:link styleClass="navbar-brand" value="Furniture" outcome="/pages/index.xhtml"/>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <app:menu-link outcome="/pages/index.xhtml" value="Beds"/>
+                        </li>
+                        <li class="nav-item">
+                            <app:menu-link outcome="/pages/index.xhtml" value="Kitchens"/>
+                        </li>
+                        <li class="nav-item">
+                            <app:menu-link outcome="/pages/index.xhtml" value="Sinks"/>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item mr-2">
+                            <app:menu-link outcome="/pages/user/session/login.xhtml" value="Login"/>
+                        </li>
+                        <li>
+                            <h:link styleClass="btn btn-primary" value="Register"
+                                    outcome="/pages/user/session/register.xhtml"/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </h:form>
+    <div class="min-vh-100 pt-5 d-flex flex-column">
+        <div class="container mt-3 flex-grow-1">
+            <app:flash-messages/>
+            <ui:insert/>
+        </div>
+        <div class="container py-2 border-top">
+            &copy; Samuel Kodytek
+        </div>
+    </div>
+</h:body>
+</html>

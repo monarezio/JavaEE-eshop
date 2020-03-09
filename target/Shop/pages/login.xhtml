@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+<h:body>
+
+    <ui:composition template="../WEB-INF/tags/layout.xhtml">
+        <h:form class="w-50 mx-auto">
+            <h2 class="my-3">Login</h2>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <h:inputText require="true" class="form-control" type="email" id="email"/>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input class="form-control" type="password" id="password"/>
+            </div>
+            <div class="text-right">
+                <button class="btn btn-primary">Login</button>
+            </div>
+        </h:form>
+    </ui:composition>
+
+</h:body>
+
+</html>

@@ -48,7 +48,7 @@ module.exports = {
         extensions: ['*', '.js', '.css', '.scss'],
     },
     output: {
-        path: __dirname + '/../src/main/webapp/assets/dist',
+        path: __dirname + '/../src/main/resources/js',
         publicPath: '/',
         filename: 'bundle.js'
     },
@@ -57,7 +57,7 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'bundle.css',
+            filename: '../css/bundle.css',
         }),
     ],
     watch: true

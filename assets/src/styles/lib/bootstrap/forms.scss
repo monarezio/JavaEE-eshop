@@ -1,0 +1,33 @@
+@import '~bootstrap/scss/_forms.scss';
+
+.form-control {
+  border-radius: 0;
+  padding: 1.25rem 0.75rem;
+  box-sizing: border-box;
+}
+
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+[type=text].form-control:focus,
+[type=password].form-control:focus,
+[type=email].form-control:focus,
+[type=tel].form-control:focus,
+[contenteditable].form-control:focus {
+  box-shadow: none;
+  outline: none;
+  border-color: $border-color;
+  border-bottom-color: $primary;
+}
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  //background: 20px no-repeat #fff;
+  padding-right: 20px;
+}
+
