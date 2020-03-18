@@ -687,7 +687,7 @@ mark,
   .blockquote-footer::before {
     content: "\2014\00A0"; }
 
-.alert {
+.alert, .form-errors li {
   position: relative;
   padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
@@ -754,13 +754,13 @@ mark,
   .alert-warning .alert-link {
     color: #533f03; }
 
-.alert-danger {
+.alert-danger, .form-errors li {
   color: #721c24;
   background-color: #f8d7da;
   border-color: #f5c6cb; }
-  .alert-danger hr {
+  .alert-danger hr, .form-errors li hr {
     border-top-color: #f1b0b7; }
-  .alert-danger .alert-link {
+  .alert-danger .alert-link, .form-errors li .alert-link {
     color: #491217; }
 
 .alert-light {
@@ -781,8 +781,12 @@ mark,
   .alert-dark .alert-link {
     color: #040505; }
 
-.alert {
+.alert, .form-errors li {
   font-size: 0.8rem; }
+
+.form-errors {
+  list-style: none;
+  padding: 0; }
 
 .badge {
   display: inline-block;

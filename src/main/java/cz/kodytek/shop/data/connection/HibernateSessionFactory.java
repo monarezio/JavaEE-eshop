@@ -9,19 +9,25 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
 @ApplicationScoped
 public class HibernateSessionFactory implements IHibernateSessionFactory {
+
+    private EntityManagerFactory entityManagerFactory;
+
     private SessionFactory sessionFactory;
 
     public void createSession(OpenedSessionFunction fn) throws PersistenceException {
         Transaction transaction = null;
-        try (Session session = getSessionFactory().openSession()) {
+
+        try (Session session = getEntityManager().unwrap(Session.class)) {
             transaction = session.beginTransaction();
             fn.invoke(session);
             transaction.commit();
-            session.close();
         } catch (Exception e) {
             try {
                 if (transaction != null) transaction.rollback();
@@ -50,5 +56,12 @@ public class HibernateSessionFactory implements IHibernateSessionFactory {
             }
         }
         return sessionFactory;
+    }
+
+    private EntityManager getEntityManager() {
+        System.out.println("Hello!");
+        if(entityManagerFactory == null)
+            entityManagerFactory = Persistence.createEntityManagerFactory("eshop");
+        return entityManagerFactory.createEntityManager();
     }
 }

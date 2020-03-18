@@ -1,16 +1,31 @@
 package cz.kodytek.shop.domain.models.users;
 
+import cz.kodytek.common.validations.FieldMatch;
 import cz.kodytek.shop.domain.models.interfaces.users.IRegisteredUser;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Named
 @ApplicationScoped
+@FieldMatch(first = "password", second =  "passwordConfirmation", message = "Passwords do not equal.")
 public class RegisteredUser implements IRegisteredUser {
 
+    @Size(min = 6, message = "Password should contain at least 6 characters.")
     private String password;
+
+    private String passwordConfirmation;
+
+    @NotEmpty(message = "Email cannot be empty.")
+    @Email(message = "Email is not valid.")
     private String email;
+
+    @NotNull(message = "Name cannot be empty.")
+    @Size(min = 3, message = "Name must contain at least 3 characters.")
     private String name;
 
     public RegisteredUser() {
@@ -28,6 +43,11 @@ public class RegisteredUser implements IRegisteredUser {
     }
 
     @Override
+    public String getPasswordConfirmation() {
+        return passwordConfirmation;
+    }
+
+    @Override
     public String getEmail() {
         return email;
     }
@@ -39,6 +59,10 @@ public class RegisteredUser implements IRegisteredUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setPasswordConfirmation(String passwordConfirmation) {
+        this.passwordConfirmation = passwordConfirmation;
     }
 
     public void setEmail(String email) {

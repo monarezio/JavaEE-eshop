@@ -6,11 +6,10 @@ import cz.kodytek.shop.data.factories.interfaces.IUserFactory;
 import cz.kodytek.shop.domain.models.interfaces.users.ILoggedInUser;
 import cz.kodytek.shop.domain.models.interfaces.users.IRegisteredUser;
 import cz.kodytek.shop.domain.services.interfaces.users.IPasswordService;
-import cz.kodytek.shop.domain.services.interfaces.users.IUserSessionService;
+import cz.kodytek.shop.domain.services.interfaces.users.IUserAuthenticationService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -18,9 +17,8 @@ import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Named
 @ApplicationScoped
-public class UserSessionService implements IUserSessionService {
+public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Inject
     private IPasswordService passwordService;

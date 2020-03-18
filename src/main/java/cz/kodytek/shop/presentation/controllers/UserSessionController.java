@@ -2,7 +2,7 @@ package cz.kodytek.shop.presentation.controllers;
 
 import cz.kodytek.shop.domain.models.interfaces.users.ILoggedInUser;
 import cz.kodytek.shop.domain.models.interfaces.users.IRegisteredUser;
-import cz.kodytek.shop.domain.services.interfaces.users.IUserSessionService;
+import cz.kodytek.shop.domain.services.interfaces.users.IUserAuthenticationService;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import cz.kodytek.shop.presentation.session.models.FlashMessageType;
 import cz.kodytek.shop.presentation.session.services.FlashMessagesService;
@@ -16,21 +16,20 @@ import javax.inject.Named;
 public class UserSessionController {
 
     @Inject()
-    private IUserSessionService userSessionService;
+    private IUserAuthenticationService userAuthenticationService;
 
     @Inject()
     private FlashMessagesService flashMessagesService;
 
     public void login(ILoggedInUser loggedInUser) {
-        if (userSessionService.authenticate(loggedInUser)) {
+        if (userAuthenticationService.authenticate(loggedInUser)) {
         } else {
-            System.out.println("I fucked up!");
             flashMessagesService.add(new FlashMessage("Invalid login combination.", FlashMessageType.alert));
         }
     }
 
     public void register(IRegisteredUser registeredUser) {
-        userSessionService.register(registeredUser);
+        userAuthenticationService.register(registeredUser);
     }
 
 }

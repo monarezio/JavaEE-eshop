@@ -6,4 +6,6 @@ public interface IRegisteredUser extends IUser {
 
     String getPassword();
 
+    String getPasswordConfirmation();
+
 }
