@@ -3,13 +3,18 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:app="http://kodytek.cz/tags"
 >
+
+<f:event type="preRenderView" listener="#{authManager.authorize}"/>
+
 <h:head>
     <title>Shop</title>
     <h:outputStylesheet name="bundle.css" library="css"/>
     <base href="/Shop/"/>
 </h:head>
+
 <h:body>
     <h:form>
         <div class="position-fixed w-100">

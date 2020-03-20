@@ -59,7 +59,6 @@ public class HibernateSessionFactory implements IHibernateSessionFactory {
     }
 
     private EntityManager getEntityManager() {
-        System.out.println("Hello!");
         if(entityManagerFactory == null)
             entityManagerFactory = Persistence.createEntityManagerFactory("eshop");
         return entityManagerFactory.createEntityManager();

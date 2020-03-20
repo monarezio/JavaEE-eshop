@@ -1,8 +1,7 @@
 package cz.kodytek.shop.presentation.session.services;
 
 import cz.kodytek.shop.presentation.session.models.interfaces.IFlashMessage;
-import cz.kodytek.shop.presentation.session.services.interfaces.IFlashMessagesServices;
-import jdk.jfr.Name;
+import cz.kodytek.shop.presentation.session.services.interfaces.messages.IFlashMessagesService;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -10,9 +9,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Flash message usage, FacesMessage aren't sufficient enough
+ */
 @SessionScoped
 @Named
-public class FlashMessagesService implements IFlashMessagesServices, Serializable {
+public class FlashMessagesService implements IFlashMessagesService, Serializable {
 
     private List<IFlashMessage> flashMessages = new ArrayList<>();
 

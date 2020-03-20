@@ -2,6 +2,7 @@ package cz.kodytek.shop.domain.services.users;
 
 import cz.kodytek.shop.data.connection.interfaces.IHibernateSessionFactory;
 import cz.kodytek.shop.data.entities.User;
+import cz.kodytek.shop.data.entities.interfaces.IUserWithRights;
 import cz.kodytek.shop.data.factories.interfaces.IUserFactory;
 import cz.kodytek.shop.domain.models.interfaces.users.ILoggedInUser;
 import cz.kodytek.shop.domain.models.interfaces.users.IRegisteredUser;
@@ -10,12 +11,13 @@ import cz.kodytek.shop.domain.services.interfaces.users.IUserAuthenticationServi
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 @ApplicationScoped
 public class UserAuthenticationService implements IUserAuthenticationService {
@@ -30,8 +32,8 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     private IHibernateSessionFactory sessionFactory;
 
     @Override
-    public boolean authenticate(ILoggedInUser loggedInUser) {
-        AtomicBoolean authenticationResult = new AtomicBoolean(false);
+    public IUserWithRights authenticate(ILoggedInUser loggedInUser) {
+        AtomicReference<IUserWithRights> authenticationResult = new AtomicReference<>();
 
         try {
             sessionFactory.createSession(s -> {
@@ -39,28 +41,36 @@ public class UserAuthenticationService implements IUserAuthenticationService {
                 CriteriaQuery<User> cq = cb.createQuery(User.class);
                 Root<User> root = cq.from(User.class);
 
-                cq = cq.where(cb.equal(root.get("email"), loggedInUser.getIdentityIdentifier()));
+                System.out.println("Identity identifier: " + loggedInUser.getIdentityIdentifier());
+                cq = cq.where(cb.like(root.get("email"), loggedInUser.getIdentityIdentifier()));
 
                 User user = s.createQuery(cq).getSingleResult();
 
                 if (passwordService.verify(loggedInUser.getPassword(), user.getHashedPassword())) {
                     user.setLastLogin(LocalDateTime.now());
-                    authenticationResult.set(true);
+                    authenticationResult.set(user);
                 }
             });
-        } catch(PersistenceException e) {
-            return false; //Most probably did not find the user
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return null;
         }
 
         return authenticationResult.get();
     }
 
     @Override
-    public void register(IRegisteredUser registeredUser) {
-        sessionFactory.createSession(s -> {
-            final String hashedPassword = passwordService.hash(registeredUser.getPassword());
-            s.save(userFactory.createUser(registeredUser, hashedPassword));
-        });
+    public boolean register(IRegisteredUser registeredUser) {
+        try {
+            sessionFactory.createSession(s -> {
+                final String hashedPassword = passwordService.hash(registeredUser.getPassword());
+                s.save(userFactory.createClient(registeredUser, hashedPassword));
+            });
+        } catch (PersistenceException e) {
+            return false;
+        }
+
+        return true;
     }
 
 }

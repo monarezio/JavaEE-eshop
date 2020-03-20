@@ -1,14 +1,15 @@
 package cz.kodytek.shop.presentation.session.services.interfaces;
 
-import cz.kodytek.shop.presentation.session.models.interfaces.ICurrentUser;
+import cz.kodytek.shop.data.entities.interfaces.IUserWithRights;
+import cz.kodytek.shop.domain.models.interfaces.users.ILoggedInUser;
 
 public interface IUserSessionService {
 
-    void login(ICurrentUser user);
+    void login(ILoggedInUser user);
 
     void logout();
 
-    ICurrentUser getCurrentUser();
+    IUserWithRights getCurrentUser();
 
     boolean isLoggedIn();
 

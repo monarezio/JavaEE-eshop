@@ -10,7 +10,7 @@
         <ul class="list-unstyled">
             <ui:repeat value="#{flashMessagesService.allMessages}" var="message">
                 <li>
-                    <div class="alert alert-danger">#{message.content}</div>
+                    <div class="#{flashMessagesHelper.getStyleClass(message.type)}">#{message.content}</div>
                 </li>
             </ui:repeat>
         </ul>

@@ -1,13 +1,13 @@
 package cz.kodytek.shop.domain.services.interfaces.users;
 
-import cz.kodytek.shop.data.entities.interfaces.IUser;
+import cz.kodytek.shop.data.entities.interfaces.IUserWithRights;
 import cz.kodytek.shop.domain.models.interfaces.users.ILoggedInUser;
 import cz.kodytek.shop.domain.models.interfaces.users.IRegisteredUser;
 
 public interface IUserAuthenticationService {
 
-    boolean authenticate(ILoggedInUser loggedInUser);
+    IUserWithRights authenticate(ILoggedInUser loggedInUser);
 
-    void register(IRegisteredUser registeredUser);
+    boolean register(IRegisteredUser registeredUser);
 
 }

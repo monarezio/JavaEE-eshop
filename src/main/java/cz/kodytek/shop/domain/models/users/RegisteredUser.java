@@ -1,18 +1,13 @@
 package cz.kodytek.shop.domain.models.users;
 
-import cz.kodytek.common.validations.FieldMatch;
 import cz.kodytek.shop.domain.models.interfaces.users.IRegisteredUser;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Named
 @ApplicationScoped
-@FieldMatch(first = "password", second =  "passwordConfirmation", message = "Passwords do not equal.")
 public class RegisteredUser implements IRegisteredUser {
 
     @Size(min = 6, message = "Password should contain at least 6 characters.")
