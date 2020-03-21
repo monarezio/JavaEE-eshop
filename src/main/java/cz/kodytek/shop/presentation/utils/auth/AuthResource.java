@@ -10,20 +10,40 @@ public class AuthResource {
     /**
      * Must user be logged in?
      */
-    private boolean isRestricted = false;
+    private boolean restrict = false;
+
+    private boolean rescrictLoggedUsers = false;
 
     private AuthResource(String resource) {
         this.resource = resource;
     }
 
     public AuthResource restrict() {
-        isRestricted = true;
+        restrict = true;
         return this;
     }
 
     public AuthResource open() {
-        isRestricted = false;
+        restrict = false;
         return this;
+    }
+
+    public AuthResource restrictLoggedUsers() {
+        rescrictLoggedUsers = true;
+        return this;
+    }
+
+    public AuthResource openLoggedUsers() {
+        rescrictLoggedUsers = false;
+        return this;
+    }
+
+    public boolean isRestriced() {
+        return restrict;
+    }
+
+    public boolean isRestrictedForLoggedUsers() {
+        return rescrictLoggedUsers;
     }
 
     public String getResource() {

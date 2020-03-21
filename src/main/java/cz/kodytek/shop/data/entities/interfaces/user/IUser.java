@@ -1,4 +1,4 @@
-package cz.kodytek.shop.data.entities.interfaces;
+package cz.kodytek.shop.data.entities.interfaces.user;
 
 public interface IUser {
 

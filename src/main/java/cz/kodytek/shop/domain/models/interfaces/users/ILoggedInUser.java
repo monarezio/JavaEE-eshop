@@ -1,7 +1,5 @@
 package cz.kodytek.shop.domain.models.interfaces.users;
 
-import cz.kodytek.shop.data.entities.interfaces.IUserWithRights;
-
 public interface ILoggedInUser {
     
     /**

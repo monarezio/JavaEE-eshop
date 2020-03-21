@@ -34,7 +34,7 @@ public class UserSessionController {
 
         if (userSessionService.getCurrentUser() != null) {
             flashMessagesService.add(new FlashMessage("Successfully logged in.", FlashMessageType.success));
-            requestUtils.redirect("//");
+            requestUtils.redirect("");
         } else {
             flashMessagesService.add(new FlashMessage("Invalid login combination.", FlashMessageType.alert));
         }
@@ -44,9 +44,14 @@ public class UserSessionController {
         if (!registeredUser.getPassword().equals(registeredUser.getPasswordConfirmation()))
             flashMessagesService.add(new FlashMessage("Password do not match", FlashMessageType.alert));
         else if (userAuthenticationService.register(registeredUser))
-            requestUtils.redirect("//", new FlashMessage("Successfully registered.", FlashMessageType.success));
+            requestUtils.redirect("", new FlashMessage("Successfully registered.", FlashMessageType.success));
         else
             flashMessagesService.add(new FlashMessage("Email is already in use.", FlashMessageType.alert));
+    }
+
+    public void logout() {
+        userSessionService.logout();
+        requestUtils.redirect("", new FlashMessage("Successfully logged out.", FlashMessageType.success));
     }
 
 }

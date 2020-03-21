@@ -23,3 +23,6 @@
 hs_err_pid*
 
 node_modules/
+
+src/main/resources/css/bundle.css
+src/main/resources/js/bundle.js

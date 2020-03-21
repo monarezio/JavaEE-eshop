@@ -27,6 +27,13 @@ public class AuthConfig {
         return this;
     }
 
+    public AuthConfig restrictLoggedInUsers(String resource) {
+        resources.add(
+                AuthResource.create(resource).restrictLoggedUsers()
+        );
+        return this;
+    }
+
     public AuthConfig setDefaultPage(String defaultPage) {
         this.defaultPage = defaultPage;
         return this;

@@ -2,7 +2,7 @@ package cz.kodytek.shop.data.factories.interfaces;
 
 import cz.kodytek.shop.data.entities.Right;
 import cz.kodytek.shop.data.entities.User;
-import cz.kodytek.shop.data.entities.interfaces.IUser;
+import cz.kodytek.shop.data.entities.interfaces.user.IUser;
 
 import java.util.List;
 

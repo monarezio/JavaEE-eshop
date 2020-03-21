@@ -2,7 +2,7 @@ package cz.kodytek.shop.domain.services.users;
 
 import cz.kodytek.shop.data.connection.interfaces.IHibernateSessionFactory;
 import cz.kodytek.shop.data.entities.User;
-import cz.kodytek.shop.data.entities.interfaces.IUserWithRights;
+import cz.kodytek.shop.data.entities.interfaces.user.IUserWithRights;
 import cz.kodytek.shop.data.factories.interfaces.IUserFactory;
 import cz.kodytek.shop.domain.models.interfaces.users.ILoggedInUser;
 import cz.kodytek.shop.domain.models.interfaces.users.IRegisteredUser;
