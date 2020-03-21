@@ -11,6 +11,7 @@ public class CurrentUser implements ICurrentUser {
     private String email;
     private String name;
     private List<Right> rights;
+    private String phoneNumber;
 
     public CurrentUser(String email, String name, List<Right> rights) {
         this.email = email;
@@ -36,5 +37,10 @@ public class CurrentUser implements ICurrentUser {
     @Override
     public List<Right> getRights() {
         return rights;
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }

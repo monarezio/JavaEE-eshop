@@ -36,7 +36,7 @@
                     </ul>
 
                     <c:if test="#{not userSessionService.loggedIn}">
-                        <ul class="navbar-nav">
+                        <ul class="navbar-nav d-flex align-items-center">
                             <li class="nav-item mr-2">
                                 <app:menu-link outcome="/pages/user/session/login.xhtml" value="Login"/>
                             </li>

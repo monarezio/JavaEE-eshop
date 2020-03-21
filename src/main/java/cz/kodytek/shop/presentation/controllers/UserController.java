@@ -1,6 +1,7 @@
 package cz.kodytek.shop.presentation.controllers;
 
 import cz.kodytek.shop.data.entities.interfaces.user.IUser;
+import cz.kodytek.shop.data.entities.interfaces.user.IUserWithPhoneNumber;
 import cz.kodytek.shop.domain.models.interfaces.users.IPassword;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserService;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
@@ -29,7 +30,7 @@ public class UserController {
     @Inject
     IRequestUtils requestUtils;
 
-    public void edit(IUser editedUser) {
+    public void edit(IUserWithPhoneNumber editedUser) {
         if (userService.editUser(userSessionService.getCurrentUser().getId(), editedUser))
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Account information edited.", FlashMessageType.success));
         else

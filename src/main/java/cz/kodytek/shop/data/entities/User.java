@@ -2,6 +2,7 @@ package cz.kodytek.shop.data.entities;
 
 import cz.kodytek.shop.data.entities.interfaces.IAddress;
 import cz.kodytek.shop.data.entities.interfaces.IEntityWithAddresses;
+import cz.kodytek.shop.data.entities.interfaces.user.IUserWithPhoneNumber;
 import cz.kodytek.shop.data.entities.interfaces.user.IUserWithRights;
 
 import javax.persistence.*;
@@ -24,6 +25,9 @@ public class User implements IUserWithRights, IEntityWithAddresses {
 
     @Column(nullable = false)
     private String hashedPassword;
+
+    @Column
+    private String phoneNumber;
 
     @Column
     private LocalDateTime lastLogin;
@@ -63,6 +67,10 @@ public class User implements IUserWithRights, IEntityWithAddresses {
         return name;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public String getHashedPassword() {
         return hashedPassword;
     }
@@ -81,6 +89,10 @@ public class User implements IUserWithRights, IEntityWithAddresses {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public void setHashedPassword(String hashedPassword) {
