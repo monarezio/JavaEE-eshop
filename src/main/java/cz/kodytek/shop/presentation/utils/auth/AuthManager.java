@@ -24,6 +24,7 @@ public class AuthManager {
             .setDefaultPage("/pages/user/session/login.xhtml")
             .restrict("/pages/user/account.xhtml")
             .restrict("/pages/user/edit.xhtml")
+            .restrict("/pages/user/company/create.xhtml")
             .restrictLoggedInUsers("/pages/user/session/login.xhtml")
             .restrictLoggedInUsers("/pages/user/session/register.xhtml");
 

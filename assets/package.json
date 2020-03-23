@@ -29,6 +29,8 @@
     "jquery": "^3.4.1",
     "normalize.css": "^8.0.1",
     "popper.js": "^1.14.3",
+    "run-script": "^0.1.1",
+    "serve": "^11.3.0",
     "style-loader": "^1.1.2"
   }
 }

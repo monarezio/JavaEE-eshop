@@ -1,16 +1,16 @@
 package cz.kodytek.shop.data.entities;
 
-import cz.kodytek.shop.data.entities.interfaces.IAddress;
-import cz.kodytek.shop.data.entities.interfaces.IEntityWithAddresses;
-import cz.kodytek.shop.data.entities.interfaces.user.IUserWithPhoneNumber;
-import cz.kodytek.shop.data.entities.interfaces.user.IUserWithRights;
+import cz.kodytek.shop.data.entities.interfaces.user.IFullUser;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-public class User implements IUserWithRights, IEntityWithAddresses {
+public class User implements IFullUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,13 +39,19 @@ public class User implements IUserWithRights, IEntityWithAddresses {
 
     @OneToMany()
     @JoinColumn(name = "user_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Address> addresses;
 
     @OneToMany()
     @JoinColumn(name = "user_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Company> companies;
 
     public User() {
+    }
+
+    public User(long id) {
+        this.id = id;
     }
 
     public User(String email, String name, String hashedPassword, List<Right> rights) {
@@ -104,7 +110,12 @@ public class User implements IUserWithRights, IEntityWithAddresses {
     }
 
     @Override
-    public List<? extends IAddress> getAddresses() {
-        return null;
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    @Override
+    public List<Company> getCompanies() {
+        return companies;
     }
 }

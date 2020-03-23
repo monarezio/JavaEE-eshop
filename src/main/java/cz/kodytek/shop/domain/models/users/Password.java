@@ -3,12 +3,13 @@ package cz.kodytek.shop.domain.models.users;
 import cz.kodytek.shop.domain.models.interfaces.users.IPassword;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Named
-@ApplicationScoped
+@RequestScoped
 public class Password implements IPassword {
 
     @NotNull

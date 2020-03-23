@@ -3,13 +3,14 @@ package cz.kodytek.shop.domain.models.users;
 import cz.kodytek.shop.domain.models.interfaces.users.ILoggedInUser;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Named
-@ApplicationScoped
+@RequestScoped
 public class LoggedInUser implements ILoggedInUser {
 
     @NotEmpty(message = "Email cannot be empty.")

@@ -3,11 +3,12 @@ package cz.kodytek.shop.domain.models.users;
 import cz.kodytek.shop.domain.models.interfaces.users.IRegisteredUser;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.validation.constraints.*;
 
 @Named
-@ApplicationScoped
+@RequestScoped
 public class RegisteredUser implements IRegisteredUser {
 
     @Size(min = 6, message = "Password should contain at least 6 characters.")

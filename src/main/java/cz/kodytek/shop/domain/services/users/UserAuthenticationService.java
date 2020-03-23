@@ -41,7 +41,6 @@ public class UserAuthenticationService implements IUserAuthenticationService {
                 CriteriaQuery<User> cq = cb.createQuery(User.class);
                 Root<User> root = cq.from(User.class);
 
-                System.out.println("Identity identifier: " + loggedInUser.getIdentityIdentifier());
                 cq = cq.where(cb.like(root.get("email"), loggedInUser.getIdentityIdentifier()));
 
                 User user = s.createQuery(cq).getSingleResult();

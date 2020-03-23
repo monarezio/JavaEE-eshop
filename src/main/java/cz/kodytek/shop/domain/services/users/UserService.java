@@ -1,7 +1,10 @@
 package cz.kodytek.shop.domain.services.users;
 
 import cz.kodytek.shop.data.connection.interfaces.IHibernateSessionFactory;
-import cz.kodytek.shop.data.entities.User;
+import cz.kodytek.shop.data.entities.*;
+import cz.kodytek.shop.data.entities.Company_;
+import cz.kodytek.shop.data.entities.User_;
+import cz.kodytek.shop.data.entities.interfaces.user.IFullUser;
 import cz.kodytek.shop.data.entities.interfaces.user.IUser;
 import cz.kodytek.shop.data.entities.interfaces.user.IUserWithPhoneNumber;
 import cz.kodytek.shop.domain.models.interfaces.users.IPassword;
@@ -12,7 +15,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Named
 @ApplicationScoped
@@ -58,6 +63,28 @@ public class UserService implements IUserService {
             });
         } catch(PersistenceException e) {
             return false;
+        }
+
+        return result.get();
+    }
+
+    @Override
+    public IFullUser getUser(long userId) {
+        AtomicReference<User> result = new AtomicReference<>();
+
+        try {
+        sessionFactory.createSession(s -> {
+            CriteriaBuilder cb = s.getCriteriaBuilder();
+            CriteriaQuery<User> cq = cb.createQuery(User.class);
+            Root<User> root = cq.from(User.class);
+            Fetch<User, Company> userToCompanyJoin = root.fetch(User_.companies, JoinType.LEFT);
+            Fetch<User, Address> userToAddressJoin = root.fetch(User_.addresses, JoinType.LEFT);
+
+            result.set(s.createQuery(cq).getSingleResult());
+        });
+        } catch(PersistenceException e) {
+            e.printStackTrace();
+            return null;
         }
 
         return result.get();

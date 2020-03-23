@@ -16,25 +16,25 @@
                 <h:inputText styleClass="form-control"
                              type="text"
                              id="full-name"
-                             value="#{userSessionService.currentUser.name}"/>
+                             value="#{userController.currentUser.name}"/>
             </div>
             <div class="form-group">
                 <h:outputLabel for="email">Email*</h:outputLabel>
                 <h:inputText styleClass="form-control"
                              type="email"
                              id="email"
-                             value="#{userSessionService.currentUser.email}"/>
+                             value="#{userController.currentUser.email}"/>
             </div>
             <div class="form-group">
                 <h:outputLabel for="phone-number">Phone number</h:outputLabel>
                 <h:inputText styleClass="form-control"
                              type="text"
                              id="phone-number"
-                             value="#{userSessionService.currentUser.phoneNumber}"/>
+                             value="#{userController.currentUser.phoneNumber}"/>
             </div>
             <div class="text-right">
                 <h:commandLink styleClass="btn btn-primary" value="Edit account's information"
-                               action="#{userController.edit(userSessionService.currentUser)}"/>
+                               action="#{userController.edit(userController.currentUser)}"/>
             </div>
         </h:form>
     </ui:composition>

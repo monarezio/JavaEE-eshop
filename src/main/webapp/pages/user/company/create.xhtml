@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+        xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+<h:body>
+
+    <ui:composition template="../../../WEB-INF/templates/layout.xhtml">
+        <h:form styleClass="w-50 mx-auto">
+            <h:messages styleClass="form-errors"/>
+            <h2 class="my-3">Add company</h2>
+            <div class="form-group">
+                <h:outputLabel for="name">Name*</h:outputLabel>
+                <h:inputText styleClass="form-control"
+                             type="text"
+                             id="name"
+                             value="#{company.name}"/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="ico">Identification number (IČO)*</h:outputLabel>
+                <h:inputText styleClass="form-control"
+                             type="email"
+                             id="ico"
+                             value="#{company.identificationNumber}"/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="dic">Tax identification number (DIČ)</h:outputLabel>
+                <h:inputText styleClass="form-control"
+                             type="text"
+                             id="dic"
+                             value="#{company.taxIdentificationNumber}"/>
+            </div>
+            <!-- TODO: Address -->
+            <div class="text-right">
+                <h:commandLink styleClass="btn btn-primary" value="Add company"
+                               action="#{companyController.create(company)}"/>
+            </div>
+        </h:form>
+    </ui:composition>
+
+</h:body>
+
+</html>
