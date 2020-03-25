@@ -5,6 +5,8 @@ import cz.kodytek.shop.data.entities.Company;
 import cz.kodytek.shop.data.entities.User;
 import cz.kodytek.shop.data.entities.interfaces.company.ICompany;
 import cz.kodytek.shop.data.entities.interfaces.company.ICompanyWithId;
+import cz.kodytek.shop.domain.models.company.AddressCreationType;
+import cz.kodytek.shop.domain.models.interfaces.company.ICreatedCompany;
 import cz.kodytek.shop.domain.services.interfaces.company.ICompanyService;
 import org.hibernate.Session;
 
@@ -68,7 +70,7 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public ICompanyWithId create(long userId, ICompany company) {
+    public ICompanyWithId create(long userId, ICreatedCompany company) {
         AtomicReference<ICompanyWithId> result = new AtomicReference<>();
 
         hibernateSessionFactory.createSession(s -> {
@@ -79,6 +81,11 @@ public class CompanyService implements ICompanyService {
             c.setIdentificationNumber(company.getIdentificationNumber());
             c.setName(company.getName());
             c.setAddress(company.getAddress());
+
+            if(company.getAddressCreationType().equals(AddressCreationType.NEW))
+                company.getAddress().
+
+
             user.addCompany(c);
             s.save(c);
             result.set(c);

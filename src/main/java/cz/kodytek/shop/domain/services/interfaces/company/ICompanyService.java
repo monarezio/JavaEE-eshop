@@ -2,6 +2,7 @@ package cz.kodytek.shop.domain.services.interfaces.company;
 
 import cz.kodytek.shop.data.entities.interfaces.company.ICompany;
 import cz.kodytek.shop.data.entities.interfaces.company.ICompanyWithId;
+import cz.kodytek.shop.domain.models.interfaces.company.ICreatedCompany;
 
 public interface ICompanyService {
 
@@ -11,6 +12,6 @@ public interface ICompanyService {
 
     void delete(long userId, long companyId);
 
-    ICompanyWithId create(long userId, ICompany company);
+    ICompanyWithId create(long userId, ICreatedCompany company);
 
 }

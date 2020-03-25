@@ -1,0 +1,14 @@
+.radio-group {
+  input[type=radio] {
+    margin-right: 0.5rem;
+  }
+  label {
+    margin-right: 0.75rem;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  td {
+    display: inline-flex;
+    align-items: center;
+  }
+}

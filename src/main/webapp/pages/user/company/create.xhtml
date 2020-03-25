@@ -3,7 +3,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html
         xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
 >
 <h:body>
 
@@ -32,7 +32,50 @@
                              id="dic"
                              value="#{company.taxIdentificationNumber}"/>
             </div>
-            <!-- TODO: Address -->
+            <div id="address-chooser">
+                <span/>
+                <div class="my-2">
+                    <h:selectOneRadio styleClass="radio-group" value="#{company.addressCreationType}">
+                        <f:selectItems value="#{company.addressCreationTypes}"
+                                       var="type"
+                                       itemLabel="#{type.label}"
+                                       itemValue="#{type}"/>
+                    </h:selectOneRadio>
+                </div>
+            </div>
+            <div id="new-address" class="mt-2">
+                <h3>Address*</h3>
+                <div class="form-group">
+                    <h:outputLabel for="a_name">City*</h:outputLabel>
+                    <h:inputText styleClass="form-control"
+                                 type="text"
+                                 id="a_name"
+                                 value="#{company.address.city}"/>
+                </div>
+                <div class="form-group">
+                    <h:outputLabel for="a_ico">Street*</h:outputLabel>
+                    <h:inputText styleClass="form-control"
+                                 type="email"
+                                 id="a_ico"
+                                 value="#{company.address.street}"/>
+                </div>
+                <div class="form-group">
+                    <h:outputLabel for="a_dic">Post code*</h:outputLabel>
+                    <h:inputText styleClass="form-control"
+                                 type="text"
+                                 id="a_dic"
+                                 value="#{company.address.postCode}"/>
+                </div>
+            </div>
+            <div id="reuse-address" class="mb-2">
+                <h:outputLabel for="address_id">Address*</h:outputLabel>
+                <h:selectOneListbox id="address_id" styleClass="custom-select" value="#{company.address.id}">
+                    <f:selectItems value="#{companyController.addresses}"
+                                   var="a"
+                                   itemLabel="#{addressHelper.parse(a)}"
+                                   itemValue="#{a.id}"/>
+                </h:selectOneListbox>
+            </div>
             <div class="text-right">
                 <h:commandLink styleClass="btn btn-primary" value="Add company"
                                action="#{companyController.create(company)}"/>

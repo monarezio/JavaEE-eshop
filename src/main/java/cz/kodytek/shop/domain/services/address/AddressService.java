@@ -15,6 +15,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -33,6 +35,26 @@ public class AddressService implements IAddressService {
         });
 
         return result.get();
+    }
+
+    @Override
+    public List<IAddressWithId> getAllForUser(long userId) {
+        List<IAddressWithId> result = new ArrayList<>();
+
+        hibernateSessionFactory.createSession(s -> {
+            CriteriaBuilder cb = s.getCriteriaBuilder();
+            CriteriaQuery<Address> cq = cb.createQuery(Address.class);
+            Root<Address> root = cq.from(Address.class);
+
+            Predicate predicate = cb.and(
+                    cb.equal(root.get("user"), new User(userId))
+            );
+            cq.where(predicate);
+
+            result.addAll(s.createQuery(cq).getResultList());
+        });
+
+        return result;
     }
 
     @Override
@@ -71,13 +93,13 @@ public class AddressService implements IAddressService {
         AtomicReference<Address> result = new AtomicReference<>();
 
         hibernateSessionFactory.createSession(s -> {
-              Address a = new Address();
-              a.setStreet(address.getStreet());
-              a.setCity(address.getCity());
-              a.setPostCode(address.getPostCode());
-              a.setUser(new User(userId));
-              s.save(a);
-              result.set(a);
+            Address a = new Address();
+            a.setStreet(address.getStreet());
+            a.setCity(address.getCity());
+            a.setPostCode(address.getPostCode());
+            a.setUser(new User(userId));
+            s.save(a);
+            result.set(a);
         });
 
         return result.get();

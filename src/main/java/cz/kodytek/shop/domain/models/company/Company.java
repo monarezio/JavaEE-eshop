@@ -1,8 +1,7 @@
 package cz.kodytek.shop.domain.models.company;
 
-import cz.kodytek.shop.data.entities.Address;
 import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
-import cz.kodytek.shop.data.entities.interfaces.company.ICompany;
+import cz.kodytek.shop.domain.models.interfaces.company.ICreatedCompany;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -13,7 +12,7 @@ import javax.validation.constraints.Size;
 
 @Named
 @RequestScoped
-public class Company implements ICompany {
+public class Company implements ICreatedCompany {
 
     @NotNull(message = "Company name cannot be empty.")
     @Size(min = 1, message = "Company name must contain at least 2 characters.")
@@ -27,7 +26,9 @@ public class Company implements ICompany {
     @Size(min = 10, max = 10, message = "DIČ must contain exactly 10 characters.")
     private String taxIdentificationNumber;
 
-    private Address address;
+    private AddressCreationType addressCreationType = AddressCreationType.NEW;
+
+    private IAddressWithId address;
 
     @Override
     public String getName() {
@@ -61,7 +62,19 @@ public class Company implements ICompany {
         this.taxIdentificationNumber = taxIdentificationNumber;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(IAddressWithId address) {
         this.address = address;
+    }
+
+    public AddressCreationType getAddressCreationType() {
+        return addressCreationType;
+    }
+
+    public void setAddressCreationType(AddressCreationType addressCreationType) {
+        this.addressCreationType = addressCreationType;
+    }
+
+    public AddressCreationType[] getAddressCreationTypes() {
+        return AddressCreationType.values();
     }
 }
