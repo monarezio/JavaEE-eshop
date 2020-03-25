@@ -1,12 +1,11 @@
 package cz.kodytek.shop.data.entities;
 
-import cz.kodytek.shop.data.entities.interfaces.IAddress;
-import cz.kodytek.shop.data.entities.interfaces.IEntityId;
+import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
 
 import javax.persistence.*;
 
 @Entity
-public class Address implements IAddress {
+public class Address implements IAddressWithId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,21 +26,37 @@ public class Address implements IAddress {
 
     @Override
     public String getStreet() {
-        return null;
+        return street;
     }
 
     @Override
     public String getCity() {
-        return null;
+        return city;
     }
 
     @Override
     public String getPostCode() {
-        return null;
+        return postCode;
     }
 
     @Override
     public long getId() {
-        return 0;
+        return id;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

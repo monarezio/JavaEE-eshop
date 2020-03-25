@@ -77,6 +77,7 @@ public class UserService implements IUserService {
             CriteriaBuilder cb = s.getCriteriaBuilder();
             CriteriaQuery<User> cq = cb.createQuery(User.class);
             Root<User> root = cq.from(User.class);
+
             Fetch<User, Company> userToCompanyJoin = root.fetch(User_.companies, JoinType.LEFT);
             Fetch<User, Address> userToAddressJoin = root.fetch(User_.addresses, JoinType.LEFT);
 

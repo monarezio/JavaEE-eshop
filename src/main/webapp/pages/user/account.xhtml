@@ -46,7 +46,7 @@
                             <ui:repeat value="#{userController.currentUser.companies}" var="c">
                                 <li class="list-group-item d-flex flex-row">
                                     <div class="flex-grow-1">
-                                        <h:link outcome="/pages/user/company/detail.xhtml"
+                                        <h:link outcome="/pages/user/company/edit.xhtml"
                                                 value='#{c.identificationNumber}'>
                                             <f:param name="companyId" value="#{c.id}"/>
                                         </h:link>
@@ -54,7 +54,6 @@
                                     </div>
                                     <div class="flex-grow-0">
                                         <h:form>
-                                            #{companyController.print(c.id)}
                                             <h:commandLink styleClass="text-danger text-decoration-none"
                                                            action="#{companyController.delete(c)}" value="&times;"/>
                                         </h:form>
@@ -71,11 +70,37 @@
             </div>
             <div class="flex-grow-1 p-2">
                 <h4>List of addresses: </h4>
-                <div class="h6 mt-2 text-center text-dark">
-                    List of addressees is empty.
-                </div>
-                <div class="text-right">
-                    <button class="btn btn-primary">Add an address</button>
+                <c:if test="#{userController.currentUser.addresses.isEmpty()}">
+                    <div class="h6 mt-2 text-center text-dark">
+                        List of addressees is empty.
+                    </div>
+                </c:if>
+                <c:if test="#{!userController.currentUser.addresses.isEmpty()}">
+                    <div class="card">
+                        <ul class="list-group list-group-flush">
+                            <ui:repeat value="#{userController.currentUser.addresses}" var="a">
+                                <li class="list-group-item d-flex flex-row">
+                                    <div class="flex-grow-1">
+                                        <h:link outcome="/pages/user/address/edit.xhtml"
+                                                value='#{a.city}'>
+                                            <f:param name="addressId" value="#{a.id}"/>
+                                        </h:link>
+                                        | ${a.street} ${a.postCode}
+                                    </div>
+                                    <div class="flex-grow-0">
+                                        <h:form>
+                                            <h:commandLink styleClass="text-danger text-decoration-none"
+                                                           action="#{addressController.delete(a)}" value="&times;"/>
+                                        </h:form>
+                                    </div>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </div>
+                </c:if>
+                <div class="text-right mt-2">
+                    <h:link styleClass="btn btn-primary" outcome="/pages/user/address/create.xhtml"
+                            value="Add an address"/>
                 </div>
             </div>
         </div>

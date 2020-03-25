@@ -1,6 +1,6 @@
 package cz.kodytek.shop.data.entities;
 
-import cz.kodytek.shop.data.entities.interfaces.IAddress;
+import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
 import cz.kodytek.shop.data.entities.interfaces.company.ICompanyWithId;
 
 import javax.persistence.*;
@@ -40,7 +40,7 @@ public class Company implements ICompanyWithId {
     }
 
     @Override
-    public int getIdentificationNumber() {
+    public Integer getIdentificationNumber() {
         return identificationNumber;
     }
 
@@ -50,7 +50,7 @@ public class Company implements ICompanyWithId {
     }
 
     @Override
-    public IAddress getAddress() {
+    public IAddressWithId getAddress() {
         return address;
     }
 
@@ -66,7 +66,7 @@ public class Company implements ICompanyWithId {
         this.taxIdentificationNumber = taxIdentificationNumber;
     }
 
-    public void setAddress(IAddress address) {
+    public void setAddress(IAddressWithId address) {
         this.address = (Address) address;
     }
 }

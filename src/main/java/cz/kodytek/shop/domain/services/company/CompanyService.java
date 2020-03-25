@@ -47,6 +47,7 @@ public class CompanyService implements ICompanyService {
                     c.setAddress(company.getAddress());
                     c.setIdentificationNumber(company.getIdentificationNumber());
                     c.setTaxIdentificationNumber(company.getTaxIdentificationNumber());
+                    s.save(c);
                     result.set(true);
                 }
             });
@@ -62,9 +63,6 @@ public class CompanyService implements ICompanyService {
     public void delete(long userId, long companyId) {
         hibernateSessionFactory.createSession(s -> {
             Company company = getCompany(s, userId, companyId);
-
-            System.out.println("Deleting company with id: " + companyId);
-
             s.delete(company);
         });
     }
@@ -81,7 +79,7 @@ public class CompanyService implements ICompanyService {
             c.setIdentificationNumber(company.getIdentificationNumber());
             c.setName(company.getName());
             c.setAddress(company.getAddress());
-            user.getCompanies().add(c);
+            user.addCompany(c);
             s.save(c);
             result.set(c);
         });

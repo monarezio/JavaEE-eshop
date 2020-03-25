@@ -1,20 +1,32 @@
 package cz.kodytek.shop.domain.models.company;
 
 import cz.kodytek.shop.data.entities.Address;
-import cz.kodytek.shop.data.entities.interfaces.IAddress;
+import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
 import cz.kodytek.shop.data.entities.interfaces.company.ICompany;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Named
 @RequestScoped
 public class Company implements ICompany {
 
+    @NotNull(message = "Company name cannot be empty.")
+    @Size(min = 1, message = "Company name must contain at least 2 characters.")
     private String name;
-    private int identificationNumber;
+
+    @NotNull(message = "IČO cannot be empty.")
+    @Min(value = 10000000, message = "IČO must contain exactly 8 numeric characters.")
+    @Max(value = 99999999, message = "IČO must contain exactly 8 numeric characters.")
+    private Integer identificationNumber;
+
+    @Size(min = 10, max = 10, message = "DIČ must contain exactly 10 characters.")
     private String taxIdentificationNumber;
+
     private Address address;
 
     @Override
@@ -23,7 +35,7 @@ public class Company implements ICompany {
     }
 
     @Override
-    public int getIdentificationNumber() {
+    public Integer getIdentificationNumber() {
         return identificationNumber;
     }
 
@@ -33,7 +45,7 @@ public class Company implements ICompany {
     }
 
     @Override
-    public IAddress getAddress() {
+    public IAddressWithId getAddress() {
         return address;
     }
 
@@ -41,7 +53,7 @@ public class Company implements ICompany {
         this.name = name;
     }
 
-    public void setIdentificationNumber(int identificationNumber) {
+    public void setIdentificationNumber(Integer identificationNumber) {
         this.identificationNumber = identificationNumber;
     }
 

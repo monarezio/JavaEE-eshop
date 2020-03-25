@@ -1,13 +1,17 @@
 package cz.kodytek.shop.data.entities;
 
 import cz.kodytek.shop.data.entities.interfaces.user.IFullUser;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class User implements IFullUser {
@@ -37,15 +41,13 @@ public class User implements IFullUser {
     @ElementCollection(targetClass = Right.class)
     private List<Right> rights;
 
-    @OneToMany()
+    @OneToMany
     @JoinColumn(name = "user_id")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Address> addresses;
+    private Set<Address> addresses;
 
-    @OneToMany()
+    @OneToMany
     @JoinColumn(name = "user_id")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Company> companies;
+    private Set<Company> companies;
 
     public User() {
     }
@@ -111,11 +113,19 @@ public class User implements IFullUser {
 
     @Override
     public List<Address> getAddresses() {
-        return addresses;
+        return addresses.stream().sorted(Comparator.comparingLong(Address::getId)).collect(Collectors.toList());
     }
 
     @Override
     public List<Company> getCompanies() {
-        return companies;
+        return companies.stream().sorted(Comparator.comparingLong(Company::getId)).collect(Collectors.toList());
+    }
+
+    public void addAddress(Address address) {
+        addresses.add(address);
+    }
+
+    public void addCompany(Company company) {
+        companies.add(company);
     }
 }
