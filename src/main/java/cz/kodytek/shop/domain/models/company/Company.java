@@ -1,5 +1,6 @@
 package cz.kodytek.shop.domain.models.company;
 
+import cz.kodytek.shop.data.entities.Address;
 import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
 import cz.kodytek.shop.domain.models.interfaces.company.ICreatedCompany;
 
@@ -28,7 +29,7 @@ public class Company implements ICreatedCompany {
 
     private AddressCreationType addressCreationType = AddressCreationType.NEW;
 
-    private IAddressWithId address;
+    private IAddressWithId address = new Address();
 
     @Override
     public String getName() {

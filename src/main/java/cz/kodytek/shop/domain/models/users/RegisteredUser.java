@@ -27,8 +27,9 @@ public class RegisteredUser implements IRegisteredUser {
     public RegisteredUser() {
     }
 
-    public RegisteredUser(String password, String email, String name) {
+    public RegisteredUser(String email, String name, String password) {
         this.password = password;
+        this.passwordConfirmation = password;
         this.email = email;
         this.name = name;
     }

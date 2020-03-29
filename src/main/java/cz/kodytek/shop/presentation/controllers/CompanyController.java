@@ -3,6 +3,7 @@ package cz.kodytek.shop.presentation.controllers;
 import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
 import cz.kodytek.shop.data.entities.interfaces.company.ICompany;
 import cz.kodytek.shop.data.entities.interfaces.company.ICompanyWithId;
+import cz.kodytek.shop.domain.models.interfaces.company.ICreatedCompany;
 import cz.kodytek.shop.domain.services.interfaces.address.IAddressService;
 import cz.kodytek.shop.domain.services.interfaces.company.ICompanyService;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
@@ -37,7 +38,7 @@ public class CompanyController {
 
     private List<IAddressWithId> addressesForUser = null;
 
-    public void create(ICompany company) {
+    public void create(ICreatedCompany company) {
         if (companyService.create(userSessionService.getCurrentUser().getId(), company) != null)
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Company added successfully.", FlashMessageType.success));
         else

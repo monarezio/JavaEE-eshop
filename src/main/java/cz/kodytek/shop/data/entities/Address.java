@@ -24,6 +24,13 @@ public class Address implements IAddressWithId {
     @ManyToOne
     private User user;
 
+    public Address() {
+    }
+
+    public Address(long id) {
+        this.id = id;
+    }
+
     @Override
     public String getStreet() {
         return street;
@@ -58,5 +65,9 @@ public class Address implements IAddressWithId {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

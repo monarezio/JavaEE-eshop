@@ -8,14 +8,14 @@
       xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:app="http://kodytek.cz/tags"
 >
 
-<f:event type="preRenderView" listener="#{authManager.authorize}"/>
-
 <h:head>
     <title>Shop</title>
     <h:outputStylesheet name="bundle.css" library="css"/>
     <h:outputScript name="bundle.js" library="js"/>
     <base href="/Shop/"/>
 </h:head>
+
+<f:event type="preRenderView" listener="#{dbSeeder.seed()}"/>
 
 <h:body>
     <h:form>
@@ -38,11 +38,11 @@
                     <c:if test="#{not userSessionService.loggedIn}">
                         <ul class="navbar-nav d-flex align-items-center">
                             <li class="nav-item mr-2">
-                                <app:menu-link outcome="/pages/user/session/login.xhtml" value="Login"/>
+                                <app:menu-link outcome="/pages/session/login.xhtml" value="Login"/>
                             </li>
                             <li>
                                 <h:link styleClass="btn btn-primary" value="Register"
-                                        outcome="/pages/user/session/register.xhtml"/>
+                                        outcome="/pages/session/register.xhtml"/>
                             </li>
                         </ul>
                     </c:if>

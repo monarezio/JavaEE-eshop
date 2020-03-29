@@ -1,6 +1,7 @@
 package cz.kodytek.shop.domain.services.company;
 
 import cz.kodytek.shop.data.connection.interfaces.IHibernateSessionFactory;
+import cz.kodytek.shop.data.entities.Address;
 import cz.kodytek.shop.data.entities.Company;
 import cz.kodytek.shop.data.entities.User;
 import cz.kodytek.shop.data.entities.interfaces.company.ICompany;
@@ -80,10 +81,19 @@ public class CompanyService implements ICompanyService {
             c.setTaxIdentificationNumber(company.getTaxIdentificationNumber());
             c.setIdentificationNumber(company.getIdentificationNumber());
             c.setName(company.getName());
-            c.setAddress(company.getAddress());
 
-            if(company.getAddressCreationType().equals(AddressCreationType.NEW))
-                company.getAddress().
+            if (company.getAddressCreationType().equals(AddressCreationType.NEW)) {
+                Address a = new Address();
+                a.setCity(company.getAddress().getCity());
+                a.setStreet(company.getAddress().getStreet());
+                a.setPostCode(company.getAddress().getPostCode());
+
+                user.addAddress(a);
+                s.save(a);
+                c.setAddress(a);
+            } else {
+                c.setAddress(new Address(company.getAddress().getId()));
+            }
 
 
             user.addCompany(c);

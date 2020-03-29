@@ -1,10 +1,6 @@
 package cz.kodytek.shop.data.entities;
 
 import cz.kodytek.shop.data.entities.interfaces.user.IFullUser;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

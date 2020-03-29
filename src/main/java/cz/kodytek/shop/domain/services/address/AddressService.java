@@ -7,10 +7,12 @@ import cz.kodytek.shop.data.entities.interfaces.address.IAddress;
 import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
 import cz.kodytek.shop.domain.services.interfaces.address.IAddressService;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
+import javax.persistence.RollbackException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -82,10 +84,15 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public void delete(long userId, IAddressWithId address) {
+    public boolean delete(long userId, IAddressWithId address) {
+        try {
         hibernateSessionFactory.createSession(s -> {
             s.delete(getAddress(s, userId, address.getId()));
         });
+        } catch(RollbackException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override

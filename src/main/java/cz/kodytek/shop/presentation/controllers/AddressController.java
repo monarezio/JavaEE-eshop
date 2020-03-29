@@ -39,8 +39,10 @@ public class AddressController {
     }
 
     public void delete(IAddressWithId address) {
-        addressService.delete(userSessionService.getCurrentUser().getId(), address);
-        requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Address deleted successfully.", FlashMessageType.success));
+        if(addressService.delete(userSessionService.getCurrentUser().getId(), address))
+            requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Address deleted successfully.", FlashMessageType.success));
+        else
+            flashMessagesService.add(new FlashMessage("Deletion failed. Please delete all associated companies with this address before deleting it again.", FlashMessageType.alert));
     }
 
     public void edit(IAddressWithId address) {

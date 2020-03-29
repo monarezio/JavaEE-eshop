@@ -40,11 +40,17 @@ public class RequestUtils implements IRequestUtils {
         } catch (IOException e) {
             e.printStackTrace(); // Just crash, this should not happen
         }
+        stopLifecycle();
     }
 
     @Override
     public String getCurrentJSFPageId() {
         return facesContext.getViewRoot().getViewId();
+    }
+
+    @Override
+    public void stopLifecycle() {
+        facesContext.responseComplete();
     }
 
     private String getAppRootUrl() {

@@ -8,6 +8,9 @@
         <class>cz.kodytek.shop.data.entities.User</class>
         <class>cz.kodytek.shop.data.entities.Address</class>
         <class>cz.kodytek.shop.data.entities.Company</class>
+        <class>cz.kodytek.shop.data.entities.Category</class>
+        <class>cz.kodytek.shop.data.entities.Good</class>
+        <class>cz.kodytek.shop.data.entities.Resource</class>
 
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>

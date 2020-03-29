@@ -40,7 +40,7 @@ public class UserService implements IUserService {
                 u.setPhoneNumber(user.getPhoneNumber());
                 s.save(u);
             });
-        } catch(PersistenceException e) {
+        } catch (PersistenceException e) {
             return false;
         }
 
@@ -55,13 +55,13 @@ public class UserService implements IUserService {
             sessionFactory.createSession(s -> {
                 User u = s.get(User.class, userId);
 
-                if(passwordService.verify(password.getOldPassword(), u.getHashedPassword())) {
+                if (passwordService.verify(password.getOldPassword(), u.getHashedPassword())) {
                     String newHashedPassword = passwordService.hash(password.getPassword());
                     u.setHashedPassword(newHashedPassword);
                     result.set(true);
                 }
             });
-        } catch(PersistenceException e) {
+        } catch (PersistenceException e) {
             return false;
         }
 
@@ -70,23 +70,31 @@ public class UserService implements IUserService {
 
     @Override
     public IFullUser getUser(long userId) {
+        System.out.println(userId);
+
         AtomicReference<User> result = new AtomicReference<>();
 
         try {
-        sessionFactory.createSession(s -> {
-            CriteriaBuilder cb = s.getCriteriaBuilder();
-            CriteriaQuery<User> cq = cb.createQuery(User.class);
-            Root<User> root = cq.from(User.class);
+            sessionFactory.createSession(s -> {
+                CriteriaBuilder cb = s.getCriteriaBuilder();
+                CriteriaQuery<User> cq = cb.createQuery(User.class);
+                Root<User> root = cq.from(User.class);
 
-            Fetch<User, Company> userToCompanyJoin = root.fetch(User_.companies, JoinType.LEFT);
-            Fetch<User, Address> userToAddressJoin = root.fetch(User_.addresses, JoinType.LEFT);
+                Fetch<User, Company> userToCompanyJoin = root.fetch(User_.companies, JoinType.LEFT);
+                Fetch<User, Address> userToAddressJoin = root.fetch(User_.addresses, JoinType.LEFT);
 
-            result.set(s.createQuery(cq).getSingleResult());
-        });
-        } catch(PersistenceException e) {
+                cq.where(
+                        cb.equal(root.get("id"), userId)
+                );
+
+                result.set(s.createQuery(cq).getSingleResult());
+            });
+        } catch (PersistenceException e) {
             e.printStackTrace();
             return null;
         }
+
+        System.out.println(result.get().getId());
 
         return result.get();
     }

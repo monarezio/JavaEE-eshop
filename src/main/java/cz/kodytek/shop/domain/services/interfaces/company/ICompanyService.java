@@ -1,6 +1,5 @@
 package cz.kodytek.shop.domain.services.interfaces.company;
 
-import cz.kodytek.shop.data.entities.interfaces.company.ICompany;
 import cz.kodytek.shop.data.entities.interfaces.company.ICompanyWithId;
 import cz.kodytek.shop.domain.models.interfaces.company.ICreatedCompany;
 

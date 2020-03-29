@@ -13,7 +13,7 @@ public interface IAddressService {
 
     boolean edit(long userId, IAddressWithId address);
 
-    void delete(long userId, IAddressWithId address);
+    boolean delete(long userId, IAddressWithId address);
 
     IAddressWithId create(long userId, IAddress company);
 
