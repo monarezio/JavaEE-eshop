@@ -13,4 +13,6 @@ public interface IUserSessionService {
 
     boolean isLoggedIn();
 
+    boolean isAdmin();
+
 }

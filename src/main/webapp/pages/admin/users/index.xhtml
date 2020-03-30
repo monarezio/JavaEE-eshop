@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+<h:body>
+
+    <ui:composition template="../../../WEB-INF/templates/admin.xhtml">
+        <div class="bg-white p-3 shadow-sm">
+            <h2>Users</h2>
+
+            <div class="text-right">
+                <h:link styleClass="btn btn-primary" outcome="/pages/admin/users/create.xhtml" value="Create"/>
+            </div>
+        </div>
+    </ui:composition>
+
+</h:body>
+
+</html>

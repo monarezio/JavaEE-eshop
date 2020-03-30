@@ -47,7 +47,7 @@ public class CompanyService implements ICompanyService {
                 Company c = getCompany(s, userId, company.getId());
                 if (c != null) {
                     c.setName(company.getName());
-                    c.setAddress(company.getAddress());
+                    c.setAddress(new Address(company.getAddress().getId()));
                     c.setIdentificationNumber(company.getIdentificationNumber());
                     c.setTaxIdentificationNumber(company.getTaxIdentificationNumber());
                     s.save(c);
@@ -105,6 +105,9 @@ public class CompanyService implements ICompanyService {
     }
 
     private Company getCompany(Session s, long userId, long companyId) {
+        System.out.println("ABC: " + companyId);
+        System.out.println("User id: " + userId);
+        System.out.println("Company id: " + companyId);
         CriteriaBuilder cb = s.getCriteriaBuilder();
         CriteriaQuery<Company> cq = cb.createQuery(Company.class);
         Root<Company> root = cq.from(Company.class);

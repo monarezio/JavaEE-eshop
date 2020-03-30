@@ -48,6 +48,21 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public void addRights(long userId, Right ...rights) {
+        try {
+            sessionFactory.createSession(s -> {
+                User u = s.get(User.class, userId);
+                for(Right r : rights)
+                    u.addRight(r);
+
+                s.save(u);
+            });
+        } catch(PersistenceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public boolean changePassword(long userId, IPassword password) {
         AtomicBoolean result = new AtomicBoolean(false);
 

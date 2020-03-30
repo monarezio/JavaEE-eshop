@@ -9,7 +9,7 @@ public class Resource implements IResource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(unique = false)
+    @Column(unique = true)
     private long id;
 
     @Column(unique = true)

@@ -38,9 +38,18 @@ public class CompanyController {
 
     private List<IAddressWithId> addressesForUser = null;
 
+    private ICompanyWithId company;
+
     public void create(ICreatedCompany company) {
         if (companyService.create(userSessionService.getCurrentUser().getId(), company) != null)
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Company added successfully.", FlashMessageType.success));
+        else
+            flashMessagesService.add(new FlashMessage("There was a unknown error, sorry.", FlashMessageType.alert));
+    }
+
+    public void edit(ICompanyWithId company) {
+        if(companyService.edit(userSessionService.getCurrentUser().getId(), company))
+            requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Company edited successfully.", FlashMessageType.success));
         else
             flashMessagesService.add(new FlashMessage("There was a unknown error, sorry.", FlashMessageType.alert));
     }
@@ -54,6 +63,14 @@ public class CompanyController {
         if(addressesForUser == null)
             addressesForUser = addressService.getAllForUser(userSessionService.getCurrentUser().getId());
         return addressesForUser;
+    }
+
+    public ICompanyWithId getCompany(long id) {
+        if(company == null)
+            company = companyService.get(userSessionService.getCurrentUser().getId(), id);
+
+        System.out.println("Company ID: " + company.getId());
+        return company;
     }
 
 }

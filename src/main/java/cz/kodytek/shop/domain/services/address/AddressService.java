@@ -84,10 +84,10 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public boolean delete(long userId, IAddressWithId address) {
+    public boolean delete(long userId, long addressId) {
         try {
         hibernateSessionFactory.createSession(s -> {
-            s.delete(getAddress(s, userId, address.getId()));
+            s.delete(getAddress(s, userId, addressId));
         });
         } catch(RollbackException e) {
             return false;

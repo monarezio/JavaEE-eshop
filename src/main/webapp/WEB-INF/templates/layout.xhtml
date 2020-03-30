@@ -18,48 +18,55 @@
 <f:event type="preRenderView" listener="#{dbSeeder.seed()}"/>
 
 <h:body>
-    <h:form>
-        <div class="position-fixed w-100">
-            <div class="navbar navbar-expand-lg navbar-light shadow-sm">
-                <h:link styleClass="navbar-brand" value="Furniture" outcome="/pages/index.xhtml"/>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <app:menu-link outcome="/pages/index.xhtml" value="Beds"/>
+    <div class="position-fixed w-100 z-front">
+        <div class="navbar navbar-expand-lg navbar-light shadow-sm">
+            <h:link styleClass="navbar-brand" value="Furniture" outcome="/pages/index.xhtml"/>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <app:menu-link outcome="/pages/index.xhtml" value="Beds"/>
+                    </li>
+                    <li class="nav-item">
+                        <app:menu-link outcome="/pages/index.xhtml" value="Kitchens"/>
+                    </li>
+                    <li class="nav-item">
+                        <app:menu-link outcome="/pages/index.xhtml" value="Sinks"/>
+                    </li>
+                </ul>
+
+                <c:if test="#{not userSessionService.loggedIn}">
+                    <ul class="navbar-nav d-flex align-items-center">
+                        <li class="nav-item mr-2">
+                            <app:menu-link outcome="/pages/session/login.xhtml" value="Login"/>
                         </li>
-                        <li class="nav-item">
-                            <app:menu-link outcome="/pages/index.xhtml" value="Kitchens"/>
-                        </li>
-                        <li class="nav-item">
-                            <app:menu-link outcome="/pages/index.xhtml" value="Sinks"/>
+                        <li>
+                            <h:link styleClass="btn btn-primary" value="Register"
+                                    outcome="/pages/session/register.xhtml"/>
                         </li>
                     </ul>
-
-                    <c:if test="#{not userSessionService.loggedIn}">
-                        <ul class="navbar-nav d-flex align-items-center">
+                </c:if>
+                <c:if test="#{userSessionService.loggedIn}">
+                    <ul class="navbar-nav">
+                        <c:if test="#{userSessionService.admin}">
                             <li class="nav-item mr-2">
-                                <app:menu-link outcome="/pages/session/login.xhtml" value="Login"/>
+                                <app:menu-link outcome="/pages/admin/index.xhtml" value="Adminnistration"/>
                             </li>
-                            <li>
-                                <h:link styleClass="btn btn-primary" value="Register"
-                                        outcome="/pages/session/register.xhtml"/>
-                            </li>
-                        </ul>
-                    </c:if>
-                    <c:if test="#{userSessionService.loggedIn}">
-                        <ul class="navbar-nav">
-                            <li class="nav-item mr-2">
-                                <app:menu-link outcome="/pages/user/account.xhtml" value="${userSessionService.currentUser.name}"/>
-                            </li>
-                            <li class="nav-item mr-2">
-                                <h:commandLink styleClass="nav-link" action="${userSessionController.logout}" value="Logout"/>
-                            </li>
-                        </ul>
-                    </c:if>
-                </div>
+                        </c:if>
+                        <li class="nav-item mr-2">
+                            <app:menu-link outcome="/pages/user/account.xhtml"
+                                           value="${userSessionService.currentUser.name}"/>
+                        </li>
+                        <li class="nav-item mr-2">
+                            <h:form>
+                                <h:commandLink styleClass="nav-link" action="${userSessionController.logout}"
+                                               value="Logout"/>
+                            </h:form>
+                        </li>
+                    </ul>
+                </c:if>
             </div>
         </div>
-    </h:form>
+    </div>
     <div class="min-vh-100 pt-5 d-flex flex-column">
         <div class="container mt-3 flex-grow-1">
             <app:flash-messages/>

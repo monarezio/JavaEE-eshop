@@ -1,14 +1,19 @@
 package cz.kodytek.shop.domain.common;
 
 import com.github.dhiraj072.randomwordgenerator.RandomWordGenerator;
+import cz.kodytek.shop.data.entities.Right;
+import cz.kodytek.shop.data.entities.User;
 import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
+import cz.kodytek.shop.data.entities.interfaces.user.IUserWithRights;
 import cz.kodytek.shop.domain.models.address.Address;
 import cz.kodytek.shop.domain.models.company.AddressCreationType;
 import cz.kodytek.shop.domain.models.company.Company;
+import cz.kodytek.shop.domain.models.users.LoggedInUser;
 import cz.kodytek.shop.domain.models.users.RegisteredUser;
 import cz.kodytek.shop.domain.services.interfaces.address.IAddressService;
 import cz.kodytek.shop.domain.services.interfaces.company.ICompanyService;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserAuthenticationService;
+import cz.kodytek.shop.domain.services.interfaces.users.IUserService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -27,11 +32,15 @@ public class DbSeeder { // TODO: Figure out a better way
     @Inject
     private ICompanyService companyService;
 
+    @Inject
+    private IUserService userService;
+
     private boolean didSeed = false;
 
     public void seed() {
         if (!didSeed) {
             userAuthenticationService.register(new RegisteredUser("samuel@kodytek.cz", "Samuel Kodytek", "abcabc"));
+            userService.addRights(1, Right.ADMIN);
 
             for (int i = 0; i < 10; i++) {
                 Address a = new Address();

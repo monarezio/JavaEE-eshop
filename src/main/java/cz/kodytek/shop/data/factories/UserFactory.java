@@ -8,13 +8,14 @@ import cz.kodytek.shop.data.factories.interfaces.IUserFactory;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 @ApplicationScoped
 public class UserFactory implements IUserFactory {
     @Override
     public User createUser(IUser user, String hashedPassword, List<Right> rights) {
-        return new User(user.getEmail(), user.getName(), hashedPassword, rights);
+        return new User(user.getEmail(), user.getName(), hashedPassword, new HashSet<>(rights));
     }
 
     @Override

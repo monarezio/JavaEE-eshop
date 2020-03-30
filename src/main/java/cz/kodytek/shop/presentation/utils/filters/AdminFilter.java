@@ -1,7 +1,6 @@
 package cz.kodytek.shop.presentation.utils.filters;
 
-import cz.kodytek.shop.presentation.session.models.FlashMessage;
-import cz.kodytek.shop.presentation.session.models.FlashMessageType;
+import cz.kodytek.shop.data.entities.Right;
 import cz.kodytek.shop.presentation.session.services.interfaces.IUserSessionService;
 import cz.kodytek.shop.presentation.session.services.interfaces.messages.IFlashMessagesService;
 
@@ -12,17 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("/pages/user/*")
-public class AuthenticationFilter implements Filter {
-
-    @Inject
-    private IFlashMessagesService flashMessagesService;
+@WebFilter("/pages/admin/*")
+public class AdminFilter  implements Filter {
 
     @Inject
     private IUserSessionService userSessionService;
 
+    @Inject
+    private IFlashMessagesService flashMessagesService;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+
     }
 
     @Override
@@ -30,9 +30,8 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (!userSessionService.isLoggedIn()) {
-            flashMessagesService.add(new FlashMessage("Page is only for logged in users, please login.", FlashMessageType.alert));
-            response.sendRedirect(request.getContextPath() + "/pages/session/login.xhtml");
+        if (userSessionService.getCurrentUser() == null || !userSessionService.getCurrentUser().getRights().contains(Right.ADMIN)) {
+            response.sendRedirect(request.getContextPath() + "/");
         } else {
             filterChain.doFilter(servletRequest, response);
         }
@@ -40,5 +39,6 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void destroy() {
+
     }
 }

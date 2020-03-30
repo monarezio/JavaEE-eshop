@@ -15,7 +15,7 @@ public class Company implements ICompanyWithId {
 
     @Column(nullable = false)
     //Is not unique since, it would be kind of stupid not allowing the user to not add his company, if someone miss typed the id
-    private int identificationNumber;
+    private Integer identificationNumber;
 
     @Column(nullable = false)
     private String name;
@@ -54,7 +54,7 @@ public class Company implements ICompanyWithId {
         return address;
     }
 
-    public void setIdentificationNumber(int identificationNumber) {
+    public void setIdentificationNumber(Integer identificationNumber) {
         this.identificationNumber = identificationNumber;
     }
 

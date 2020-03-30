@@ -33,6 +33,7 @@ public class Good implements IGood {
     private BigDecimal cost;
 
     @OneToMany
+    @JoinColumn(name = "good_id")
     private Set<Resource> resources;
 
     @Override

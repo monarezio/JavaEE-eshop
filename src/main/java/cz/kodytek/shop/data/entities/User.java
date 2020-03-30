@@ -4,6 +4,7 @@ import cz.kodytek.shop.data.entities.interfaces.user.IFullUser;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -34,8 +35,8 @@ public class User implements IFullUser {
 
     @Column
     @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = Right.class)
-    private List<Right> rights;
+    @ElementCollection(targetClass = Right.class, fetch = FetchType.EAGER)
+    private Set<Right> rights;
 
     @OneToMany
     @JoinColumn(name = "user_id")
@@ -52,7 +53,7 @@ public class User implements IFullUser {
         this.id = id;
     }
 
-    public User(String email, String name, String hashedPassword, List<Right> rights) {
+    public User(String email, String name, String hashedPassword, Set<Right> rights) {
         this.email = email;
         this.name = name;
         this.hashedPassword = hashedPassword;
@@ -84,7 +85,11 @@ public class User implements IFullUser {
     }
 
     public List<Right> getRights() {
-        return rights;
+        return new ArrayList<>(rights);
+    }
+
+    public void addRight(Right right) {
+        this.rights.add(right);
     }
 
     public void setEmail(String email) {

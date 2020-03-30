@@ -1,5 +1,6 @@
 package cz.kodytek.shop.presentation.session.services;
 
+import cz.kodytek.shop.data.entities.Right;
 import cz.kodytek.shop.data.entities.interfaces.user.IUserWithRights;
 import cz.kodytek.shop.domain.models.interfaces.users.ILoggedInUser;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserAuthenticationService;
@@ -37,5 +38,10 @@ public class UserSessionService implements IUserSessionService, Serializable {
     @Override
     public boolean isLoggedIn() {
         return currentUser != null;
+    }
+
+    @Override
+    public boolean isAdmin() {
+        return isLoggedIn() && currentUser.getRights().contains(Right.ADMIN);
     }
 }
