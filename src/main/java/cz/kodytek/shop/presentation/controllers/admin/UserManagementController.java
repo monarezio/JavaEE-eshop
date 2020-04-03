@@ -1,6 +1,7 @@
 package cz.kodytek.shop.presentation.controllers.admin;
 
 import cz.kodytek.shop.data.entities.Right;
+import cz.kodytek.shop.data.entities.interfaces.user.IFullUser;
 import cz.kodytek.shop.data.entities.interfaces.user.IUserWithRights;
 import cz.kodytek.shop.domain.models.EntityFilter;
 import cz.kodytek.shop.domain.models.interfaces.IEntityFilter;
@@ -38,6 +39,8 @@ public class UserManagementController {
 
     private IEntityFilter cachedFilter;
 
+    private IFullUser cachedUser;
+
     public IEntityPage<? extends IUserWithRights> getUsers(String search, String page) {
         if (cachedPage == null)
             cachedPage = userService.getUsers(search, Integer.parseInt(page), 20, userSessionService.getCurrentUser().getId());
@@ -58,14 +61,37 @@ public class UserManagementController {
             flashMessagesService.add(new FlashMessage("Password do not match", FlashMessageType.alert));
     }
 
+    public void editUser(IFullUser user) {
+        if(userService.editUser(user.getId(), user))
+            requestUtils.redirect("/pages/admin/users/index.xhtml", new FlashMessage("User edited successfully.", FlashMessageType.success));
+        else
+            flashMessagesService.add(new FlashMessage("Unknown error.", FlashMessageType.alert));
+    }
+
+    public void deleteUser(long id) {
+        userService.deleteUser(id);
+        requestUtils.redirect("/pages/admin/users/index.xhtml", new FlashMessage("User deleted successfully.", FlashMessageType.success));
+    }
+
     public void search(IEntityFilter filter) {
-        System.out.println("Search filter: " + filter.getSearchFilter());
         requestUtils.redirect("/pages/admin/users/index.xhtml?search=" + filter.getSearchFilter());
     }
 
     public IEntityFilter getFilter() {
         if(cachedFilter == null)
-            cachedFilter = new EntityFilter(requestUtils.getParam("search"));
+            cachedFilter = new EntityFilter(requestUtils.hasParam("search") ? requestUtils.getParam("search") : "");
         return cachedFilter;
+    }
+
+    public IFullUser getUserById(long id) {
+        if(cachedUser == null)
+            cachedUser = userService.getUser(id);
+
+        if(cachedUser != null) {
+            return cachedUser;
+        } else {
+            requestUtils.redirect("/pages/admin/users/index.xhtml");
+            return null;
+        }
     }
 }

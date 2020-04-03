@@ -39,13 +39,35 @@ public class UserService implements IUserService {
 
     @Override
     public boolean editUser(long userId, IUserWithPhoneNumber user) {
-
         try {
             sessionFactory.createSession(s -> {
                 User u = s.get(User.class, userId);
                 u.setEmail(user.getEmail());
                 u.setName(user.getName());
                 u.setPhoneNumber(user.getPhoneNumber());
+                s.save(u);
+            });
+        } catch (PersistenceException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void deleteUser(long userId) {
+        sessionFactory.createSession(s -> s.delete(s.get(User.class, userId)));
+    }
+
+    @Override
+    public boolean editUser(long userId, IFullUser user) {
+        try {
+            sessionFactory.createSession(s -> {
+                User u = s.get(User.class, userId);
+                u.setEmail(user.getEmail());
+                u.setName(user.getName());
+                u.setPhoneNumber(user.getPhoneNumber());
+                u.setRights(new HashSet<>(user.getRights()));
                 s.save(u);
             });
         } catch (PersistenceException e) {

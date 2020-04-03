@@ -1,6 +1,6 @@
 @import '~bootstrap/scss/_forms.scss';
 
-.form-control {
+.form-control, .custom-select {
   border-radius: 0;
   padding: 1.25rem 0.75rem;
   box-sizing: border-box;
@@ -17,7 +17,8 @@ input[type=number]:focus,
 [type=password].form-control:focus,
 [type=email].form-control:focus,
 [type=tel].form-control:focus,
-[contenteditable].form-control:focus {
+[contenteditable].form-control:focus,
+.custom-select:focus {
   box-shadow: none;
   outline: none;
   border-color: $border-color;

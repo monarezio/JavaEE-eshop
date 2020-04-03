@@ -15,6 +15,10 @@ public interface IUserService {
 
     boolean editUser(long userId, IUserWithPhoneNumber user);
 
+    boolean editUser(long userId, IFullUser user);
+
+    void deleteUser(long userId);
+
     void addRights(long userId, Right...rights);
 
     boolean changePassword(long userId, IPassword password);

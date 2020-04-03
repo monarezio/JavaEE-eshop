@@ -4,10 +4,7 @@ import cz.kodytek.shop.data.entities.interfaces.user.IFullUser;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -90,6 +87,10 @@ public class User implements IFullUser {
 
     public void addRight(Right right) {
         this.rights.add(right);
+    }
+
+    public void setRights(List<Right> rights) {
+        this.rights = new HashSet<>(rights);
     }
 
     public void setRights(Set<Right> rights) {

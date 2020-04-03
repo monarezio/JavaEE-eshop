@@ -28,6 +28,7 @@
                     <th>Full name</th>
                     <th>Email</th>
                     <th>Admin</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,10 +36,20 @@
                         value="#{userManagementController.getUsers(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).all}"
                         var="u">
                     <tr>
-                        <td class="font-weight-bold">#{u.id}</td>
+                        <td class="font-weight-bold">
+                            <h:link outcome="/pages/admin/users/edit.xhtml" value="#{u.id}">
+                                <f:param name="id" value="#{u.id}"/>
+                            </h:link>
+                        </td>
                         <td>#{u.name}</td>
                         <td>#{u.email}</td>
                         <td>#{u.admin ? 'Yes' : 'No'}</td>
+                        <td>
+                            <h:form>
+                                <h:commandLink styleClass="text-danger text-decoration-none"
+                                               value="&times;" action="#{userManagementController.deleteUser(u.id)}"/>
+                            </h:form>
+                        </td>
                     </tr>
                 </ui:repeat>
                 </tbody>

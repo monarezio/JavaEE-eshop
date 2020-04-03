@@ -10,7 +10,7 @@ import javax.inject.Named;
 public class EntityFilter implements IEntityFilter {
 
     private int page;
-    private String search;
+    private String search = "";
 
     public EntityFilter(String search) {
         this.search = search;
@@ -26,7 +26,7 @@ public class EntityFilter implements IEntityFilter {
 
     @Override
     public String getSearchFilter() {
-        return search;
+        return search == null ? "" : search;
     }
 
     public void setPage(int page) {

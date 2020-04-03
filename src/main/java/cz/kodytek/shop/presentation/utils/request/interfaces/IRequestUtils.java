@@ -15,6 +15,8 @@ public interface IRequestUtils {
 
     String getParam(String key);
 
+    boolean hasParam(String key);
+
     void stopLifecycle();
 
 }

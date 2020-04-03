@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+>
+<h:body>
+
+    <ui:composition template="../../../WEB-INF/templates/admin.xhtml">
+        <h:form styleClass="bg-white p-3 shadow-sm w-50 mx-auto">
+            <h:messages styleClass="form-errors"/>
+            <h2 class="my-3">Create user</h2>
+            <div class="form-group">
+                <h:outputLabel for="full-name">Full name*</h:outputLabel>
+                <h:inputText styleClass="form-control"
+                             type="full-name"
+                             id="full-name"
+                             value="#{userManagementController.getUserById(param['id']).name}"/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="email">Email*</h:outputLabel>
+                <h:inputText styleClass="form-control"
+                             type="email"
+                             id="email"
+                             value="#{userManagementController.getUserById(param['id']).email}"/>
+            </div>
+            <div>
+                <h:outputLabel for="address_id">Rights</h:outputLabel>
+                <h:selectManyListbox id="address_id" styleClass="custom-select" value="#{userManagementController.getUserById(param['id']).rights}">
+                    <f:selectItems value="#{userManagementController.rightsList}"
+                                   var="r"
+                                   itemLabel="#{rightsHelper.parse(r)}"
+                                   itemValue="#{r}"/>
+                </h:selectManyListbox>
+            </div>
+            <div class="text-right mt-2">
+                <h:commandLink styleClass="btn btn-primary" value="Edit"
+                               action="#{userManagementController.editUser(userManagementController.getUserById(param['id']))}">
+                    <f:param name="id" value="#{param['id']}"/>
+                </h:commandLink>
+            </div>
+        </h:form>
+    </ui:composition>
+
+</h:body>
+
+</html>
