@@ -43,4 +43,9 @@ public class CurrentUser implements ICurrentUser {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+    @Override
+    public boolean isAdmin() {
+        return rights.contains(Right.ADMIN);
+    }
 }

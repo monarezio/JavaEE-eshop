@@ -4,13 +4,54 @@
 <html
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
 >
 <h:body>
 
     <ui:composition template="../../../WEB-INF/templates/admin.xhtml">
-        <div class="bg-white p-3 shadow-sm">
-            <h2>Create user</h2>
-        </div>
+        <h:form styleClass="bg-white p-3 shadow-sm w-50 mx-auto">
+            <h:messages styleClass="form-errors"/>
+            <h2 class="my-3">Create user</h2>
+            <div class="form-group">
+                <h:outputLabel for="full-name">Full name*</h:outputLabel>
+                <h:inputText styleClass="form-control"
+                             type="full-name"
+                             id="full-name"
+                             value="#{newUser.name}"/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="email">Email*</h:outputLabel>
+                <h:inputText styleClass="form-control"
+                             type="email"
+                             id="email"
+                             value="#{newUser.email}"/>
+            </div>
+            <div>
+                <h:outputLabel for="address_id">Rights</h:outputLabel>
+                <h:selectManyListbox id="address_id" styleClass="custom-select" value="#{newUser.rights}">
+                    <f:selectItems value="#{userManagementController.rightsList}"
+                                   var="r"
+                                   itemLabel="#{rightsHelper.parse(r)}"
+                                   itemValue="#{r}"/>
+                </h:selectManyListbox>
+            </div>
+            <div class="form-group mt-4">
+                <h:outputLabel for="password">Password*</h:outputLabel>
+                <h:inputSecret styleClass="form-control"
+                               type="password" id="password"
+                               value="#{newUser.password}"/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="passwordConfirmation">Password confirmation*</h:outputLabel>
+                <h:inputSecret styleClass="form-control"
+                               type="password" id="passwordConfirmation"
+                               value="#{newUser.passwordConfirmation}"/>
+            </div>
+            <div class="text-right">
+                <h:commandLink styleClass="btn btn-primary" value="Create"
+                               action="#{userManagementController.createUser(newUser)}"/>
+            </div>
+        </h:form>
     </ui:composition>
 
 </h:body>

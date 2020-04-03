@@ -92,6 +92,10 @@ public class User implements IFullUser {
         this.rights.add(right);
     }
 
+    public void setRights(Set<Right> rights) {
+        this.rights = rights;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -128,5 +132,10 @@ public class User implements IFullUser {
 
     public void addCompany(Company company) {
         companies.add(company);
+    }
+
+    @Override
+    public boolean isAdmin() {
+        return rights.contains(Right.ADMIN);
     }
 }

@@ -49,6 +49,11 @@ public class RequestUtils implements IRequestUtils {
     }
 
     @Override
+    public String getParam(String key) {
+        return facesContext.getExternalContext().getRequestParameterMap().get(key);
+    }
+
+    @Override
     public void stopLifecycle() {
         facesContext.responseComplete();
     }

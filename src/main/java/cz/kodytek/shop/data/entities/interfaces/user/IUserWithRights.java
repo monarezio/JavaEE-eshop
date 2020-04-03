@@ -4,4 +4,7 @@ import cz.kodytek.shop.data.entities.interfaces.IEntityId;
 import cz.kodytek.shop.data.entities.interfaces.IEntityWithRights;
 
 public interface IUserWithRights extends IEntityWithRights, IEntityId, IUserWithPhoneNumber {
+
+    boolean isAdmin();
+
 }

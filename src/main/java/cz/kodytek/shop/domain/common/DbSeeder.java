@@ -50,7 +50,7 @@ public class DbSeeder { // TODO: Figure out a better way
 
                 IAddressWithId addedAddress = addressService.create(1, a);
 
-                if (((int)((Math.random() * 10)) % 3) == 0) {
+                if (((int) ((Math.random() * 10)) % 3) == 0) {
                     System.out.println("Generating company");
                     Company c = new Company();
                     c.setAddress(addedAddress);
@@ -60,6 +60,12 @@ public class DbSeeder { // TODO: Figure out a better way
                     c.setAddressCreationType(AddressCreationType.REUSE);
                     companyService.create(1, c);
                 }
+            }
+
+            for (int i = 0; i < 100; i++) {
+                String email = "user" + (int) ((Math.random() * 10000)) + "@" + "gmail.com";
+                String name = RandomWordGenerator.getRandomWord() + " " + RandomWordGenerator.getRandomWord();
+                userAuthenticationService.register(new RegisteredUser(email, name, "abcabc"));
             }
 
             didSeed = true;

@@ -13,6 +13,8 @@ public interface IRequestUtils {
 
     String getCurrentJSFPageId();
 
+    String getParam(String key);
+
     void stopLifecycle();
 
 }

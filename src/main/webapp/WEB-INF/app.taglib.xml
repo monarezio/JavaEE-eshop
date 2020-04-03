@@ -12,4 +12,8 @@
         <tag-name>flash-messages</tag-name>
         <source>tags/flash-messages.xhtml</source>
     </tag>
+    <tag>
+        <tag-name>pagination</tag-name>
+        <source>tags/pagination.xhtml</source>
+    </tag>
 </facelet-taglib>
