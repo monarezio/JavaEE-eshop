@@ -5,6 +5,7 @@ import cz.kodytek.shop.data.entities.interfaces.reousrce.IResource;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "file_resource")
 public class Resource implements IResource {
 
     @Id

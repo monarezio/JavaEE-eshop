@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ICategory extends IEntityId {
 
-    int getOrder();
+    Integer getOrder();
 
     String getTitle();
 

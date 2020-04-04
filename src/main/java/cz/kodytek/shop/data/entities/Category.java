@@ -18,7 +18,7 @@ public class Category implements ICategory {
     @Column(nullable = false)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, name = "category_order")
     private int order;
 
     @Column
@@ -38,7 +38,7 @@ public class Category implements ICategory {
     }
 
     @Override
-    public int getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
@@ -50,6 +50,22 @@ public class Category implements ICategory {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setGoods(Set<Good> goods) {
+        this.goods = goods;
     }
 
     @Override

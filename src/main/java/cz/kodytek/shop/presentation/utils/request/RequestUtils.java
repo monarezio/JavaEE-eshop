@@ -8,10 +8,14 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Syntax sugar
@@ -61,6 +65,15 @@ public class RequestUtils implements IRequestUtils {
     @Override
     public void stopLifecycle() {
         facesContext.responseComplete();
+    }
+
+    @Override
+    public Collection<Part> getAllParts(Part part) throws ServletException, IOException {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        request.getParts().stream().forEach(i -> System.out.println(i.getName()));
+        System.out.println("Part: " + part.getName());
+
+        return request.getParts().stream().filter(p -> part.getName().equals(p.getName())).collect(Collectors.toList());
     }
 
     private String getAppRootUrl() {

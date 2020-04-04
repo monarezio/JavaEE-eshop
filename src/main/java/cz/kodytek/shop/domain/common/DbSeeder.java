@@ -1,16 +1,15 @@
 package cz.kodytek.shop.domain.common;
 
 import com.github.dhiraj072.randomwordgenerator.RandomWordGenerator;
+import cz.kodytek.shop.data.entities.Category;
 import cz.kodytek.shop.data.entities.Right;
-import cz.kodytek.shop.data.entities.User;
 import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
-import cz.kodytek.shop.data.entities.interfaces.user.IUserWithRights;
 import cz.kodytek.shop.domain.models.address.Address;
 import cz.kodytek.shop.domain.models.company.AddressCreationType;
 import cz.kodytek.shop.domain.models.company.Company;
-import cz.kodytek.shop.domain.models.users.LoggedInUser;
 import cz.kodytek.shop.domain.models.users.RegisteredUser;
 import cz.kodytek.shop.domain.services.interfaces.address.IAddressService;
+import cz.kodytek.shop.domain.services.interfaces.categories.ICategoryService;
 import cz.kodytek.shop.domain.services.interfaces.company.ICompanyService;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserAuthenticationService;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserService;
@@ -35,10 +34,14 @@ public class DbSeeder { // TODO: Figure out a better way
     @Inject
     private IUserService userService;
 
+    @Inject
+    private ICategoryService categoryService;
+
     private boolean didSeed = false;
 
     public void seed() {
         if (!didSeed) {
+            didSeed = true;
             userAuthenticationService.register(new RegisteredUser("samuel@kodytek.cz", "Samuel Kodytek", "abcabc"));
             userService.addRights(1, Right.ADMIN);
 
@@ -68,7 +71,21 @@ public class DbSeeder { // TODO: Figure out a better way
                 userAuthenticationService.register(new RegisteredUser(email, name, "abcabc"));
             }
 
-            didSeed = true;
+            Category beds = new Category();
+            beds.setOrder(1);
+            beds.setTitle("Beds");
+
+            Category kitchens = new Category();
+            kitchens.setOrder(2);
+            kitchens.setTitle("Kitchens");
+
+            Category sinks = new Category();
+            sinks.setOrder(3);
+            sinks.setTitle("Sinks");
+
+            categoryService.create(beds);
+            categoryService.create(kitchens);
+            categoryService.create(sinks);
         }
     }
 

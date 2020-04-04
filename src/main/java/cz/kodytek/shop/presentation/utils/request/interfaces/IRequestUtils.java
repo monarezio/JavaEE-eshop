@@ -2,6 +2,11 @@ package cz.kodytek.shop.presentation.utils.request.interfaces;
 
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.Part;
+import java.io.IOException;
+import java.util.Collection;
+
 /**
  * Syntax sugar
  */
@@ -18,5 +23,7 @@ public interface IRequestUtils {
     boolean hasParam(String key);
 
     void stopLifecycle();
+
+    Collection<Part> getAllParts(Part part) throws ServletException, IOException;
 
 }
