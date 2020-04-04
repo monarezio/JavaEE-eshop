@@ -5,6 +5,7 @@ import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 
 /**

@@ -21,11 +21,18 @@
                              value="#{newGoods.title}"/>
             </div>
             <div class="form-group">
-                <h:outputLabel for="order">Amount*</h:outputLabel>
+                <h:outputLabel for="amount">Amount*</h:outputLabel>
                 <h:inputText styleClass="form-control"
-                             type="order"
-                             id="order"
+                             type="amount"
+                             id="amount"
                              value="#{newGoods.amount}"/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="cost">Cost*</h:outputLabel>
+                <h:inputText styleClass="form-control"
+                             type="cost"
+                             id="cost"
+                             value="#{newGoods.costStr}"/>
             </div>
             <div class="form-group">
                 <h:outputLabel>Photos</h:outputLabel>

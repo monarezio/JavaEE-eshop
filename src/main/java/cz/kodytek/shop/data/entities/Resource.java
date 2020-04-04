@@ -25,4 +25,8 @@ public class Resource implements IResource {
     public long getId() {
         return id;
     }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }

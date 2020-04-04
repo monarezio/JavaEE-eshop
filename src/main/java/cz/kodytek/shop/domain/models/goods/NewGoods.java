@@ -10,6 +10,7 @@ import javax.inject.Named;
 import javax.servlet.http.Part;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Named
@@ -28,7 +29,7 @@ public class NewGoods implements IGood {
 
     @NotNull(message = "Price cannot be empty.")
     @Pattern(regexp = "[1-9][0-9]*[,.]{1}[0-9]{2}", message = "Price is incorrect format (ie. 10,00).")
-    private String cost;
+    private String costStr;
 
     private long id;
 
@@ -69,7 +70,15 @@ public class NewGoods implements IGood {
 
     @Override
     public Money getCost() {
-        return null;
+        return Money.of(BigDecimal.valueOf(Double.parseDouble(getCostStr().replace(",", "."))), "CZK");
+    }
+
+    public String getCostStr() {
+        return costStr;
+    }
+
+    public void setCostStr(String costStr) {
+        this.costStr = costStr;
     }
 
     @Override
@@ -87,9 +96,5 @@ public class NewGoods implements IGood {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
-    }
-
-    public void setCost(String cost) {
-        this.cost = cost;
     }
 }

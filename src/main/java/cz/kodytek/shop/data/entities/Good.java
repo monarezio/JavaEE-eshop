@@ -8,6 +8,7 @@ import org.javamoney.moneta.Money;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -87,6 +88,9 @@ public class Good implements IGood {
     }
 
     public void addResource(Resource resource) {
+        if(resources == null)
+            resources = new HashSet<>();
+
         resources.add(resource);
     }
 }

@@ -1,6 +1,8 @@
 package cz.kodytek.shop.presentation.controllers.admin;
 
+import cz.kodytek.shop.domain.exceptions.InvalidFileTypeException;
 import cz.kodytek.shop.domain.models.goods.NewGoods;
+import cz.kodytek.shop.domain.services.interfaces.goods.IGoodsService;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import cz.kodytek.shop.presentation.session.models.FlashMessageType;
 import cz.kodytek.shop.presentation.session.models.interfaces.IFlashMessage;
@@ -8,6 +10,7 @@ import cz.kodytek.shop.presentation.session.services.interfaces.messages.IFlashM
 import cz.kodytek.shop.presentation.utils.request.interfaces.IRequestUtils;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.Flash;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
@@ -25,22 +28,19 @@ public class GoodsManagementController {
     @Inject
     private IFlashMessagesService flashMessagesService;
 
+    @Inject
+    private IGoodsService goodsService;
+
     public void create(NewGoods goods) {
         try {
-            for(Part p : requestUtils.getAllParts(goods.getFiles())) {
-                String fileName = p.getSubmittedFileName();
-                InputStream fileContent = p.getInputStream();
-
-                flashMessagesService.add(new FlashMessage(fileName, FlashMessageType.success));
-
-                System.out.println(fileName);
-            }
-
-            requestUtils.redirect("/pages/admin/index.xhtml");
-        } catch (ServletException e) {
+            if(goodsService.create(goods, requestUtils.getAllParts(goods.getFiles())))
+                requestUtils.redirect("/pages/admin/index.xhtml", new FlashMessage("Good successfully added.", FlashMessageType.success));
+            else
+                flashMessagesService.add(new FlashMessage("Unknown error.", FlashMessageType.alert));
+        } catch (ServletException | IOException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (InvalidFileTypeException e) {
+            flashMessagesService.add(new FlashMessage("File isn't a valid image.", FlashMessageType.alert));
         }
     }
 
