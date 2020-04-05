@@ -33,6 +33,9 @@ public class NewGoods implements IGood {
 
     private long id;
 
+    @NotNull(message = "Please choose a category.")
+    private Long categoryId;
+
     public NewGoods(long id) {
         this.id = id;
     }
@@ -96,5 +99,13 @@ public class NewGoods implements IGood {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
     }
 }

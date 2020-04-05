@@ -32,6 +32,13 @@ public class Category implements ICategory {
     @JoinColumn(name = "category_id")
     private Set<Good> goods;
 
+    public Category() {
+    }
+
+    public Category(long id) {
+        this.id = id;
+    }
+
     @Override
     public long getId() {
         return id;

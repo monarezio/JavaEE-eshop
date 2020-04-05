@@ -10,6 +10,6 @@ public interface IGoodsService {
 
     IGood get(long id);
 
-    boolean create(IGood good, Collection<Part> files) throws InvalidFileTypeException;
+    boolean create(IGood good, Collection<Part> files, long categoryId) throws InvalidFileTypeException;
 
 }

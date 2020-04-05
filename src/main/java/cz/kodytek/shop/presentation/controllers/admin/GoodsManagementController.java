@@ -33,7 +33,7 @@ public class GoodsManagementController {
 
     public void create(NewGoods goods) {
         try {
-            if(goodsService.create(goods, requestUtils.getAllParts(goods.getFiles())))
+            if(goodsService.create(goods, requestUtils.getAllParts(goods.getFiles()), goods.getCategoryId()))
                 requestUtils.redirect("/pages/admin/index.xhtml", new FlashMessage("Good successfully added.", FlashMessageType.success));
             else
                 flashMessagesService.add(new FlashMessage("Unknown error.", FlashMessageType.alert));

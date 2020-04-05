@@ -1,6 +1,7 @@
 package cz.kodytek.shop.domain.services.goods;
 
 import cz.kodytek.shop.data.connection.HibernateSessionFactory;
+import cz.kodytek.shop.data.entities.Category;
 import cz.kodytek.shop.data.entities.Good;
 import cz.kodytek.shop.data.entities.Resource;
 import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
@@ -45,7 +46,7 @@ public class GoodsService implements IGoodsService {
     }
 
     @Override
-    public boolean create(IGood good, Collection<Part> files) throws InvalidFileTypeException {
+    public boolean create(IGood good, Collection<Part> files, long categoryId) throws InvalidFileTypeException {
 
         AtomicBoolean invalidFile = new AtomicBoolean(false);
 
@@ -55,12 +56,14 @@ public class GoodsService implements IGoodsService {
             g.setTitle(good.getTitle());
             g.setCost(good.getCost());
             g.setDescription(good.getDescription());
+            g.setCategory(new Category(categoryId));
 
             for(Part p : files) {
                 Resource r = new Resource();
                 new File("resources/photos/goods/").mkdirs();
 
                 File f = new File("resources/photos/goods/" + UUID.randomUUID().toString() + ".png");
+                File fhd = new File("resources/photos/goods/" + UUID.randomUUID().toString() + "_hd.png");
                 File fm = new File("resources/photos/goods/" + UUID.randomUUID().toString() + "_miniature.png");
 
                 try {
@@ -68,9 +71,11 @@ public class GoodsService implements IGoodsService {
                     OutputStream outStream = new FileOutputStream(f);
 
                     BufferedImage image = ImageIO.read(is);
+                    BufferedImage hdImage = bufferedImageUtil.resize(image, 1080);
                     BufferedImage resizedImage = bufferedImageUtil.resize(image, 500);
-                    ImageIO.write(image, "png", f);
-                    ImageIO.write(resizedImage, "png", fm);
+                    ImageIO.write(image, "jpeg", f);
+                    ImageIO.write(resizedImage, "jpeg", fm);
+                    ImageIO.write(hdImage, "jpeg", fhd);
 
                     r.setPath(f.getPath());
                     s.save(r);

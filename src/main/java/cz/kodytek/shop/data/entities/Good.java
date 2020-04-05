@@ -33,6 +33,9 @@ public class Good implements IGood {
     @Column
     private BigDecimal cost;
 
+    @ManyToOne
+    private Category category;
+
     @OneToMany
     @JoinColumn(name = "good_id")
     private Set<Resource> resources;
@@ -92,5 +95,13 @@ public class Good implements IGood {
             resources = new HashSet<>();
 
         resources.add(resource);
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
