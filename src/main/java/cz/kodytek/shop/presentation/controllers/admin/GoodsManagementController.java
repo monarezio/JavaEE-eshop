@@ -1,6 +1,8 @@
 package cz.kodytek.shop.presentation.controllers.admin;
 
 import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
+import cz.kodytek.shop.data.entities.interfaces.goods.cateogry.ICategory;
+import cz.kodytek.shop.data.entities.interfaces.reousrce.IResource;
 import cz.kodytek.shop.domain.exceptions.InvalidFileTypeException;
 import cz.kodytek.shop.domain.models.EntityFilter;
 import cz.kodytek.shop.domain.models.goods.GoodsPage;
@@ -22,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.stream.Collectors;
 
 @Named
 @RequestScoped
@@ -43,9 +46,11 @@ public class GoodsManagementController {
 
     private IEntityFilter entityFilter;
 
+    private NewGoods newGoods;
+
     public void create(NewGoods goods) {
         try {
-            if(goodsService.create(goods, requestUtils.getAllPartsAsInputStream(goods.getFiles()), goods.getCategoryId()))
+            if (goodsService.create(goods, requestUtils.getAllPartsAsInputStream(goods.getFiles()), goods.getCategoryId()))
                 requestUtils.redirect("/pages/admin/goods/index.xhtml", new FlashMessage("Good successfully added.", FlashMessageType.success));
             else
                 flashMessagesService.add(new FlashMessage("Unknown error.", FlashMessageType.alert));
@@ -57,10 +62,11 @@ public class GoodsManagementController {
     }
 
     public IEntityPage<? extends IGood> getGoods(String search, String page) {
-        if(cachedPage == null)
+        if (cachedPage == null)
             cachedPage = goodsService.getGoods(search, 20, Integer.parseInt(page));
         return cachedPage;
     }
+
 
     public void search(IEntityFilter filter) {
         requestUtils.redirect("/pages/admin/goods/index.xhtml?search=" + filter.getSearchFilter());
@@ -71,10 +77,33 @@ public class GoodsManagementController {
         requestUtils.redirect("/pages/admin/goods/index.xhtml", new FlashMessage("Good deleted successfully.", FlashMessageType.success));
     }
 
+    public void edit(IGood good) {
+
+    }
+
     public IEntityFilter getFilter() {
-        if(entityFilter == null)
+        if (entityFilter == null)
             entityFilter = new EntityFilter(requestUtils.hasParam("search") ? requestUtils.getParam("search") : "");
         return entityFilter;
+    }
+
+    public NewGoods getGood(long id) {
+        if (newGoods == null) {
+            newGoods = new NewGoods();
+            IGood g = goodsService.get(id);
+            newGoods.setCategoryId(g.getCategory().getId());
+            newGoods.setCategory(g.getCategory());
+
+            newGoods.setTitle(g.getTitle());
+            newGoods.setAmount(g.getAmount());
+            newGoods.setDescription(g.getDescription());
+            newGoods.setCost(g.getCost());
+            newGoods.setImagePaths(
+                    g.getImageNames().stream().map(IResource::getPath).collect(Collectors.toList())
+            );
+        }
+
+        return newGoods;
     }
 
 }

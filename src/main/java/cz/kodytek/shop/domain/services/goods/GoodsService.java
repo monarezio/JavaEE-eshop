@@ -42,7 +42,20 @@ public class GoodsService implements IGoodsService {
 
         try {
             sessionFactory.createSession(s -> {
-                result.set(s.get(Good.class, id));
+
+                CriteriaBuilder cb = s.getCriteriaBuilder();
+                CriteriaQuery<Good> cq = cb.createQuery(Good.class);
+                Root<Good> root = cq.from(Good.class);
+
+                Fetch<Good, Resource> fetch = root.fetch(Good_.resources, JoinType.LEFT);
+
+                cq.where(
+                        cb.equal(root.get(Good_.id), id)
+                );
+
+                Query<Good> q = s.createQuery(cq);
+
+                result.set(q.getSingleResult());
             });
         } catch (PersistenceException e) {
             return null;

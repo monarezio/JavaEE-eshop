@@ -1,6 +1,7 @@
 package cz.kodytek.shop.domain.models.goods;
 
 import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
+import cz.kodytek.shop.data.entities.interfaces.goods.cateogry.ICategory;
 import cz.kodytek.shop.data.entities.interfaces.reousrce.IResource;
 import org.hibernate.validator.constraints.Range;
 import org.javamoney.moneta.Money;
@@ -34,8 +35,12 @@ public class NewGoods implements IGood {
 
     private long id;
 
+    private ICategory category;
+
     @NotNull(message = "Please choose a category.")
     private Long categoryId;
+
+    private List<String> imagePaths;
 
     public NewGoods(long id) {
         this.id = id;
@@ -77,6 +82,10 @@ public class NewGoods implements IGood {
         return Money.of(BigDecimal.valueOf(Double.parseDouble(getCostStr().replace(",", "."))), "CZK");
     }
 
+    public void setCost(Money cost) {
+        costStr = cost.getNumberStripped().toString();
+    }
+
     public String getCostStr() {
         return costStr;
     }
@@ -108,5 +117,22 @@ public class NewGoods implements IGood {
 
     public Long getCategoryId() {
         return categoryId;
+    }
+
+    @Override
+    public ICategory getCategory() {
+        return category; //TODO: Implement
+    }
+
+    public void setCategory(ICategory category) {
+        this.category = category;
+    }
+
+    public List<String> getImagePaths() {
+        return imagePaths;
+    }
+
+    public void setImagePaths(List<String> imagePaths) {
+        this.imagePaths = imagePaths;
     }
 }

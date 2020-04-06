@@ -1,6 +1,7 @@
 package cz.kodytek.shop.data.entities.interfaces.goods;
 
 import cz.kodytek.shop.data.entities.interfaces.IEntityId;
+import cz.kodytek.shop.data.entities.interfaces.goods.cateogry.ICategory;
 import cz.kodytek.shop.data.entities.interfaces.reousrce.IResource;
 import org.javamoney.moneta.Money;
 
@@ -17,5 +18,7 @@ public interface IGood extends IEntityId {
     Integer getAmount();
 
     Money getCost();
+
+    ICategory getCategory();
 
 }
