@@ -31,7 +31,7 @@
                             </h:link>
                         </li>
                     </ui:repeat>
-                    <li class="page-item  #{(page + 2) == to ? 'disabled' : ''}">
+                    <li class="page-item  #{page == to || (page + 2) == to ? 'disabled' : ''}">
                         <h:link styleClass="page-link" outcome="#{view.viewId}" value="Next">
                             <f:param name="page" value="#{page + 1}"/>
                             <c:if test="#{param.containsKey('search')}">

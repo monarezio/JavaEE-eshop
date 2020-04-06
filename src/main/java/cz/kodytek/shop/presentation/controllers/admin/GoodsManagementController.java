@@ -1,7 +1,12 @@
 package cz.kodytek.shop.presentation.controllers.admin;
 
+import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
 import cz.kodytek.shop.domain.exceptions.InvalidFileTypeException;
+import cz.kodytek.shop.domain.models.EntityFilter;
+import cz.kodytek.shop.domain.models.goods.GoodsPage;
 import cz.kodytek.shop.domain.models.goods.NewGoods;
+import cz.kodytek.shop.domain.models.interfaces.IEntityFilter;
+import cz.kodytek.shop.domain.models.interfaces.IEntityPage;
 import cz.kodytek.shop.domain.services.interfaces.goods.IGoodsService;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import cz.kodytek.shop.presentation.session.models.FlashMessageType;
@@ -31,10 +36,17 @@ public class GoodsManagementController {
     @Inject
     private IGoodsService goodsService;
 
+    @Inject
+    private CategoryManagementController categoryManagementController;
+
+    private IEntityPage<? extends IGood> cachedPage;
+
+    private IEntityFilter entityFilter;
+
     public void create(NewGoods goods) {
         try {
-            if(goodsService.create(goods, requestUtils.getAllParts(goods.getFiles()), goods.getCategoryId()))
-                requestUtils.redirect("/pages/admin/index.xhtml", new FlashMessage("Good successfully added.", FlashMessageType.success));
+            if(goodsService.create(goods, requestUtils.getAllPartsAsInputStream(goods.getFiles()), goods.getCategoryId()))
+                requestUtils.redirect("/pages/admin/goods/index.xhtml", new FlashMessage("Good successfully added.", FlashMessageType.success));
             else
                 flashMessagesService.add(new FlashMessage("Unknown error.", FlashMessageType.alert));
         } catch (ServletException | IOException e) {
@@ -42,6 +54,27 @@ public class GoodsManagementController {
         } catch (InvalidFileTypeException e) {
             flashMessagesService.add(new FlashMessage("File isn't a valid image.", FlashMessageType.alert));
         }
+    }
+
+    public IEntityPage<? extends IGood> getGoods(String search, String page) {
+        if(cachedPage == null)
+            cachedPage = goodsService.getGoods(search, 20, Integer.parseInt(page));
+        return cachedPage;
+    }
+
+    public void search(IEntityFilter filter) {
+        requestUtils.redirect("/pages/admin/goods/index.xhtml?search=" + filter.getSearchFilter());
+    }
+
+    public void delete(IGood good) {
+        goodsService.delete(good);
+        requestUtils.redirect("/pages/admin/goods/index.xhtml", new FlashMessage("Good deleted successfully.", FlashMessageType.success));
+    }
+
+    public IEntityFilter getFilter() {
+        if(entityFilter == null)
+            entityFilter = new EntityFilter(requestUtils.hasParam("search") ? requestUtils.getParam("search") : "");
+        return entityFilter;
     }
 
 }

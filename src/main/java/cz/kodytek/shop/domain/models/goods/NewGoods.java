@@ -24,6 +24,7 @@ public class NewGoods implements IGood {
 
     private String description;
 
+    @NotNull(message = "Amount cannot be empty.")
     @Range(message = "Amount cannot be negative.")
     private Integer amount;
 
@@ -101,11 +102,11 @@ public class NewGoods implements IGood {
         this.amount = amount;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 }

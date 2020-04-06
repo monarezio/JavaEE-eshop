@@ -16,12 +16,12 @@
             <div class="form-group">
                 <div class="form-group">
                     <h:outputLabel for="category">Category*</h:outputLabel>
-                    <h:selectOneListbox styleClass="custom-select" size="1" id="category" value="#{newGoods.categoryId}">
+                    <h:selectOneMenu styleClass="form-control" id="category" value="#{newGoods.categoryId}">
                         <f:selectItems value="#{categoryManagementController.all}"
                                        var="c"
                                        itemLabel="#{c.title}"
                                        itemValue="#{c.id}"/>
-                    </h:selectOneListbox>
+                    </h:selectOneMenu>
                 </div>
                 <h:outputLabel for="title">Title*</h:outputLabel>
                 <h:inputText styleClass="form-control"

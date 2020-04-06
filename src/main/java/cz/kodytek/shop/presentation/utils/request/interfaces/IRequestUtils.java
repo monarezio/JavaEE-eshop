@@ -27,4 +27,6 @@ public interface IRequestUtils {
 
     Collection<Part> getAllParts(Part part) throws ServletException, IOException;
 
+    Collection<InputStream> getAllPartsAsInputStream(Part part) throws ServletException, IOException;
+
 }

@@ -2,6 +2,7 @@ package cz.kodytek.shop.domain.services.users;
 
 import cz.kodytek.shop.data.connection.interfaces.IHibernateSessionFactory;
 import cz.kodytek.shop.data.entities.*;
+import cz.kodytek.shop.data.entities.User_;
 import cz.kodytek.shop.data.entities.interfaces.user.IFullUser;
 import cz.kodytek.shop.data.entities.interfaces.user.IUserWithPhoneNumber;
 import cz.kodytek.shop.data.entities.interfaces.user.IUserWithRights;
@@ -18,8 +19,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.PersistenceException;
 import javax.persistence.criteria.*;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;

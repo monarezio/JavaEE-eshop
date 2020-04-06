@@ -1,6 +1,7 @@
 package cz.kodytek.shop.presentation.controllers.admin;
 
 import cz.kodytek.shop.data.entities.interfaces.goods.cateogry.ICategory;
+import cz.kodytek.shop.domain.models.interfaces.IEntityFilter;
 import cz.kodytek.shop.domain.services.interfaces.categories.ICategoryService;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import cz.kodytek.shop.presentation.session.models.FlashMessageType;

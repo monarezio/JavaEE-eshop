@@ -86,6 +86,10 @@ public class Good implements IGood {
         this.cost = cost.getNumberStripped();
     }
 
+    public Set<Resource> getResources() {
+        return resources;
+    }
+
     public void setResources(Set<Resource> resources) {
         this.resources = resources;
     }

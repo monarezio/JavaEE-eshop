@@ -1,24 +1,30 @@
 package cz.kodytek.shop.domain.services.goods;
 
 import cz.kodytek.shop.data.connection.HibernateSessionFactory;
-import cz.kodytek.shop.data.entities.Category;
-import cz.kodytek.shop.data.entities.Good;
-import cz.kodytek.shop.data.entities.Resource;
+import cz.kodytek.shop.data.entities.*;
+import cz.kodytek.shop.data.entities.Good_;
+import cz.kodytek.shop.data.entities.User_;
 import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
 import cz.kodytek.shop.domain.common.utils.BufferedImageUtil;
 import cz.kodytek.shop.domain.exceptions.InvalidFileTypeException;
+import cz.kodytek.shop.domain.models.goods.GoodsPage;
+import cz.kodytek.shop.domain.models.interfaces.IEntityPage;
 import cz.kodytek.shop.domain.services.interfaces.goods.IGoodsService;
+import org.hibernate.query.Query;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
-import javax.servlet.http.Part;
+import javax.persistence.criteria.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 @ApplicationScoped
@@ -38,7 +44,7 @@ public class GoodsService implements IGoodsService {
             sessionFactory.createSession(s -> {
                 result.set(s.get(Good.class, id));
             });
-        } catch(PersistenceException e) {
+        } catch (PersistenceException e) {
             return null;
         }
 
@@ -46,7 +52,7 @@ public class GoodsService implements IGoodsService {
     }
 
     @Override
-    public boolean create(IGood good, Collection<Part> files, long categoryId) throws InvalidFileTypeException {
+    public boolean create(IGood good, Collection<InputStream> files, long categoryId) throws InvalidFileTypeException {
 
         AtomicBoolean invalidFile = new AtomicBoolean(false);
 
@@ -58,31 +64,30 @@ public class GoodsService implements IGoodsService {
             g.setDescription(good.getDescription());
             g.setCategory(new Category(categoryId));
 
-            for(Part p : files) {
+            for (InputStream is : files) {
                 Resource r = new Resource();
                 new File("resources/photos/goods/").mkdirs();
-
-                File f = new File("resources/photos/goods/" + UUID.randomUUID().toString() + ".png");
-                File fhd = new File("resources/photos/goods/" + UUID.randomUUID().toString() + "_hd.png");
-                File fm = new File("resources/photos/goods/" + UUID.randomUUID().toString() + "_miniature.png");
-
                 try {
-                    InputStream is = p.getInputStream();
-                    OutputStream outStream = new FileOutputStream(f);
+                    String name = UUID.randomUUID().toString();
+
+                    File f = new File("resources/photos/goods/" + name + ".png");
+                    File fhd = new File("resources/photos/goods/" + name + "_hd.png");
+                    File fm = new File("resources/photos/goods/" + name + "_miniature.png");
 
                     BufferedImage image = ImageIO.read(is);
                     BufferedImage hdImage = bufferedImageUtil.resize(image, 1080);
                     BufferedImage resizedImage = bufferedImageUtil.resize(image, 500);
-                    ImageIO.write(image, "jpeg", f);
-                    ImageIO.write(resizedImage, "jpeg", fm);
-                    ImageIO.write(hdImage, "jpeg", fhd);
+                    System.out.println("Writing original file");
+                    ImageIO.write(image, "png", f);
+                    ImageIO.write(resizedImage, "png", fm);
+                    ImageIO.write(hdImage, "png", fhd);
 
                     r.setPath(f.getPath());
                     s.save(r);
                     g.addResource(r);
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch(IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     invalidFile.set(true);
                 }
             }
@@ -90,9 +95,94 @@ public class GoodsService implements IGoodsService {
             s.save(g);
         });
 
-        if(invalidFile.get())
+        if (invalidFile.get())
             throw new InvalidFileTypeException();
 
         return true;
+    }
+
+    @Override
+    public IEntityPage<? extends IGood> getGoods(String search, int perPage, int page) {
+        AtomicReference<IEntityPage<? extends IGood>> result = new AtomicReference<>();
+
+        try {
+            sessionFactory.createSession(s -> {
+                CriteriaBuilder cb = s.getCriteriaBuilder();
+                CriteriaQuery<Good> cq = cb.createQuery(Good.class);
+                Root<Good> root = cq.from(Good.class);
+
+                cq.where(
+                        cb.like(root.get(Good_.title), "%" + search + "%")
+                );
+
+                Query<Good> q = s.createQuery(cq);
+
+                q.setFirstResult(page * perPage);
+                q.setMaxResults(perPage);
+
+                result.set(new GoodsPage(page, (int) (Math.ceil(getGoodsCount(search) / (float) perPage) + 1), q.getResultList()));
+            });
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return result.get();
+    }
+
+    @Override
+    public long getGoodsCount(String searchFilter) {
+        AtomicLong result = new AtomicLong();
+
+        sessionFactory.createSession(s -> {
+            CriteriaBuilder cb = s.getCriteriaBuilder();
+            CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+            Root<Good> root = cq.from(Good.class);
+
+            cq.where(
+                    cb.like(root.get(Good_.title), "%" + searchFilter + "%")
+            );
+
+            cq.select(cb.count(root));
+            result.set(s.createQuery(cq).getSingleResult());
+        });
+
+        return result.get();
+    }
+
+    @Override
+    public boolean edit(IGood good) {
+        return false;
+    }
+
+    @Override
+    public void delete(IGood good) {
+        sessionFactory.createSession(s -> {
+            //Good g =
+
+            CriteriaBuilder cb = s.getCriteriaBuilder();
+            CriteriaQuery<Good> cq = cb.createQuery(Good.class);
+            Root<Good> root = cq.from(Good.class);
+
+            Fetch<Good, Resource> fetch = root.fetch(Good_.resources, JoinType.LEFT);
+
+            cq.where(
+                    cb.equal(root.get(Good_.id), good.getId() + "")
+            );
+
+            Good g = s.createQuery(cq).getSingleResult();
+
+            g.getResources().forEach(r -> {
+                String path = r.getPath().replaceFirst("[.][^.]+$", "");
+
+                new File(r.getPath()).delete();
+                new File(path + "_hd.png").delete();
+                new File(path + "_miniature.png").delete();
+
+                s.delete(r);
+            });
+
+            s.delete(s.get(Good.class, good.getId()));
+        });
     }
 }

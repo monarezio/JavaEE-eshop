@@ -18,12 +18,14 @@ input[type=number]:focus,
 [type=email].form-control:focus,
 [type=tel].form-control:focus,
 [contenteditable].form-control:focus,
+select.form-control,
 .custom-select:focus {
   box-shadow: none;
   outline: none;
   border-color: $border-color;
   border-bottom-color: $primary;
 }
+
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -32,3 +34,6 @@ select {
   padding-right: 20px;
 }
 
+select.form-control[size], select.form-control[multiple] {
+  padding: 0.5rem;
+}

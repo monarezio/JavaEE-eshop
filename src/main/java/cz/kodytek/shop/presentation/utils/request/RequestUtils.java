@@ -15,10 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -77,6 +74,16 @@ public class RequestUtils implements IRequestUtils {
         if(part == null)
             return Collections.emptyList();
         return request.getParts().stream().filter(p -> part.getName().equals(p.getName())).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<InputStream> getAllPartsAsInputStream(Part part) throws ServletException, IOException {
+        ArrayList<InputStream> al = new ArrayList<>();
+
+        for(Part p : getAllParts(part))
+            al.add(p.getInputStream());
+
+        return al;
     }
 
     private String getAppRootUrl() {

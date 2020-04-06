@@ -16,38 +16,40 @@
                 <h3>Filter</h3>
                 <div class="form-group">
                     <h:outputLabel value="Search" for="search"/>
-                    <h:inputText id="search" styleClass="form-control" value="#{userManagementController.filter.searchFilter}"/>
+                    <h:inputText id="search" styleClass="form-control"
+                                 value="#{goodsManagementController.filter.searchFilter}"/>
                 </div>
-                <h:commandButton styleClass="btn btn-primary" value="Search" action="#{userManagementController.search(userManagementController.filter)}"/>
+                <h:commandButton styleClass="btn btn-primary" value="Search"
+                                 action="#{goodsManagementController.search(goodsManagementController.filter)}"/>
             </h:form>
 
             <table class="table">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Full name</th>
-                    <th>Email</th>
-                    <th>Admin</th>
+                    <th>Title</th>
+                    <th>Amount</th>
+                    <th>Price</th>
                     <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
                 <ui:repeat
-                        value="#{userManagementController.getUsers(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).all}"
-                        var="u">
+                        value="#{goodsManagementController.getGoods(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).all}"
+                        var="g">
                     <tr>
                         <td class="font-weight-bold">
-                            <h:link outcome="/pages/admin/users/edit.xhtml" value="#{u.id}">
-                                <f:param name="id" value="#{u.id}"/>
+                            <h:link outcome="/pages/admin/goods/edit.xhtml" value="#{g.id}">
+                                <f:param name="id" value="#{g.id}"/>
                             </h:link>
                         </td>
-                        <td>#{u.name}</td>
-                        <td>#{u.email}</td>
-                        <td>#{u.admin ? 'Yes' : 'No'}</td>
+                        <td>#{g.title}</td>
+                        <td>#{g.amount}</td>
+                        <td>#{goodsHelper.parsePrice(g)}</td>
                         <td>
                             <h:form>
                                 <h:commandLink styleClass="text-danger text-decoration-none"
-                                               value="&times;" action="#{userManagementController.deleteUser(u.id)}"/>
+                                               value="&times;" action="#{goodsManagementController.delete(g)}"/>
                             </h:form>
                         </td>
                     </tr>
@@ -56,10 +58,13 @@
             </table>
 
             <div class="text-right">
-                <app:pagination from="1"
-                                to="#{userManagementController.getUsers(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).pagesCount}"
-                                page="#{!param.containsKey('page') ? 0 : param['page']}"/>
-                <h:link styleClass="btn btn-primary" outcome="/pages/admin/users/create.xhtml" value="Create"/>
+                <c:if test="#{!goodsManagementController.getGoods(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).all.isEmpty()}">
+                    <app:pagination from="1"
+                                    to="#{goodsManagementController.getGoods(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).pagesCount}"
+                                    page="#{!param.containsKey('page') ? 0 : param['page']}"/>
+                </c:if>
+
+                <h:link styleClass="btn btn-primary" outcome="/pages/admin/goods/create.xhtml" value="Create"/>
             </div>
         </div>
     </ui:composition>
