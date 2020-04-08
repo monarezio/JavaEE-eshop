@@ -1,16 +1,16 @@
 package cz.kodytek.shop.domain.services.goods;
 
 import cz.kodytek.shop.data.connection.HibernateSessionFactory;
-import cz.kodytek.shop.data.entities.*;
+import cz.kodytek.shop.data.entities.Category;
+import cz.kodytek.shop.data.entities.Good;
 import cz.kodytek.shop.data.entities.Good_;
-import cz.kodytek.shop.data.entities.User_;
+import cz.kodytek.shop.data.entities.Resource;
 import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
 import cz.kodytek.shop.domain.common.utils.BufferedImageUtil;
 import cz.kodytek.shop.domain.exceptions.InvalidFileTypeException;
 import cz.kodytek.shop.domain.models.goods.GoodsPage;
 import cz.kodytek.shop.domain.models.interfaces.IEntityPage;
 import cz.kodytek.shop.domain.services.interfaces.goods.IGoodsService;
-import net.coobird.thumbnailator.Thumbnailator;
 import net.coobird.thumbnailator.Thumbnails;
 import org.hibernate.query.Query;
 
@@ -170,15 +170,62 @@ public class GoodsService implements IGoodsService {
     }
 
     @Override
-    public boolean edit(IGood good) {
-        return false;
+    public boolean edit(IGood good, Collection<InputStream> files, long categoryId) {
+        AtomicBoolean invalidFile = new AtomicBoolean(false);
+
+        System.out.println("FILES: " + files.size());
+
+        sessionFactory.createSession(s -> {
+            Good g = s.get(Good.class, good.getId());
+            g.setTitle(good.getTitle());
+            g.setDescription(good.getDescription());
+            g.setCost(good.getCost());
+            g.setAmount(good.getAmount());
+            g.setCategory(new Category(categoryId));
+
+            for (InputStream is : files) {
+                Resource r = new Resource();
+                new File("resources/photos/goods/").mkdirs();
+                try {
+                    String name = UUID.randomUUID().toString();
+
+                    System.out.println("Creating file: " + name);
+
+                    File f = new File("resources/photos/goods/" + name + ".jpg");
+                    File fhd = new File("resources/photos/goods/" + name + "_hd.jpg");
+                    File fm = new File("resources/photos/goods/" + name + "_miniature.jpg");
+
+                    BufferedImage originalImage = ImageIO.read(is);
+                    ImageIO.write(originalImage, "jpg", f);
+
+                    Thumbnails.of(originalImage)
+                            .outputFormat("jpg")
+                            .size(1920, 1080)
+                            .toFile(fhd);
+                    Thumbnails.of(originalImage)
+                            .outputFormat("jpg")
+                            .size(640, 480)
+                            .toFile(fm);
+
+                    r.setPath(f.getPath());
+                    s.save(r);
+                    g.addResource(r);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    invalidFile.set(true);
+                }
+            }
+
+            s.save(g);
+        });
+
+        return !invalidFile.get();
     }
 
     @Override
     public void delete(IGood good) {
         sessionFactory.createSession(s -> {
-            //Good g =
-
             CriteriaBuilder cb = s.getCriteriaBuilder();
             CriteriaQuery<Good> cq = cb.createQuery(Good.class);
             Root<Good> root = cq.from(Good.class);
@@ -202,6 +249,17 @@ public class GoodsService implements IGoodsService {
             });
 
             s.delete(s.get(Good.class, good.getId()));
+        });
+    }
+
+    @Override
+    public void deleteImage(long resourceId) {
+        sessionFactory.createSession(s -> {
+            Resource r = s.get(Resource.class, resourceId);
+
+            new File(r.getPath()).delete();
+
+            s.delete(r);
         });
     }
 }

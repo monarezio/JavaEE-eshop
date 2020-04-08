@@ -18,8 +18,9 @@ public interface IGoodsService {
 
     long getGoodsCount(String searchFilter);
 
-    boolean edit(IGood good);
+    boolean edit(IGood good, Collection<InputStream> files, long categoryId);
 
     void delete(IGood good);
 
+    void deleteImage(long resourceId);
 }

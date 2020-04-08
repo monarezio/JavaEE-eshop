@@ -4,11 +4,13 @@ import cz.kodytek.shop.data.entities.Resource;
 
 public class ImageResource {
 
+    private long id;
     private String originalPath;
     private String miniaturePath;
     private String hdPath;
 
-    public ImageResource(String path) {
+    public ImageResource(long id, String path) {
+        this.id = id;
         this.originalPath = path;
         this.miniaturePath = path.substring(0, path.lastIndexOf('.')) + "_miniature.jpg";
         this.hdPath = path.substring(0, path.lastIndexOf('.')) + "_hd.jpg";
@@ -24,5 +26,9 @@ public class ImageResource {
 
     public String getHdPath() {
         return hdPath;
+    }
+
+    public long getId() {
+        return id;
     }
 }

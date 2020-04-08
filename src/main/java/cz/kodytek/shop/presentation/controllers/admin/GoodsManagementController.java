@@ -82,8 +82,23 @@ public class GoodsManagementController {
         requestUtils.redirect("/pages/admin/goods/index.xhtml", new FlashMessage("Good deleted successfully.", FlashMessageType.success));
     }
 
-    public void edit(IGood good) {
+    public void deleteResource(long goodsId, long id) {
+        goodsService.deleteImage(id);
+        requestUtils.redirect("/pages/admin/goods/edit.xhtml?id=" + goodsId, new FlashMessage("Image deleted.", FlashMessageType.success));
+    }
 
+    public void edit(NewGoods good) {
+        try {
+            if(goodsService.edit(good, requestUtils.getAllPartsAsInputStream(good.getFiles()), good.getCategoryId())) {
+                requestUtils.redirect("/pages/admin/goods/index.xhtml", new FlashMessage("Good edited.", FlashMessageType.success));
+            } else {
+                flashMessagesService.add(new FlashMessage("File is not a image.", FlashMessageType.alert));
+            }
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public IEntityFilter getFilter() {
@@ -94,7 +109,7 @@ public class GoodsManagementController {
 
     public NewGoods getGood(long id) {
         if (newGoods == null) {
-            newGoods = new NewGoods();
+            newGoods = new NewGoods(id);
             IGood g = goodsService.get(id);
             newGoods.setCategoryId(g.getCategory().getId());
             newGoods.setCategory(g.getCategory());
@@ -104,7 +119,7 @@ public class GoodsManagementController {
             newGoods.setDescription(g.getDescription());
             newGoods.setCost(g.getCost());
             newGoods.setImagePaths(
-                    g.getImageNames().stream().map(i -> new ImageResource(i.getPath())).collect(Collectors.toList())
+                    g.getImageNames().stream().sorted((o1, o2) -> (int) (o1.getId() - o2.getId())).map(i -> new ImageResource(i.getId(), i.getPath())).collect(Collectors.toList())
             );
         }
 

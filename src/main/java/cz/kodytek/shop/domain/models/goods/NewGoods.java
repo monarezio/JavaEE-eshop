@@ -83,7 +83,7 @@ public class NewGoods implements IGood {
     }
 
     public void setCost(Money cost) {
-        costStr = cost.getNumberStripped().toString();
+        costStr = String.format("%.2f", cost.getNumberStripped());
     }
 
     public String getCostStr() {

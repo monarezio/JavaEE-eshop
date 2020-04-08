@@ -5,14 +5,14 @@
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:c="http://java.sun.com/jsp/jstl/core"
 >
 <h:body>
 
     <ui:composition template="../../../WEB-INF/templates/admin.xhtml">
         <h:form styleClass="bg-white p-3 shadow-sm w-50 mx-auto" enctype="multipart/form-data">
             <h:messages styleClass="form-errors"/>
-            <h2 class="my-3">Create good</h2>
+            <h2 class="my-3">Edit good</h2>
             <div class="form-group">
                 <div class="form-group">
                     <h:outputLabel for="category">Category*</h:outputLabel>
@@ -46,24 +46,36 @@
             </div>
             <div>
                 <label>Current uploaded photos</label>
-                <div>
-                    <ui:repeat value="#{goodsManagementController.getGood(param['id']).imagePaths}" var="ir">
-                        <a href="/${goodsManagementController.applicationName}/#{ir.hdPath}" data-lightbox="images">
-                            <div class="d-flex align-items-center justify-content-center border"
-                                 style="width: 150px; height: 150px;">
-                                <h:graphicImage styleClass="mw-100 mh-100" value="/#{ir.miniaturePath}"/>
+                <c:if test="#{!goodsManagementController.getGood(param['id']).imagePaths.isEmpty()}">
+                    <div class="d-flex flex-wrap">
+                        <ui:repeat value="#{goodsManagementController.getGood(param['id']).imagePaths}" var="ir">
+                            <div class="mx-1 position-relative">
+                                <a href="/${goodsManagementController.applicationName}/#{ir.hdPath}"
+                                   data-lightbox="images">
+                                    <div class="d-flex align-items-center justify-content-center border"
+                                         style="width: 150px; height: 150px;">
+                                        <h:graphicImage styleClass="mw-100 mh-100" value="/#{ir.miniaturePath}"/>
+                                    </div>
+                                </a>
+                                <h:commandLink styleClass="top-right text-danger" value="&times;"
+                                               action="#{goodsManagementController.deleteResource(param['id'], ir.id)}">
+                                    <f:param name="id" value="#{param['id']}"/>
+                                </h:commandLink>
                             </div>
-                        </a>
-                    </ui:repeat>
-                </div>
+                        </ui:repeat>
+                    </div>
+                </c:if>
+                <c:if test="#{goodsManagementController.getGood(param['id']).imagePaths.isEmpty()}">
+                    <h3 class="text-center">This product has no image.</h3>
+                </c:if>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <h:outputLabel>Photos to add</h:outputLabel>
                 <div class="custom-file">
                     <h:inputFile styleClass="custom-file-input"
                                  id="file"
                                  a:multiple="true"
-                                 value="#{newGoods.files}"/>
+                                 value="#{goodsManagementController.getGood(param['id']).files}"/>
                     <h:outputLabel for="file" styleClass="custom-file-label">Choose files...</h:outputLabel>
                 </div>
             </div>
@@ -75,8 +87,10 @@
                                  value="#{goodsManagementController.getGood(param['id']).description}"/>
             </div>
             <div class="text-right">
-                <h:commandLink styleClass="btn btn-primary" value="Create"
-                               action="#{goodsManagementController.edit(goodsManagementController.getGood(param['id']))}"/>
+                <h:commandLink styleClass="btn btn-primary" value="Edit"
+                               action="#{goodsManagementController.edit(goodsManagementController.getGood(param['id']))}">
+                    <f:param name="id" value="#{param['id']}"/>
+                </h:commandLink>
             </div>
         </h:form>
     </ui:composition>
