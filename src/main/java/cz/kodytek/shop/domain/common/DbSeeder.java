@@ -105,7 +105,7 @@ public class DbSeeder { // TODO: Figure out a better way
             ICategory bed = categoryList.stream().filter(i -> i.getTitle().equals("Beds")).findFirst().get();
 
             //Beds
-            /*
+
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             try {
                 InputStream is = classLoader.getResourceAsStream("/images/bed0.jpg");
@@ -117,7 +117,7 @@ public class DbSeeder { // TODO: Figure out a better way
                 goodsService.create(g, Arrays.asList(is), bed.getId());
             } catch (InvalidFileTypeException e) {
                 e.printStackTrace();
-            }*/
+            }
         }
     }
 

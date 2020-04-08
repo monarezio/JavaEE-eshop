@@ -40,7 +40,7 @@ public class NewGoods implements IGood {
     @NotNull(message = "Please choose a category.")
     private Long categoryId;
 
-    private List<String> imagePaths;
+    private List<ImageResource> imagePaths;
 
     public NewGoods(long id) {
         this.id = id;
@@ -128,11 +128,11 @@ public class NewGoods implements IGood {
         this.category = category;
     }
 
-    public List<String> getImagePaths() {
+    public List<ImageResource> getImagePaths() {
         return imagePaths;
     }
 
-    public void setImagePaths(List<String> imagePaths) {
+    public void setImagePaths(List<ImageResource> imagePaths) {
         this.imagePaths = imagePaths;
     }
 }

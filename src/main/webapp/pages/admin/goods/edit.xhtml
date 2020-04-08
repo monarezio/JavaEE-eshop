@@ -46,8 +46,8 @@
             <div>
                 <label>Current uploaded photos</label>
                 <div>
-                    <ui:repeat value="#{goodsManagementController.getGood(param['id']).imagePaths}" var="ip">
-                        <img src="#{ip}" width="300px" alt="Image"/>
+                    <ui:repeat value="#{goodsManagementController.getGood(param['id']).imagePaths}" var="ir">
+                        <h:graphicImage value="/#{ir.miniaturePath}"/>
                     </ui:repeat>
                 </div>
             </div>

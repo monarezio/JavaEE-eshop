@@ -10,6 +10,8 @@ import cz.kodytek.shop.domain.exceptions.InvalidFileTypeException;
 import cz.kodytek.shop.domain.models.goods.GoodsPage;
 import cz.kodytek.shop.domain.models.interfaces.IEntityPage;
 import cz.kodytek.shop.domain.services.interfaces.goods.IGoodsService;
+import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
 import org.hibernate.query.Query;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -83,17 +85,21 @@ public class GoodsService implements IGoodsService {
                 try {
                     String name = UUID.randomUUID().toString();
 
-                    File f = new File("resources/photos/goods/" + name + ".png");
-                    File fhd = new File("resources/photos/goods/" + name + "_hd.png");
-                    File fm = new File("resources/photos/goods/" + name + "_miniature.png");
+                    File f = new File("resources/photos/goods/" + name + ".jpg");
+                    File fhd = new File("resources/photos/goods/" + name + "_hd.jpg");
+                    File fm = new File("resources/photos/goods/" + name + "_miniature.jpg");
 
-                    BufferedImage image = ImageIO.read(is);
-                    BufferedImage hdImage = bufferedImageUtil.resize(image, 1080);
-                    BufferedImage resizedImage = bufferedImageUtil.resize(image, 500);
-                    System.out.println("Writing original file");
-                    ImageIO.write(image, "png", f);
-                    ImageIO.write(resizedImage, "png", fm);
-                    ImageIO.write(hdImage, "png", fhd);
+                    BufferedImage originalImage = ImageIO.read(is);
+                    ImageIO.write(originalImage, "jpg", f);
+
+                    Thumbnails.of(originalImage)
+                            .outputFormat("jpg")
+                            .size(1920, 1080)
+                            .toFile(fhd);
+                    Thumbnails.of(originalImage)
+                            .outputFormat("jpg")
+                            .size(640, 480)
+                            .toFile(fm);
 
                     r.setPath(f.getPath());
                     s.save(r);

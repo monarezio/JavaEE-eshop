@@ -6,6 +6,7 @@ import cz.kodytek.shop.data.entities.interfaces.reousrce.IResource;
 import cz.kodytek.shop.domain.exceptions.InvalidFileTypeException;
 import cz.kodytek.shop.domain.models.EntityFilter;
 import cz.kodytek.shop.domain.models.goods.GoodsPage;
+import cz.kodytek.shop.domain.models.goods.ImageResource;
 import cz.kodytek.shop.domain.models.goods.NewGoods;
 import cz.kodytek.shop.domain.models.interfaces.IEntityFilter;
 import cz.kodytek.shop.domain.models.interfaces.IEntityPage;
@@ -99,7 +100,7 @@ public class GoodsManagementController {
             newGoods.setDescription(g.getDescription());
             newGoods.setCost(g.getCost());
             newGoods.setImagePaths(
-                    g.getImageNames().stream().map(IResource::getPath).collect(Collectors.toList())
+                    g.getImageNames().stream().map(i -> new ImageResource(i.getPath())).collect(Collectors.toList())
             );
         }
 
