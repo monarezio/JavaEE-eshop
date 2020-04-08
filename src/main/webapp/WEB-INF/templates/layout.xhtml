@@ -25,7 +25,9 @@
                 <ul class="navbar-nav mr-auto">
                     <ui:repeat value="#{categoryManagementController.all}" var="c">
                         <li>
-                            <app:menu-link outcome="/pages/index.xhtml" value="#{c.title}"/>
+                            <h:link styleClass="nav-link" outcome="/pages/goods/index.xhtml" value="#{c.title}">
+                                <f:param name="category" value="#{c.id}"/>
+                            </h:link>
                         </li>
                     </ui:repeat>
                 </ul>

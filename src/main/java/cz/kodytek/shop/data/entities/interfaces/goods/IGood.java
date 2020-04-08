@@ -21,4 +21,6 @@ public interface IGood extends IEntityId {
 
     ICategory getCategory();
 
+    boolean hasImages();
+
 }

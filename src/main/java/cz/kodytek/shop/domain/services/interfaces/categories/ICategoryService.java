@@ -8,6 +8,8 @@ public interface ICategoryService {
 
     List<ICategory> getAll();
 
+    ICategory getWithGoods(long id);
+
     ICategory get(long id);
 
     boolean edit(ICategory category);

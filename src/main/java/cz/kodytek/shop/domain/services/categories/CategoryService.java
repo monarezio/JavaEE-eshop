@@ -1,8 +1,7 @@
 package cz.kodytek.shop.domain.services.categories;
 
 import cz.kodytek.shop.data.connection.HibernateSessionFactory;
-import cz.kodytek.shop.data.entities.Category;
-import cz.kodytek.shop.data.entities.Category_;
+import cz.kodytek.shop.data.entities.*;
 import cz.kodytek.shop.data.entities.interfaces.goods.cateogry.ICategory;
 import cz.kodytek.shop.domain.models.categories.NewCategory;
 import cz.kodytek.shop.domain.services.interfaces.categories.ICategoryService;
@@ -11,9 +10,7 @@ import org.hibernate.criterion.Order;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,6 +36,30 @@ public class CategoryService implements ICategoryService {
         });
 
         return category;
+    }
+
+    @Override
+    public ICategory getWithGoods(long id) {
+        AtomicReference<ICategory> category = new AtomicReference<>();
+
+        try {
+        sessionFactory.createSession(s -> {
+            CriteriaBuilder cb = s.getCriteriaBuilder();
+            CriteriaQuery<Category> cq = cb.createQuery(Category.class);
+            Root<Category> root = cq.from(Category.class);
+
+            Fetch<Category, Good> fetch = root.fetch(Category_.goods, JoinType.LEFT);
+            Fetch<Good, Resource> fetch2 = fetch.fetch(Good_.resources, JoinType.LEFT);
+
+            cq.where(cb.equal(root.get(Category_.id), id));
+
+            category.set(s.createQuery(cq).getSingleResult());
+        });
+        } catch(PersistenceException e) {
+            return null;
+        }
+
+        return category.get();
     }
 
     @Override

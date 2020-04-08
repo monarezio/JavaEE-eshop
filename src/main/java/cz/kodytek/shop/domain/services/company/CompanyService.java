@@ -105,9 +105,6 @@ public class CompanyService implements ICompanyService {
     }
 
     private Company getCompany(Session s, long userId, long companyId) {
-        System.out.println("ABC: " + companyId);
-        System.out.println("User id: " + userId);
-        System.out.println("Company id: " + companyId);
         CriteriaBuilder cb = s.getCriteriaBuilder();
         CriteriaQuery<Company> cq = cb.createQuery(Company.class);
         Root<Company> root = cq.from(Company.class);

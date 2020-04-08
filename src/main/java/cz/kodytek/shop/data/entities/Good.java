@@ -108,4 +108,10 @@ public class Good implements IGood {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    @Override
+    public boolean hasImages() {
+        System.out.println("MY GOD WORK FOR FUCK SAKE " + (getResources().size() > 0 ? "TRUE" : "FALSE"));
+        return getResources().size() > 0;
+    }
 }

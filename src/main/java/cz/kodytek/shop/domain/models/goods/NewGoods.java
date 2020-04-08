@@ -124,6 +124,11 @@ public class NewGoods implements IGood {
         return category; //TODO: Implement
     }
 
+    @Override
+    public boolean hasImages() {
+        return getImageNames().size() > 0;
+    }
+
     public void setCategory(ICategory category) {
         this.category = category;
     }
