@@ -16,7 +16,8 @@
             <div class="form-group">
                 <div class="form-group">
                     <h:outputLabel for="category">Category*</h:outputLabel>
-                    <h:selectOneMenu styleClass="form-control" id="category" value="#{goodsManagementController.getGood(param['id']).categoryId}">
+                    <h:selectOneMenu styleClass="form-control" id="category"
+                                     value="#{goodsManagementController.getGood(param['id']).categoryId}">
                         <f:selectItems value="#{categoryManagementController.all}"
                                        var="c"
                                        itemLabel="#{c.title}"
@@ -47,7 +48,12 @@
                 <label>Current uploaded photos</label>
                 <div>
                     <ui:repeat value="#{goodsManagementController.getGood(param['id']).imagePaths}" var="ir">
-                        <h:graphicImage value="/#{ir.miniaturePath}"/>
+                        <a href="/${goodsManagementController.applicationName}/#{ir.hdPath}" data-lightbox="images">
+                            <div class="d-flex align-items-center justify-content-center border"
+                                 style="width: 150px; height: 150px;">
+                                <h:graphicImage styleClass="mw-100 mh-100" value="/#{ir.miniaturePath}"/>
+                            </div>
+                        </a>
                     </ui:repeat>
                 </div>
             </div>

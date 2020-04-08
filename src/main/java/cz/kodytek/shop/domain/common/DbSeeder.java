@@ -18,7 +18,9 @@ import cz.kodytek.shop.domain.services.interfaces.company.ICompanyService;
 import cz.kodytek.shop.domain.services.interfaces.goods.IGoodsService;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserAuthenticationService;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserService;
+import io.netty.util.internal.StringUtil;
 import org.javamoney.moneta.Money;
+import org.springframework.util.StringUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -27,7 +29,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @ApplicationScoped
 @Named
@@ -105,18 +109,36 @@ public class DbSeeder { // TODO: Figure out a better way
             ICategory bed = categoryList.stream().filter(i -> i.getTitle().equals("Beds")).findFirst().get();
 
             //Beds
+            List<String> imageNames = Arrays.asList(
+                    "/images/bed0.jpg", "/images/bed1.jpg",
+                    "/images/bed2.jpg", "/images/bed3.jpg",
+                    "/images/bed4.jpg", "/images/bed5.jpg"
+            );
+
+            //Clear the old images, HDD capacity is small...
+            File resourceFolder = new File("resources/photos/goods");
+            for (File file : Objects.requireNonNull(resourceFolder.listFiles())) {
+                file.delete();
+            }
 
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            try {
-                InputStream is = classLoader.getResourceAsStream("/images/bed0.jpg");
-                Good g = new Good();
-                g.setAmount(100);
-                g.setCost(Money.of(100, "CZK"));
-                g.setTitle("Bed 1");
 
-                goodsService.create(g, Arrays.asList(is), bed.getId());
-            } catch (InvalidFileTypeException e) {
-                e.printStackTrace();
+            for (String imagePath : imageNames) {
+                try {
+                    InputStream is = classLoader.getResourceAsStream(imagePath);
+                    Good g = new Good();
+                    g.setAmount((int) (Math.random() * 100));
+                    g.setCost(Money.of((int) Math.ceil(Math.random() * 1000), "CZK"));
+                    g.setTitle(StringUtils.capitalize(RandomWordGenerator.getRandomWord()) + " " + (int) (Math.random() * 100));
+
+                    String descrpition = "## " + g.getTitle() + "\n";
+                    descrpition += "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et lectus eget odio scelerisque feugiat. Aliquam luctus velit laoreet massa vehicula, rhoncus eleifend nibh consequat. Sed vel feugiat ipsum. Praesent enim ex, tempus porttitor ex a, luctus aliquam mi. Nulla condimentum faucibus ex at euismod. Nam egestas sem ut leo fermentum tempus. In diam neque, varius venenatis ullamcorper ut, pharetra vitae est. Suspendisse sollicitudin vestibulum scelerisque. Donec iaculis massa risus, eget iaculis tellus cursus a. Praesent vitae efficitur ligula, et volutpat est. Etiam sed nisi non dui molestie pretium. Donec dignissim elit dui, eget scelerisque mi finibus sit amet. Suspendisse feugiat luctus arcu, placerat dapibus enim sodales sed. Morbi velit ex, aliquet at posuere at, semper id nunc. Vivamus et orci fermentum, vestibulum tortor vel, auctor nulla. Nunc et elit id mauris aliquam mattis.";
+
+                    g.setDescription(descrpition);
+                    goodsService.create(g, Collections.singletonList(is), bed.getId());
+                } catch (InvalidFileTypeException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

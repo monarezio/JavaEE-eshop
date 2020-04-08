@@ -17,6 +17,7 @@ import cz.kodytek.shop.presentation.session.models.interfaces.IFlashMessage;
 import cz.kodytek.shop.presentation.session.services.interfaces.messages.IFlashMessagesService;
 import cz.kodytek.shop.presentation.utils.request.interfaces.IRequestUtils;
 
+import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.Flash;
 import javax.inject.Inject;
@@ -46,6 +47,9 @@ public class GoodsManagementController {
     private IEntityPage<? extends IGood> cachedPage;
 
     private IEntityFilter entityFilter;
+
+    @Resource(lookup="java:app/AppName")
+    private String applicationName;
 
     private NewGoods newGoods;
 
@@ -107,4 +111,7 @@ public class GoodsManagementController {
         return newGoods;
     }
 
+    public String getApplicationName() {
+        return applicationName;
+    }
 }
