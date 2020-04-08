@@ -9,7 +9,18 @@
 <h:body>
 
     <ui:composition template="../../WEB-INF/templates/layout.xhtml">
-        <h1>Detail</h1>
+        <h1>#{categoryController.good.title}</h1>
+        <h:panelGroup styleClass="owl-carousel" rendered="#{categoryController.good.hasImages()}">
+            <ui:repeat value="#{categoryController.good.imageNames}" var="r">
+                <div>
+                    <h:graphicImage value="#{resourceHelper.getHd(r)}"/>
+                </div>
+            </ui:repeat>
+        </h:panelGroup>
+        <p>
+            #{categoryController.good.description}
+        </p>
+
     </ui:composition>
 
 </h:body>

@@ -13,4 +13,9 @@ public class ResourceHelper implements IResourceHelper {
     public String getMiniature(IResource resource) {
         return resource.getPath().replaceFirst("[.][^.]+$", "") + "_miniature.jpg";
     }
+
+    @Override
+    public String getHd(IResource resource) {
+        return resource.getPath().replaceFirst("[.][^.]+$", "") + "_hd.jpg";
+    }
 }

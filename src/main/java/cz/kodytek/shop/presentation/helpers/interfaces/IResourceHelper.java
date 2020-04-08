@@ -6,4 +6,6 @@ public interface IResourceHelper {
 
     String getMiniature(IResource resource);
 
+    String getHd(IResource resource);
+
 }
