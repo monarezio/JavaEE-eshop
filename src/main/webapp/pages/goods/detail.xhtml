@@ -1,25 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:f="http://java.sun.com/jsf/core"
+<html
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core"
 >
 <h:body>
 
     <ui:composition template="../../WEB-INF/templates/layout.xhtml">
-        <h1>#{categoryController.good.title}</h1>
-        <h:panelGroup styleClass="owl-carousel" rendered="#{categoryController.good.hasImages()}">
-            <ui:repeat value="#{categoryController.good.imageNames}" var="r">
+        <div class="d-flex flex-row">
+            <div class="col-6">
                 <div>
-                    <h:graphicImage value="#{resourceHelper.getHd(r)}"/>
+                    <h:panelGroup styleClass="owl-carousel owl-theme" layout="block"
+                                  rendered="#{categoryController.good.imageNames.size() > 1}">
+                        <ui:repeat value="#{categoryController.good.imageNames}" var="r">
+                            <div class="item">
+                                <h:graphicImage value="#{resourceHelper.getHd(r)}"/>
+                            </div>
+                        </ui:repeat>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="d-flex align-items-center justify-content-center"
+                                  rendered="#{categoryController.good.imageNames.size() == 1}">
+                        <h:graphicImage styleClass="mh-100 mw-100 m-auto h-auto"
+                                        value="#{resourceHelper.getHd(categoryController.good.imageNames.get(0))}"/>
+                    </h:panelGroup>
                 </div>
-            </ui:repeat>
-        </h:panelGroup>
-        <p>
-            #{categoryController.good.description}
-        </p>
+            </div>
+            <div class="flex-grow-1">
+                <h2>#{categoryController.good.title}</h2>
+                <h:outputText value="#{goodsHelper.parseDescription(categoryController.good)}" escape="false"/>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="h3">
+                #{goodsHelper.parsePrice(categoryController.good)} Kč
+            </div>
+            <div>
+                <h:panelGroup rendered="#{categoryController.good.amount >= 5}" styleClass="text-success">
+                    Over 5 units in our warehouse.
+                </h:panelGroup>
+                <h:panelGroup
+                        rendered="#{!(categoryController.good.amount >= 5) and (categoryController.good.amount > 0)}"
+                        styleClass="text-success">
+                    #{categoryController.good.amount} units in our warehouse.
+                </h:panelGroup>
+                <h:panelGroup rendered="#{categoryController.good.amount == 0}" styleClass="text-danger">
+                    Out of stock.
+                </h:panelGroup>
+            </div>
+            <h:panelGroup rendered="#{categoryController.good.amount != 0}">
+                <h:form>
+                    <h:commandButton class="btn my-2 btn-primary" action="#{categoryController.addGoodToCart(categoryController.good)}" value="Add to cart">
+                        <f:param name="id" value="#{param['id']}"/>
+                    </h:commandButton>
+                </h:form>
+            </h:panelGroup>
+        </div>
 
     </ui:composition>
 

@@ -4,6 +4,7 @@ import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
 import cz.kodytek.shop.data.entities.interfaces.goods.cateogry.ICategory;
 import cz.kodytek.shop.domain.services.interfaces.categories.ICategoryService;
 import cz.kodytek.shop.domain.services.interfaces.goods.IGoodsService;
+import cz.kodytek.shop.presentation.session.services.interfaces.ICartService;
 import cz.kodytek.shop.presentation.utils.request.interfaces.IRequestUtils;
 
 import javax.enterprise.context.RequestScoped;
@@ -22,6 +23,9 @@ public class CategoryController {
 
     @Inject
     private IRequestUtils requestUtils;
+
+    @Inject
+    private ICartService cartService;
 
     private ICategory category;
 
@@ -55,8 +59,9 @@ public class CategoryController {
         return null;
     }
 
-    public void print(String str) {
-        System.out.println("Size: " + str);
+    public void addGoodToCart(IGood good) {
+        cartService.add(good.getId());
+        requestUtils.redirect("/pages/cart/added.xhtml");
     }
 
 }

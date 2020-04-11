@@ -41,6 +41,14 @@
                             <h:link styleClass="btn btn-primary" value="Register"
                                     outcome="/pages/session/register.xhtml"/>
                         </li>
+                        <li class="mx-4 my-0 h3">
+                            <h:link styleClass="text-dark position-relative" outcome="/pages/cart/index.xhtml">
+                                <i class="fa fa-shopping-cart"/>
+                                <h:panelGroup styleClass="badge badge-secondary cart-badge" rendered="#{cartService.count != 0}">
+                                    #{cartService.count}
+                                </h:panelGroup>
+                            </h:link>
+                        </li>
                     </ul>
                 </c:if>
                 <c:if test="#{userSessionService.loggedIn}">
@@ -59,6 +67,14 @@
                                 <h:commandLink styleClass="nav-link" action="${userSessionController.logout}"
                                                value="Logout"/>
                             </h:form>
+                        </li>
+                        <li class="mx-4 my-0 h3">
+                            <h:link styleClass="text-dark position-relative" outcome="/pages/cart/index.xhtml">
+                                <i class="fa fa-shopping-cart"/>
+                                <h:panelGroup styleClass="badge badge-secondary cart-badge" rendered="#{cartService.count != 0}">
+                                    #{cartService.count}
+                                </h:panelGroup>
+                            </h:link>
                         </li>
                     </ul>
                 </c:if>

@@ -7,6 +7,8 @@ import cz.kodytek.shop.domain.models.interfaces.IEntityPage;
 import javax.servlet.http.Part;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 public interface IGoodsService {
 
@@ -23,4 +25,6 @@ public interface IGoodsService {
     void delete(IGood good);
 
     void deleteImage(long resourceId);
+
+    List<IGood> getGoodsForIds(Set<Long> ids);
 }

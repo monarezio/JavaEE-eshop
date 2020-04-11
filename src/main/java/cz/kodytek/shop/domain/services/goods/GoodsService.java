@@ -23,8 +23,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -261,5 +260,28 @@ public class GoodsService implements IGoodsService {
 
             s.delete(r);
         });
+    }
+
+    @Override
+    public List<IGood> getGoodsForIds(Set<Long> ids) {
+        List<IGood> result = new ArrayList<>();
+
+        sessionFactory.createSession(s -> {
+            CriteriaBuilder cb = s.getCriteriaBuilder();
+            CriteriaQuery<Good> cq = cb.createQuery(Good.class);
+            Root<Good> root = cq.from(Good.class);
+
+            cq.where(
+                    cb.or(
+                            ids.stream().map(i -> cb.equal(root.get(Good_.id), i)).toArray(Predicate[]::new)
+                    )
+            );
+
+            Query<Good> q = s.createQuery(cq);
+
+            result.addAll(q.getResultList());
+        });
+
+        return result;
     }
 }
