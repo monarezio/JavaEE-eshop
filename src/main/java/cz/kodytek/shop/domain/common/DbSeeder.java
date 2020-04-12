@@ -7,6 +7,9 @@ import cz.kodytek.shop.data.entities.Right;
 import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
 import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
 import cz.kodytek.shop.data.entities.interfaces.goods.cateogry.ICategory;
+import cz.kodytek.shop.data.entities.interfaces.invoice.method.IDeliveryMethod;
+import cz.kodytek.shop.data.entities.invoice.method.DeliveryMethod;
+import cz.kodytek.shop.data.entities.invoice.method.PaymentMethod;
 import cz.kodytek.shop.domain.exceptions.InvalidFileTypeException;
 import cz.kodytek.shop.domain.models.address.Address;
 import cz.kodytek.shop.domain.models.company.AddressCreationType;
@@ -16,6 +19,8 @@ import cz.kodytek.shop.domain.services.interfaces.address.IAddressService;
 import cz.kodytek.shop.domain.services.interfaces.categories.ICategoryService;
 import cz.kodytek.shop.domain.services.interfaces.company.ICompanyService;
 import cz.kodytek.shop.domain.services.interfaces.goods.IGoodsService;
+import cz.kodytek.shop.domain.services.interfaces.invoices.IDeliveryMethodService;
+import cz.kodytek.shop.domain.services.interfaces.invoices.IPaymentMethodService;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserAuthenticationService;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserService;
 import io.netty.util.internal.StringUtil;
@@ -54,6 +59,12 @@ public class DbSeeder { // TODO: Figure out a better way
 
     @Inject
     private IGoodsService goodsService;
+
+    @Inject
+    private IPaymentMethodService paymentMethodService;
+
+    @Inject
+    private IDeliveryMethodService deliveryMethodService;
 
     private boolean didSeed = false;
 
@@ -140,6 +151,28 @@ public class DbSeeder { // TODO: Figure out a better way
                     e.printStackTrace();
                 }
             }
+
+            PaymentMethod bankTransfer = new PaymentMethod();
+            bankTransfer.setName("Bank transfer");
+            bankTransfer.setCost(Money.of(0, "CZK"));
+
+            PaymentMethod cashPayment = new PaymentMethod();
+            cashPayment.setName("Cash");
+            cashPayment.setCost(Money.of(20, "CZK"));
+
+            paymentMethodService.add(bankTransfer);
+            paymentMethodService.add(cashPayment);
+
+            DeliveryMethod postOffice = new DeliveryMethod();
+            postOffice.setCost(Money.of(50, "CZK"));
+            postOffice.setName("Post office");
+
+            DeliveryMethod dhl = new DeliveryMethod();
+            dhl.setCost(Money.of(100, "CZK"));
+            dhl.setName("DHL");
+
+            deliveryMethodService.add(postOffice);
+            deliveryMethodService.add(dhl);
         }
     }
 

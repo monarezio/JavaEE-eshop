@@ -6,4 +6,5 @@ import '@fortawesome/fontawesome-free/js/all.min'
 
 import './app/company-form';
 import './app/md-textarea';
-import './app/carousel'
+import './app/carousel';
+import './app/order-form';

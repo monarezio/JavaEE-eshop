@@ -1,9 +1,13 @@
 package cz.kodytek.shop.presentation.session.services;
 
 import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
+import cz.kodytek.shop.domain.services.interfaces.goods.IGoodsService;
+import cz.kodytek.shop.presentation.controllers.CartController;
+import cz.kodytek.shop.presentation.controllers.CategoryController;
 import cz.kodytek.shop.presentation.session.services.interfaces.ICartService;
 
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -12,6 +16,9 @@ import java.util.List;
 @Named
 @SessionScoped
 public class CartService implements Serializable, ICartService {
+
+    @Inject
+    private CartController cartController;
 
     private HashMap<Long, Integer> cart = new HashMap<>();
 
@@ -47,7 +54,7 @@ public class CartService implements Serializable, ICartService {
     }
 
     @Override
-    public boolean isValid(List<IGood> goods) {
-        return goods.stream().allMatch(g -> g.getAmount() > getUnitCount(g.getId()));
+    public boolean isValid() {
+        return cartController.getGoods().stream().allMatch(g -> g.getAmount() >= getUnitCount(g.getId()));
     }
 }

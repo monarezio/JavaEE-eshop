@@ -1,6 +1,7 @@
 package cz.kodytek.shop.data.entities;
 
 import cz.kodytek.shop.data.entities.interfaces.user.IFullUser;
+import cz.kodytek.shop.data.entities.invoice.Invoice;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,6 +43,10 @@ public class User implements IFullUser {
     @OneToMany
     @JoinColumn(name = "user_id")
     private Set<Company> companies;
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private Set<Invoice> invoices;
 
     public User() {
     }
@@ -138,5 +143,10 @@ public class User implements IFullUser {
     @Override
     public boolean isAdmin() {
         return rights.contains(Right.ADMIN);
+    }
+
+    @Override
+    public List<Invoice> getInvoices() {
+        return invoices.stream().sorted(Comparator.comparingLong(Invoice::getId)).collect(Collectors.toList());
     }
 }

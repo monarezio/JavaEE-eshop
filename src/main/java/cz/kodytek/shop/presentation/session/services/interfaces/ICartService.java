@@ -17,6 +17,6 @@ public interface ICartService {
 
     int getCount();
 
-    boolean isValid(List<IGood> goods);
+    boolean isValid();
 
 }

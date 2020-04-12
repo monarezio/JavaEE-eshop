@@ -39,13 +39,23 @@
                             </h:link>
                         </td>
                         <td>
-                            <h:panelGroup styleClass="text-danger"
-                                          rendered="#{cartService.getUnitCount(g.id) > g.amount}">
-                                #{cartService.getUnitCount(g.id)}
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{!(cartService.getUnitCount(g.id) > g.amount)}">
-                                #{cartService.getUnitCount(g.id)}
-                            </h:panelGroup>
+                            <div class="d-flex flex-row align-items-center">
+                                <h:panelGroup styleClass="text-danger"
+                                              rendered="#{cartService.getUnitCount(g.id) > g.amount}">
+                                    #{cartService.getUnitCount(g.id)}
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{!(cartService.getUnitCount(g.id) > g.amount)}">
+                                    #{cartService.getUnitCount(g.id)}
+                                </h:panelGroup>
+                                <div class="d-flex flex-column">
+                                    <h:form>
+                                        <h:commandLink styleClass="size text-primary" action="#{cartService.add(g.id)}" value="+"/>
+                                    </h:form>
+                                    <h:form>
+                                        <h:commandLink styleClass="size text-danger" value="-" action="#{cartService.remove(g.id)}"/>
+                                    </h:form>
+                                </div>
+                            </div>
                         </td>
                         <td>#{goodsHelper.parsePrice(g)} Kč</td>
                     </tr>
@@ -57,12 +67,12 @@
                 </tr>
                 </tbody>
             </table>
-            <h:panelGroup rendered="#{cartService.isValid(cartController.goods)}" styleClass="text-right" layout="block">
+            <h:panelGroup rendered="#{cartService.valid}" styleClass="text-right" layout="block">
                 <h:link styleClass="btn btn-outline-primary" outcome="/pages/index.xhtml" value="Continue shoping"/>
                 <h:link styleClass="btn ml-3 btn-primary" outcome="/pages/cart/payment.xhtml"
                         value="Proceed to payment"/>
             </h:panelGroup>
-            <h:panelGroup rendered="#{!cartService.isValid(cartController.goods)}" layout="block">
+            <h:panelGroup rendered="#{!cartService.valid}" layout="block">
                 <span class="font-weight-bold text-danger">A product in your cart exceeds our stock limit. Please remove some units from your cart.</span>
             </h:panelGroup>
         </h:panelGroup>
