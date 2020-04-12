@@ -6,11 +6,12 @@ import cz.kodytek.shop.data.entities.interfaces.invoice.method.IDeliveryMethod;
 import cz.kodytek.shop.data.entities.interfaces.invoice.method.IPaymentMethod;
 import cz.kodytek.shop.presentation.helpers.interfaces.IGoodsHelper;
 import cz.kodytek.shop.presentation.helpers.interfaces.IInvoiceHelper;
-import jdk.jfr.Name;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Named
 @ApplicationScoped
@@ -37,5 +38,10 @@ public class InvoiceHelper implements IInvoiceHelper {
     @Override
     public String parseAddress(IAddress a) {
         return a.getCity() + " " + a.getStreet() + " " + a.getPostCode();
+    }
+
+    @Override
+    public String parseDate(LocalDate date) {
+        return date != null ? date.format(DateTimeFormatter.ofPattern("MM/dd/YYYY")) : "";
     }
 }

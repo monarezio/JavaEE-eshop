@@ -12,6 +12,8 @@ public interface IGoodsHelper {
 
     String parsePrice(Money money);
 
+    String parseNullablePrice(Money money);
+
     String parseDescription(IGood good);
 
 }

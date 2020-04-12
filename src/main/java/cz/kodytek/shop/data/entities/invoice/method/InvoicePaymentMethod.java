@@ -50,7 +50,7 @@ public class InvoicePaymentMethod implements IPaymentMethod {
         this.name = name;
     }
 
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
+    public void setCost(Money cost) {
+        this.cost = cost.getNumberStripped();
     }
 }

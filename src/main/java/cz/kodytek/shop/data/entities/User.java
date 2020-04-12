@@ -147,6 +147,10 @@ public class User implements IFullUser {
 
     @Override
     public List<Invoice> getInvoices() {
-        return invoices.stream().sorted(Comparator.comparingLong(Invoice::getId)).collect(Collectors.toList());
+        return invoices.stream().sorted(Comparator.comparing(Invoice::getDateIssued)).collect(Collectors.toList());
+    }
+
+    public void addInvoice(Invoice invoice) {
+        invoices.add(invoice);
     }
 }

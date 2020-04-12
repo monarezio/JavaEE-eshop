@@ -19,7 +19,7 @@ public class InvoiceCompany implements IInvoiceCompany {
     @Column(nullable = false)
     private Integer identificationNumber;
 
-    @Column(nullable = false)
+    @Column
     private String taxIdentificationNumber;
 
     @OneToOne

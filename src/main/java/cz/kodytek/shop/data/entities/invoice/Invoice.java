@@ -10,6 +10,11 @@ import cz.kodytek.shop.data.entities.invoice.method.InvoicePaymentMethod;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Invoice implements IInvoice {
@@ -48,6 +53,10 @@ public class Invoice implements IInvoice {
     @OneToOne
     @JoinColumn
     private InvoiceCompany company;
+
+    @OneToMany
+    @JoinColumn
+    private Set<InvoiceGood> goods;
 
     @Column(nullable = false)
     private LocalDate issued;
@@ -157,5 +166,13 @@ public class Invoice implements IInvoice {
 
     public void setPayed(LocalDate payed) {
         this.payed = payed;
+    }
+
+    public List<InvoiceGood> getGoods() {
+        return goods.stream().sorted(Comparator.comparing(InvoiceGood::getTitle)).collect(Collectors.toList());
+    }
+
+    public void setGoods(Set<InvoiceGood> goods) {
+        this.goods = goods;
     }
 }

@@ -6,6 +6,7 @@ import cz.kodytek.shop.data.entities.User_;
 import cz.kodytek.shop.data.entities.interfaces.user.IFullUser;
 import cz.kodytek.shop.data.entities.interfaces.user.IUserWithPhoneNumber;
 import cz.kodytek.shop.data.entities.interfaces.user.IUserWithRights;
+import cz.kodytek.shop.data.entities.invoice.Invoice;
 import cz.kodytek.shop.domain.models.interfaces.IEntityPage;
 import cz.kodytek.shop.domain.models.interfaces.users.IPassword;
 import cz.kodytek.shop.domain.models.users.NewUser;
@@ -124,6 +125,7 @@ public class UserService implements IUserService {
 
                 Fetch<User, Company> userToCompanyJoin = root.fetch(User_.companies, JoinType.LEFT);
                 Fetch<User, Address> userToAddressJoin = root.fetch(User_.addresses, JoinType.LEFT);
+                Fetch<User, Invoice> userToInvoicesJoin = root.fetch(User_.invoices, JoinType.LEFT);
 
                 cq.where(
                         cb.equal(root.get("id"), userId)

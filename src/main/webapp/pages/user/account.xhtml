@@ -106,9 +106,18 @@
         </div>
         <div class="px-2 mt-2 border-top pt-2">
             <h4>Invoices: </h4>
-            <div class="h6 mt-2 mb-5 text-center text-dark">
+            <h:panelGroup styleClass="h6 mt-2 mb-5 text-center text-dark"
+                          rendered="#{userController.currentUser.invoices.size() == 0}">
                 You haven't bought anything yet. How about <a href="#">changing that</a>?
-            </div>
+            </h:panelGroup>
+            <h:panelGroup styleClass="nav flex-column nav-pills"
+                          rendered="#{userController.currentUser.invoices.size() != 0}">
+                <ui:repeat value="#{userController.currentUser.invoices}" var="i">
+                    <h:link outcome="/pages/invoice/detail.xhtml" styleClass="nav-link" value="#{i.invoiceNumber}">
+                        <f:param name="number" value="#{i.invoiceNumber}"/>
+                    </h:link>
+                </ui:repeat>
+            </h:panelGroup>
         </div>
 
 

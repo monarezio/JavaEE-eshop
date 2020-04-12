@@ -50,7 +50,7 @@ public class InvoiceDeliveryMethod implements IDeliveryMethod {
         this.name = name;
     }
 
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
+    public void setCost(Money cost) {
+        this.cost = cost.getNumberStripped();
     }
 }

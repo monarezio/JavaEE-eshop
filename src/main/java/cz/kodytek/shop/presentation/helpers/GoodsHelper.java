@@ -25,4 +25,11 @@ public class GoodsHelper implements IGoodsHelper {
     public String parsePrice(Money money) {
         return String.format("%.2f", money.getNumber().doubleValue());
     }
+
+    @Override
+    public String parseNullablePrice(Money money) {
+        if (money == null)
+            return "";
+        return parsePrice(money);
+    }
 }

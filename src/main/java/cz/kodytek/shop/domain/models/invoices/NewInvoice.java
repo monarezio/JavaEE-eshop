@@ -1,11 +1,14 @@
 package cz.kodytek.shop.domain.models.invoices;
 
+import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
 import cz.kodytek.shop.domain.models.address.Address;
 import cz.kodytek.shop.domain.models.company.Company;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashMap;
+import java.util.List;
 
 public class NewInvoice {
 
@@ -20,21 +23,21 @@ public class NewInvoice {
     @NotNull(message = "Phone cannot be empty.")
     private String phone;
 
-    @NotNull
+    @NotNull(message = "Please select your desired delivery method.")
     private Long deliveryMethodId;
 
-    @NotNull
+    @NotNull(message = "Please select a payment method.")
     private Long paymentMethodId;
 
-    @NotNull
     private Long companyId;
 
-    @NotNull
     private Long addressId;
 
     private Company company = new Company();
 
     private boolean companyBuying;
+
+    private HashMap<Long, Integer> cart;
 
     @NotNull
     private Address address = new Address();
@@ -117,5 +120,13 @@ public class NewInvoice {
 
     public void setCompanyBuying(boolean companyBuying) {
         this.companyBuying = companyBuying;
+    }
+
+    public HashMap<Long, Integer> getCart() {
+        return cart;
+    }
+
+    public void setCart(HashMap<Long, Integer> cart) {
+        this.cart = cart;
     }
 }

@@ -1,8 +1,8 @@
 package cz.kodytek.shop.presentation.utils.request;
 
-import cz.kodytek.shop.presentation.utils.request.interfaces.IRequestUtils;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import cz.kodytek.shop.presentation.session.services.interfaces.messages.IFlashMessagesService;
+import cz.kodytek.shop.presentation.utils.request.interfaces.IRequestUtils;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 @RequestScoped
 public class RequestUtils implements IRequestUtils {
 
-    private FacesContext facesContext =  FacesContext.getCurrentInstance();
+    private FacesContext facesContext = FacesContext.getCurrentInstance();
     private ExternalContext externalContext = facesContext.getExternalContext();
     private HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
@@ -38,14 +40,16 @@ public class RequestUtils implements IRequestUtils {
 
     @Override
     public void redirect(String url, FlashMessage message) {
-        try {
-            if (message != null)
-                flashMessagesService.add(message);
-            externalContext.redirect(getAppRootUrl() + url);
-        } catch (IOException e) {
-            e.printStackTrace(); // Just crash, this should not happen
+        if (!externalContext.isResponseCommitted()) {
+            try {
+                if (message != null)
+                    flashMessagesService.add(message);
+                externalContext.redirect(getAppRootUrl() + url);
+            } catch (IOException e) {
+                e.printStackTrace(); // Just crash, this should not happen
+            }
+            stopLifecycle();
         }
-        stopLifecycle();
     }
 
     @Override
@@ -71,7 +75,7 @@ public class RequestUtils implements IRequestUtils {
     @Override
     public Collection<Part> getAllParts(Part part) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        if(part == null)
+        if (part == null)
             return Collections.emptyList();
         return request.getParts().stream().filter(p -> part.getName().equals(p.getName())).collect(Collectors.toList());
     }
@@ -80,7 +84,7 @@ public class RequestUtils implements IRequestUtils {
     public Collection<InputStream> getAllPartsAsInputStream(Part part) throws ServletException, IOException {
         ArrayList<InputStream> al = new ArrayList<>();
 
-        for(Part p : getAllParts(part))
+        for (Part p : getAllParts(part))
             al.add(p.getInputStream());
 
         return al;
