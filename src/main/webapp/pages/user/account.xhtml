@@ -107,7 +107,7 @@
         <div class="px-2 mt-2 border-top pt-2">
             <h4>Invoices: </h4>
             <h:panelGroup styleClass="h6 mt-2 mb-5 text-center text-dark"
-                          rendered="#{userController.currentUser.invoices.size() == 0}">
+                          rendered="#{userController.currentUser.invoices.size() == 0}" layout="block">
                 You haven't bought anything yet. How about <a href="#">changing that</a>?
             </h:panelGroup>
             <h:panelGroup styleClass="nav flex-column nav-pills"
