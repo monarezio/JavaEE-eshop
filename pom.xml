@@ -13,6 +13,22 @@
   <modules>
     <module>web-eshop</module>
     <module>remote-eshop</module>
+    <module>data-eshop</module>
+    <module>domain-eshop</module>
   </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.javamoney</groupId>
+      <artifactId>moneta</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>8.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 
 </project>
