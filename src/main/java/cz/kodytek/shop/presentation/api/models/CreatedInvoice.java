@@ -24,6 +24,8 @@ public class CreatedInvoice extends Invoice {
         setIssued(i.getDateIssued());
         setPaid(i.getDatePaid());
         setId(i.getId());
+        setPaymentMethodId(i.getPaymentMethod().getId());
+        setDeliveryMethodId(i.getDeliverMethod().getId());
 
         if (i.getCompany() != null) {
             Company c = new Company();
