@@ -28,3 +28,5 @@ target/
 
 src/main/resources/css/bundle.css
 src/main/resources/js/bundle.js
+
+.idea/
