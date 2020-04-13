@@ -1,0 +1,23 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap&subset=latin-ext');
+
+$primary: #00b842;
+
+$font-family-base: 'Open Sans';
+
+$font-size-base: 0.9rem;
+$btn-font-size: 0.65rem;
+$input-font-size: 0.9rem;
+
+$alert-border-radius: 0;
+$alert-font-size: 0.8rem;
+
+/* change the primary theme color to red */
+$theme-colors: map_merge(
+                $theme-colors,
+                (
+                        'primary': $primary,
+                )
+);

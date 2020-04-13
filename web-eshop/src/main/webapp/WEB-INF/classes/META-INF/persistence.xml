@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+    <persistence-unit name="eshop" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <non-jta-data-source>java:/MySqlDS</non-jta-data-source>
+
+        <class>cz.kodytek.shop.data.entities.User</class>
+        <class>cz.kodytek.shop.data.entities.Address</class>
+        <class>cz.kodytek.shop.data.entities.Company</class>
+        <class>cz.kodytek.shop.data.entities.Category</class>
+        <class>cz.kodytek.shop.data.entities.Good</class>
+        <class>cz.kodytek.shop.data.entities.Resource</class>
+        <class>cz.kodytek.shop.data.entities.invoice.method.InvoicePaymentMethod</class>
+        <class>cz.kodytek.shop.data.entities.invoice.method.InvoiceDeliveryMethod</class>
+        <class>cz.kodytek.shop.data.entities.invoice.method.PaymentMethod</class>
+        <class>cz.kodytek.shop.data.entities.invoice.method.DeliveryMethod</class>
+        <class>cz.kodytek.shop.data.entities.invoice.InvoiceAddress</class>
+        <class>cz.kodytek.shop.data.entities.invoice.InvoiceGood</class>
+
+        <class>cz.kodytek.shop.data.entities.invoice.InvoiceCompany</class>
+        <class>cz.kodytek.shop.data.entities.invoice.Invoice</class>
+
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQL8Dialect"/>
+        </properties>
+    </persistence-unit>
+</persistence>

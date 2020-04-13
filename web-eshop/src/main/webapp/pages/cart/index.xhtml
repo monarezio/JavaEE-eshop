@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+>
+<h:body>
+
+    <ui:composition template="../../WEB-INF/templates/layout.xhtml">
+
+        <h:panelGroup rendered="#{cartService.count == 0}" styleClass="text-center mt-5 mx-auto">
+            <div>
+                <h1>Your cart seems to be empty.</h1>
+                <h4>How do you feel about <h:link outcome="/pages/index.xhtml" value="changing that?"/></h4>
+            </div>
+            <div class="cart-icon">
+                <i class="fa fa-cart-plus"/>
+            </div>
+        </h:panelGroup>
+
+        <h:panelGroup rendered="#{cartService.count != 0}">
+            <h2>Cart</h2>
+            <table class="table table-light w-100">
+                <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Units</th>
+                    <th>Price/unit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat value="#{cartController.goods}" var="g">
+                    <tr>
+                        <td>
+                            <h:link outcome="/pages/goods/detail.xhtml" value="#{g.title}">
+                                <f:param name="id" value="#{g.id}"/>
+                            </h:link>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-row align-items-center">
+                                <h:panelGroup styleClass="text-danger"
+                                              rendered="#{cartService.getUnitCount(g.id) > g.amount}">
+                                    #{cartService.getUnitCount(g.id)}
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{!(cartService.getUnitCount(g.id) > g.amount)}">
+                                    #{cartService.getUnitCount(g.id)}
+                                </h:panelGroup>
+                                <div class="d-flex flex-column">
+                                    <h:form>
+                                        <h:commandLink styleClass="size text-primary" action="#{cartService.add(g.id)}" value="+"/>
+                                    </h:form>
+                                    <h:form>
+                                        <h:commandLink styleClass="size text-danger" value="-" action="#{cartService.remove(g.id)}"/>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </td>
+                        <td>#{goodsHelper.parsePrice(g)} Kč</td>
+                    </tr>
+                </ui:repeat>
+                <tr class="border-top">
+                    <td class="font-weight-bold">Total:</td>
+                    <td class="font-weight-bold">#{cartService.count}</td>
+                    <td class="font-weight-bold">#{goodsHelper.parsePrice(cartController.totalPrice)} Kč</td>
+                </tr>
+                </tbody>
+            </table>
+            <h:panelGroup rendered="#{cartService.valid}" styleClass="text-right" layout="block">
+                <h:link styleClass="btn btn-outline-primary" outcome="/pages/index.xhtml" value="Continue shoping"/>
+                <h:link styleClass="btn ml-3 btn-primary" outcome="/pages/cart/payment.xhtml"
+                        value="Proceed to payment"/>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{!cartService.valid}" layout="block">
+                <span class="font-weight-bold text-danger">A product in your cart exceeds our stock limit. Please remove some units from your cart.</span>
+            </h:panelGroup>
+        </h:panelGroup>
+
+    </ui:composition>
+
+</h:body>
+
+</html>

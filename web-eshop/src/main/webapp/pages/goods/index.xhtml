@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+>
+<h:body>
+
+    <ui:composition template="../../WEB-INF/templates/layout.xhtml">
+        <h1>#{categoryController.category.title}</h1>
+        <c:if test="#{categoryController.category.goods.isEmpty()}">
+            <h3 class="text-center">Oh no, it seems, that this category is empty ☹</h3>
+        </c:if>
+        <c:if test="#{!categoryController.category.goods.isEmpty()}">
+            <div class="d-flex flex-wrap">
+                <ui:repeat value="#{categoryController.category.goods}" var="g">
+                    <div class="card mx-1 my-1" style="width: 250px;">
+                        <h:panelGroup style="height: 160px;" styleClass="d-flex justify-content-center align-items-center">
+                            <h:graphicImage rendered="#{g.hasImages()}" styleClass="card-img-top mw-100 mh-100 h-auto w-auto"
+                                            value="#{resourceHelper.getMiniature(g.imageNames.get(0))}"/>
+                            <h:panelGroup style="height: 160px;" rendered="#{!g.hasImages()}"/>
+                        </h:panelGroup>
+                        <div class="card-body">
+                            <h5 class="card-title">#{g.title}</h5>
+                            <p class="card-text">
+                                #{g.description.substring(0, 150)}...
+                                <h:link outcome="/pages/goods/detail.xhtml" value="read more">
+                                    <f:param name="id" value="#{g.id}"/>
+                                </h:link>
+                            </p>
+                        </div>
+                    </div>
+                </ui:repeat>
+            </div>
+        </c:if>
+    </ui:composition>
+
+</h:body>
+
+</html>

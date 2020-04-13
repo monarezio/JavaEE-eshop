@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+>
+<h:body>
+
+    <ui:composition template="../../WEB-INF/templates/layout.xhtml">
+        <h:messages styleClass="form-errors"/>
+        <h2>#{userController.currentUser.name}'s Account</h2>
+        <div class="mt-3">
+            <div class="row">
+                <div class="col-2 font-weight-bold">Full name:</div>
+                <div>#{userController.currentUser.name}</div>
+            </div>
+            <div class="row">
+                <div class="col-2 font-weight-bold">Email:</div>
+                <div>#{userController.currentUser.email}</div>
+            </div>
+            <div class="row">
+                <div class="col-2 font-weight-bold">Phone number:</div>
+                <div>#{userController.currentUser.phoneNumber}</div>
+            </div>
+            <div class="mt-2 text-right">
+                <button type="button" class="btn btn-outline-dark mx-1" data-toggle="modal"
+                        data-target="#changePassword">Change password
+                </button>
+                <h:link styleClass="btn btn-primary" outcome="/pages/user/edit.xhtml" value="Edit account"/>
+            </div>
+        </div>
+
+        <div class="mt-4 pt-2 d-flex border-top flex-row justify-content-between">
+            <div class="flex-grow-1 p-2">
+                <h4>List of companies: </h4>
+                <c:if test="#{userController.currentUser.companies.isEmpty()}">
+                    <div class="h6 mt-2 text-center text-dark">
+                        You have no companies.
+                    </div>
+                </c:if>
+                <c:if test="#{!userController.currentUser.companies.isEmpty()}">
+                    <div class="card">
+                        <ul class="list-group list-group-flush">
+                            <ui:repeat value="#{userController.currentUser.companies}" var="c">
+                                <li class="list-group-item d-flex flex-row">
+                                    <div class="flex-grow-1">
+                                        <h:link outcome="/pages/user/company/edit.xhtml"
+                                                value='#{c.identificationNumber}'>
+                                            <f:param name="companyId" value="#{c.id}"/>
+                                        </h:link>
+                                        | ${c.name}
+                                    </div>
+                                    <div class="flex-grow-0">
+                                        <h:form>
+                                            <h:commandLink styleClass="text-danger text-decoration-none"
+                                                           action="#{companyController.delete(c)}" value="&times;"/>
+                                        </h:form>
+                                    </div>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </div>
+                </c:if>
+                <div class="text-right mt-2">
+                    <h:link styleClass="btn btn-primary" outcome="/pages/user/company/create.xhtml"
+                            value="Add a company"/>
+                </div>
+            </div>
+            <div class="flex-grow-1 p-2">
+                <h4>List of addresses: </h4>
+                <c:if test="#{userController.currentUser.addresses.isEmpty()}">
+                    <div class="h6 mt-2 text-center text-dark">
+                        List of addressees is empty.
+                    </div>
+                </c:if>
+                <c:if test="#{!userController.currentUser.addresses.isEmpty()}">
+                    <div class="card">
+                        <ul class="list-group list-group-flush">
+                            <ui:repeat value="#{userController.currentUser.addresses}" var="a">
+                                <li class="list-group-item d-flex flex-row">
+                                    <div class="flex-grow-1">
+                                        <h:link outcome="/pages/user/address/edit.xhtml"
+                                                value='#{a.city}'>
+                                            <f:param name="addressId" value="#{a.id}"/>
+                                        </h:link>
+                                        | ${a.street} ${a.postCode}
+                                    </div>
+                                    <div class="flex-grow-0">
+                                        <h:form>
+                                            <h:commandLink styleClass="text-danger text-decoration-none"
+                                                           action="#{addressController.delete(a)}" value="&times;"/>
+                                        </h:form>
+                                    </div>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </div>
+                </c:if>
+                <div class="text-right mt-2">
+                    <h:link styleClass="btn btn-primary" outcome="/pages/user/address/create.xhtml"
+                            value="Add an address"/>
+                </div>
+            </div>
+        </div>
+        <div class="px-2 mt-2 border-top pt-2">
+            <h4>Invoices: </h4>
+            <h:panelGroup styleClass="h6 mt-2 mb-5 text-center text-dark"
+                          rendered="#{userController.currentUser.invoices.size() == 0}" layout="block">
+                You haven't bought anything yet. How about <a href="#">changing that</a>?
+            </h:panelGroup>
+            <h:panelGroup styleClass="nav flex-column nav-pills"
+                          rendered="#{userController.currentUser.invoices.size() != 0}">
+                <ui:repeat value="#{userController.currentUser.invoices}" var="i">
+                    <h:link outcome="/pages/invoice/detail.xhtml" styleClass="nav-link" value="#{i.invoiceNumber}">
+                        <f:param name="number" value="#{i.invoiceNumber}"/>
+                    </h:link>
+                </ui:repeat>
+            </h:panelGroup>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="changePassword">
+            <h:form>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Change password</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <h:outputLabel for="old-password">Old password*</h:outputLabel>
+                                <h:inputSecret styleClass="form-control"
+                                               id="old-password"
+                                               required="true"
+                                               value="#{password.oldPassword}"/>
+                            </div>
+                            <div class="form-group pt-3">
+                                <h:outputLabel for="password">New password*</h:outputLabel>
+                                <h:inputSecret styleClass="form-control"
+                                               id="password"
+                                               required="true"
+                                               value="#{password.password}"/>
+                            </div>
+                            <div class="form-group">
+                                <h:outputLabel for="password-confirmation">Password confirmation*</h:outputLabel>
+                                <h:inputSecret styleClass="form-control"
+                                               id="password-confirmation"
+                                               required="true"
+                                               value="#{password.passwordConfirmation}"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <h:commandButton styleClass="btn btn-primary"
+                                             action="#{userController.changePassword(password)}"
+                                             value="Change password"/>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </ui:composition>
+
+</h:body>
+
+</html>

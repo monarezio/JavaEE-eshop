@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+>
+<h:body>
+
+    <ui:composition template="../../WEB-INF/templates/layout.xhtml">
+        <h2>Order number  #{invoiceDetailController.invoice.invoiceNumber}</h2>
+        <h4 class="text-danger">Variable symbol: #{invoiceDetailController.invoice.variableSymbol}</h4>
+        <div>
+            <h3>Basic information</h3>
+            <div class="row">
+                <label class="col-3">Status</label>
+                <h:panelGroup styleClass="col-9 text-success"
+                              rendered="#{invoiceDetailController.invoice.datePaid != null}">
+                    Paid
+                </h:panelGroup>
+                <h:panelGroup styleClass="col-9 text-danger"
+                              rendered="#{invoiceDetailController.invoice.datePaid == null}">
+                    Waiting for payment
+                </h:panelGroup>
+            </div>
+            <div class="row">
+                <label class="col-3">Date issued</label>
+                <div class="col-9">
+                    #{invoiceHelper.parseDate(invoiceDetailController.invoice.dateIssued)}
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-3">Delivery method</label>
+                <div class="col-9">#{invoiceDetailController.invoice.deliverMethod.name}</div>
+            </div>
+            <div class="row">
+                <label class="col-3">Payment method</label>
+                <div class="col-9">#{invoiceDetailController.invoice.paymentMethod.name}</div>
+            </div>
+        </div>
+        <div class="d-flex flex-row mb-2">
+            <div class="flex-grow-1">
+                <h3>Contact</h3>
+                <div class="row">
+                    <label class="col-3">Full name</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.fullName}</div>
+                </div>
+                <div class="row">
+                    <label class="col-3">Email</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.email}</div>
+                </div>
+                <div class="row">
+                    <label class="col-3">Phone number</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.phone}</div>
+                </div>
+            </div>
+            <div class="flex-grow-1">
+                <h3>Delivery address</h3>
+                <div class="row">
+                    <label class="col-3">City</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.deliveryAddress.city}</div>
+                </div>
+                <div class="row">
+                    <label class="col-3">Street</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.deliveryAddress.street}</div>
+                </div>
+                <div class="row">
+                    <label class="col-3">Post code</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.deliveryAddress.postCode}</div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="d-flex mt-2">
+            <h:panelGroup styleClass="flex-grow-1" rendered="#{invoiceDetailController.invoice.company != null}">
+                <h3>Company</h3>
+                <div class="row">
+                    <label class="col-3">Name</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.company.name}</div>
+                </div>
+                <div class="row">
+                    <label class="col-3">IČO</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.company.identificationNumber}</div>
+                </div>
+                <div class="row">
+                    <label class="col-3">DIČ</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.company.taxIdentificationNumber}</div>
+                </div>
+                <h4>Company address</h4>
+                <div class="row">
+                    <label class="col-3">City</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.company.address.city}</div>
+                </div>
+                <div class="row">
+                    <label class="col-3">Street</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.company.address.street}</div>
+                </div>
+                <div class="row">
+                    <label class="col-3">Post code</label>
+                    <div class="col-9">#{invoiceDetailController.invoice.company.address.postCode}</div>
+                </div>
+            </h:panelGroup>
+            <div class="flex-grow-1">
+                <h3>Products bought</h3>
+                <table class="table table-light">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Unit count</th>
+                        <th>Price/unit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ui:repeat value="#{invoiceDetailController.invoice.goods}" var="g">
+                        <tr>
+                            <td>
+                                <h:link outcome="/pages/goods/detail.xhtml" value="#{g.title}">
+                                    <f:param name="id" value="#{g.originalId}"/>
+                                </h:link>
+                            </td>
+                            <td>#{g.amount}</td>
+                            <td>#{goodsHelper.parseNullablePrice(g.cost)} Kč</td>
+                        </tr>
+                    </ui:repeat>
+                    <tr>
+                        <td>#{invoiceDetailController.invoice.paymentMethod.name}</td>
+                        <td>1</td>
+                        <td>#{goodsHelper.parseNullablePrice(invoiceDetailController.invoice.paymentMethod.cost)} Kč</td>
+                    </tr>
+                    <tr>
+                        <td>#{invoiceDetailController.invoice.deliverMethod.name}</td>
+                        <td>1</td>
+                        <td>#{goodsHelper.parseNullablePrice(invoiceDetailController.invoice.deliverMethod.cost)} Kč</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Total:</td>
+                        <td class="font-weight-bold">#{invoiceDetailController.unitCount} (+2)</td>
+                        <td class="font-weight-bold">#{goodsHelper.parseNullablePrice(invoiceDetailController.priceCount)} Kč</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-right">
+            <h:form rendered="#{invoiceDetailController.invoice.datePaid == null}">
+                <h:commandButton value="Cancel order" styleClass="btn btn-outline-danger" action="#{invoiceDetailController.delete()}">
+                    <f:param name="number" value="#{param['number']}"/>
+                </h:commandButton>
+            </h:form>
+        </div>
+    </ui:composition>
+
+</h:body>
+
+</html>

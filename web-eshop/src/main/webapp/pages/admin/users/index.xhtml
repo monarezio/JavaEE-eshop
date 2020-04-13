@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:app="http://kodytek.cz/tags" xmlns:f="http://java.sun.com/jsf/core"
+>
+<h:body>
+
+    <ui:composition template="../../../WEB-INF/templates/admin.xhtml">
+        <div class="bg-white p-3 shadow-sm">
+            <h2>Users</h2>
+
+            <h:form styleClass="w-50 mb-2">
+                <h3>Filter</h3>
+                <div class="form-group">
+                    <h:outputLabel value="Search" for="search"/>
+                    <h:inputText id="search" styleClass="form-control" value="#{userManagementController.filter.searchFilter}"/>
+                </div>
+                <h:commandButton styleClass="btn btn-primary" value="Search" action="#{userManagementController.search(userManagementController.filter)}"/>
+            </h:form>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Full name</th>
+                    <th>Email</th>
+                    <th>Admin</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat
+                        value="#{userManagementController.getUsers(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).all}"
+                        var="u">
+                    <tr>
+                        <td class="font-weight-bold">
+                            <h:link outcome="/pages/admin/users/edit.xhtml" value="#{u.id}">
+                                <f:param name="id" value="#{u.id}"/>
+                            </h:link>
+                        </td>
+                        <td>#{u.name}</td>
+                        <td>#{u.email}</td>
+                        <td>#{u.admin ? 'Yes' : 'No'}</td>
+                        <td>
+                            <h:form>
+                                <h:commandLink styleClass="text-danger text-decoration-none"
+                                               value="&times;" action="#{userManagementController.deleteUser(u.id)}"/>
+                            </h:form>
+                        </td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
+
+            <div class="text-right">
+                <app:pagination from="1"
+                                to="#{userManagementController.getUsers(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).pagesCount}"
+                                page="#{!param.containsKey('page') ? 0 : param['page']}"/>
+                <h:link styleClass="btn btn-primary" outcome="/pages/admin/users/create.xhtml" value="Create"/>
+            </div>
+        </div>
+    </ui:composition>
+
+</h:body>
+
+</html>

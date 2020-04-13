@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:app="http://kodytek.cz/tags" xmlns:f="http://java.sun.com/jsf/core"
+>
+<h:body>
+
+    <ui:composition template="../../../WEB-INF/templates/admin.xhtml">
+        <div class="bg-white p-3 shadow-sm">
+            <h2>Users</h2>
+
+            <h:form styleClass="w-50 mb-2">
+                <h3>Filter</h3>
+                <div class="form-group">
+                    <h:outputLabel value="Search" for="search"/>
+                    <h:inputText id="search" styleClass="form-control"
+                                 value="#{goodsManagementController.filter.searchFilter}"/>
+                </div>
+                <h:commandButton styleClass="btn btn-primary" value="Search"
+                                 action="#{goodsManagementController.search(goodsManagementController.filter)}"/>
+            </h:form>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat
+                        value="#{goodsManagementController.getGoods(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).all}"
+                        var="g">
+                    <tr>
+                        <td class="font-weight-bold">
+                            <h:link outcome="/pages/admin/goods/edit.xhtml" value="#{g.id}">
+                                <f:param name="id" value="#{g.id}"/>
+                            </h:link>
+                        </td>
+                        <td>#{g.title}</td>
+                        <td>#{g.amount}</td>
+                        <td>#{goodsHelper.parsePrice(g)}</td>
+                        <td>
+                            <h:form>
+                                <h:commandLink styleClass="text-danger text-decoration-none"
+                                               value="&times;" action="#{goodsManagementController.delete(g)}"/>
+                            </h:form>
+                        </td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
+
+            <div>
+                <h:panelGroup
+                        rendered="#{goodsManagementController.getGoods(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).pagesCount != 0}">
+                    <app:pagination from="1"
+                                    to="#{goodsManagementController.getGoods(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).pagesCount}"
+                                    page="#{!param.containsKey('page') ? 0 : param['page']}"/>
+                </h:panelGroup>
+                <div class="text-right">
+                    <h:link styleClass="btn btn-primary" outcome="/pages/admin/goods/create.xhtml" value="Create"/>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+
+</h:body>
+
+</html>

@@ -1,0 +1,53 @@
+.radio-group {
+  input[type=radio] {
+    margin-right: 0.5rem;
+  }
+  label {
+    margin-right: 0.75rem;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  td {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+.z-front {
+  z-index: 9;
+}
+
+.top-right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.badge {
+  font-size: 0.9rem !important;
+}
+
+.cart-badge {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+}
+
+.cart-icon {
+  font-size: 10rem;
+}
+
+.size {
+  width: 20px;
+  text-align: center;
+  display: block;
+}
+
+.c-radio td {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.c-radio label {
+  margin-left: 0.5rem;
+}

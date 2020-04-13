@@ -1,0 +1,16 @@
+@import '~bootstrap/scss/_alert.scss';
+
+.alert {
+  font-size: $alert-font-size;
+}
+
+.form-errors {
+  list-style: none;
+  padding: 0;
+
+  li {
+    @extend .alert;
+    @extend .alert-danger;
+  }
+}
+
