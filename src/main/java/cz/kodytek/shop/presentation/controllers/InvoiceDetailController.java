@@ -3,7 +3,6 @@ package cz.kodytek.shop.presentation.controllers;
 import cz.kodytek.shop.data.entities.interfaces.invoice.IInvoice;
 import cz.kodytek.shop.data.entities.invoice.InvoiceGood;
 import cz.kodytek.shop.domain.services.interfaces.invoices.IInvoicesService;
-import cz.kodytek.shop.domain.services.invoices.InvoicesService;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import cz.kodytek.shop.presentation.session.models.FlashMessageType;
 import cz.kodytek.shop.presentation.session.services.interfaces.messages.IFlashMessagesService;
@@ -44,7 +43,7 @@ public class InvoiceDetailController {
     }
 
     public void delete() {
-        invoicesService.delete(requestUtils.getParam("number"));
+        invoicesService.deleteForInvoice(requestUtils.getParam("number"));
         requestUtils.redirect("/pages/index.xhtml", new FlashMessage("Invoice successfully canceled.", FlashMessageType.success));
     }
 

@@ -15,11 +15,11 @@
             <div class="row">
                 <label class="col-3">Status</label>
                 <h:panelGroup styleClass="col-9 text-success"
-                              rendered="#{invoiceDetailController.invoice.datePayed != null}">
+                              rendered="#{invoiceDetailController.invoice.datePaid != null}">
                     Paid
                 </h:panelGroup>
                 <h:panelGroup styleClass="col-9 text-danger"
-                              rendered="#{invoiceDetailController.invoice.datePayed == null}">
+                              rendered="#{invoiceDetailController.invoice.datePaid == null}">
                     Waiting for payment
                 </h:panelGroup>
             </div>
@@ -142,7 +142,7 @@
             </div>
         </div>
         <div class="text-right">
-            <h:form rendered="#{invoiceDetailController.invoice.datePayed == null}">
+            <h:form rendered="#{invoiceDetailController.invoice.datePaid == null}">
                 <h:commandButton value="Cancel order" styleClass="btn btn-outline-danger" action="#{invoiceDetailController.delete()}">
                     <f:param name="number" value="#{param['number']}"/>
                 </h:commandButton>

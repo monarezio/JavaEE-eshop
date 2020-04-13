@@ -129,6 +129,8 @@ public class GoodsService implements IGoodsService {
                 CriteriaQuery<Good> cq = cb.createQuery(Good.class);
                 Root<Good> root = cq.from(Good.class);
 
+                System.out.println(search);
+
                 cq.where(
                         cb.like(root.get(Good_.title), "%" + search + "%")
                 );

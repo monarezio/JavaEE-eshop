@@ -5,16 +5,24 @@ import cz.kodytek.shop.data.entities.invoice.Invoice;
 import cz.kodytek.shop.domain.models.interfaces.IEntityPage;
 import cz.kodytek.shop.domain.models.invoices.NewInvoice;
 
+import java.time.LocalDate;
+
 public interface IInvoicesService {
 
     IInvoice addInvoice(NewInvoice invoice);
 
     IInvoice addInvoice(NewInvoice invoice, long userId);
 
-    IEntityPage<IInvoice> getInvoices(int page);
+    IEntityPage<IInvoice> getInvoices(String search, int page, int perPage);
 
     IInvoice getForInvoiceNumber(String invoiceNumber);
 
-    void delete(String invoiceNumber);
+    IInvoice get(long id);
+
+    boolean edit(long id, String fullName, String email, String phone, boolean paid);
+
+    void deleteForInvoice(String invoiceNumber);
+
+    void delete(Long id);
 
 }

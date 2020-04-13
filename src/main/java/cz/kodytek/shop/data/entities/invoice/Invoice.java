@@ -105,7 +105,7 @@ public class Invoice implements IInvoice {
     }
 
     @Override
-    public LocalDate getDatePayed() {
+    public LocalDate getDatePaid() {
         return payed;
     }
 
@@ -164,7 +164,7 @@ public class Invoice implements IInvoice {
         this.issued = issued;
     }
 
-    public void setPayed(LocalDate payed) {
+    public void setPaid(LocalDate payed) {
         this.payed = payed;
     }
 

@@ -12,6 +12,12 @@ public class InvoicesPage implements IEntityPage<IInvoice> {
     private int page;
     private int pageCount;
 
+    public InvoicesPage(List<Invoice> invoices, int page, int pageCount) {
+        this.invoices = invoices;
+        this.page = page;
+        this.pageCount = pageCount;
+    }
+
     @Override
     public List<Invoice> getAll() {
         return invoices;

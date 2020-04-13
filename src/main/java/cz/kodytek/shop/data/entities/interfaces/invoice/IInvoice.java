@@ -30,7 +30,7 @@ public interface IInvoice extends IEntityId {
 
     LocalDate getDateIssued();
 
-    LocalDate getDatePayed();
+    LocalDate getDatePaid();
 
     List<InvoiceGood> getGoods();
 
