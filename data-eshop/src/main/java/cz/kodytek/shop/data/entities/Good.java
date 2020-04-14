@@ -111,7 +111,6 @@ public class Good implements IGood {
 
     @Override
     public boolean hasImages() {
-        System.out.println("MY GOD WORK FOR FUCK SAKE " + (getResources().size() > 0 ? "TRUE" : "FALSE"));
         return getResources().size() > 0;
     }
 }

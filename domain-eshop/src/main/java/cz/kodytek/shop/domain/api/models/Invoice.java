@@ -1,11 +1,10 @@
-package cz.kodytek.shop.presentation.api.models;
+package cz.kodytek.shop.domain.api.models;
 
 import javax.validation.constraints.*;
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
-public class Invoice {
+public class Invoice implements Serializable {
 
     @NotNull(message = "Full name cannot be null.")
     @Size(min = 3, message = "Full name must contain at least 3 characters.")

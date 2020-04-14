@@ -1,10 +1,11 @@
-package cz.kodytek.shop.presentation.api.models;
+package cz.kodytek.shop.domain.api.models;
 
 import org.javamoney.moneta.Money;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Method {
+public class Method implements Serializable {
 
     private String name;
     private double cost;

@@ -1,9 +1,10 @@
-package cz.kodytek.shop.presentation.api.models;
+package cz.kodytek.shop.domain.api.models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
-public class CreatedInvoice extends Invoice {
+public class CreatedInvoice extends Invoice implements Serializable {
 
     private long id;
     private String invoiceNumber;

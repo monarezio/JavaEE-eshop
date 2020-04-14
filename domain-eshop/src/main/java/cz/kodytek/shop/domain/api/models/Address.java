@@ -1,9 +1,10 @@
-package cz.kodytek.shop.presentation.api.models;
+package cz.kodytek.shop.domain.api.models;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-public class Address {
+public class Address implements Serializable {
 
     @NotNull(message = "Street cannot be null.")
     @Size(min = 3, message = "Street must contain at least 3 characters")

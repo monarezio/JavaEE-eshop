@@ -1,8 +1,10 @@
-package cz.kodytek.shop.presentation.api.models;
+package cz.kodytek.shop.domain.api.models;
 
 import org.javamoney.moneta.Money;
 
-public class Good {
+import java.io.Serializable;
+
+public class Good implements Serializable {
 
     private long id;
     private String name;

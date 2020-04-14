@@ -4,10 +4,11 @@ import cz.kodytek.shop.data.entities.interfaces.invoice.method.IPaymentMethod;
 import org.javamoney.moneta.Money;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-public class PaymentMethod implements IPaymentMethod {
+public class PaymentMethod implements IPaymentMethod, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

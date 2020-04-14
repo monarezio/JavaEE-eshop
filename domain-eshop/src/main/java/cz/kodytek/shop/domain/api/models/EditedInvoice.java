@@ -1,13 +1,14 @@
-package cz.kodytek.shop.presentation.api.models;
+package cz.kodytek.shop.domain.api.models;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class EditedInvoice {
+public class EditedInvoice implements Serializable {
 
     @NotNull(message = "Full name cannot be null.")
     @Size(min = 3, message = "Full name must contain at least 3 characters.")

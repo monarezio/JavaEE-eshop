@@ -1,20 +1,21 @@
-package cz.kodytek.shop.presentation.api.models;
+package cz.kodytek.shop.domain.api.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class InvoicesPage {
+public class GoodsPage implements Serializable {
 
     private int page;
     private int pageCount;
-    private List<Invoice> invoices;
+    private List<Good> goods;
 
-    public InvoicesPage() {
+    public GoodsPage() {
     }
 
-    public InvoicesPage(int page, int pageCount, List<Invoice> goods) {
+    public GoodsPage(int page, int pageCount, List<Good> goods) {
         this.page = page;
         this.pageCount = pageCount;
-        this.invoices = goods;
+        this.goods = goods;
     }
 
     public int getPage() {
@@ -33,12 +34,11 @@ public class InvoicesPage {
         this.pageCount = pageCount;
     }
 
-    public List<Invoice> getGoods() {
-        return invoices;
+    public List<Good> getGoods() {
+        return goods;
     }
 
-    public void setGoods(List<Invoice> invoices) {
-        this.invoices = invoices;
+    public void setGoods(List<Good> goods) {
+        this.goods = goods;
     }
-
 }

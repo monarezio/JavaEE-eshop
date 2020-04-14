@@ -1,8 +1,9 @@
-package cz.kodytek.shop.presentation.api.models;
+package cz.kodytek.shop.domain.api.models;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
-public class Product {
+public class Product implements Serializable {
 
     @NotNull
     private Long id;

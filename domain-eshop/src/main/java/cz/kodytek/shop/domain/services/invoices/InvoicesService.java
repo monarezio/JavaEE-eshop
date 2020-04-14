@@ -228,7 +228,7 @@ public class InvoicesService implements IInvoicesService {
             q.setFirstResult(page * perPage);
             q.setMaxResults(perPage);
 
-            result.set(new InvoicesPage(q.getResultList(), page, (int) (Math.ceil(getInvoiceCount(search) / (float) perPage))));
+            result.set(new InvoicesPage(q.getResultList(), page, (int) (Math.ceil(getInvoiceCount(search) / (float) perPage) - 1)));
         });
 
 

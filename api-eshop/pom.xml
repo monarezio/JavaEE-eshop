@@ -5,12 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cz.kodytek</groupId>
-    <artifactId>remote-eshop</artifactId>
+    <artifactId>api-eshop</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <properties>
-        <version.server.bom>19.0.0.Final</version.server.bom>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -21,23 +17,12 @@
                     <target>8</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <mainClass>cz.kodytek.shop.ejb.client.Main</mainClass>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+
+    <properties>
+        <version.server.bom>19.0.0.Final</version.server.bom>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -53,21 +38,21 @@
 
     <dependencies>
         <dependency>
-            <groupId>cz.kodytek</groupId>
-            <artifactId>domain-eshop</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.kodytek</groupId>
-            <artifactId>data-eshop</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>8.0.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.wildfly</groupId>
-            <artifactId>wildfly-ejb-client-bom</artifactId>
-            <type>pom</type>
-            <scope>compile</scope>
+            <groupId>org.jboss.spec.javax.annotation</groupId>
+            <artifactId>jboss-annotations-api_1.3_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -79,6 +64,17 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>1.7.22</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cz.kodytek</groupId>
+            <artifactId>data-eshop</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>cz.kodytek</groupId>
+            <artifactId>domain-eshop</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

@@ -6,6 +6,8 @@ import cz.kodytek.shop.data.entities.invoice.method.PaymentMethod;
 import cz.kodytek.shop.domain.services.interfaces.invoices.IPaymentMethodService;
 import org.hibernate.query.Query;
 
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
