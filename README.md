@@ -1,6 +1,8 @@
 # Eshop Deployment
 
-Eshop web application uses the MySQL database, therefore you will need to install it (<https://www.apachefriends.org/download.html>). Make sure your **MySQL version 8 or higher**. Application was with **JDK 13**. It is expected that you have a **correclty configured `JAVA_HOME`** system property. In order to build the application you must have **MAVEN installed and correctly setup**.
+Eshop web application uses the MySQL database, therefore you will need to install it (<https://www.apachefriends.org/download.html>). Make sure your **MySQL version is 8 or higher**. Application was with **JDK 13**. It is expected that you have a **correctly configured `JAVA_HOME`** system property. In order to build the application you must have **MAVEN installed and correctly setup**.
+
+Additional information about how the project is structured is located below the installation.
 
 ## Downloading and launching Wildfly
 
@@ -51,13 +53,13 @@ Eshop web application uses the MySQL database, therefore you will need to instal
 
    `/subsystem=messaging-activemq/server=default/jms-queue=loggerQueue:add(entries=[java:jboss/exported/jms/queue/loggerQueue])`
 
-3) Exit out of the manegement console (ctrl+c or the `exit` command).
+3) Exit out of the management console (ctrl+c or the `exit` command).
 
-4) Create a **application** user with the name `logger` and password `123`. (If you wish have a different login combination, change it in `cz.kodytek.shop.jms.JMSReciever.java`). Creating a user is as simple as running `add_user.bat`. The user must have the group `guest` asigned to him.
+4) Create a **application** user with the name `logger` and password `123`. (If you wish have a different login combination, change it in `cz.kodytek.shop.jms.JMSReciever.java`). Creating a user is as simple as running `add_user.bat`. The user must have the group `guest` assigned to him.
 
 5) Restart the application server.
 
-## Compilig and deploying the web application
+## Compiling and deploying the web application
 
 1) Clone the source code form the repository <https://github.com/monarezio/JavaEE-eshop.git>
 
@@ -65,7 +67,7 @@ Eshop web application uses the MySQL database, therefore you will need to instal
 
 3) Navigate to the module `web-eshop`. Open the `assets/` dir and execute `npm i` and then `npm run-script build`. This will build the css and js
 
-4) In the `web-eshop` module root run `mvn clean wildfly`. The average deployment time is 40s. The application automaticly seeds the database with few randomly generated entities. The application generates a user with administrator rights
+4) In the `web-eshop` module root run `mvn clean wildfly`. The average deployment time is 40s. The application automatically seeds the database with few randomly generated entities. The application generates a user with administrator rights
 
    **Generated user:**
 
@@ -86,8 +88,27 @@ Eshop web application uses the MySQL database, therefore you will need to instal
 
 2) Run `mvn exec:java`
 
-## Openning rest API
+## Opening rest API
 
-1) Open your preffered REST API "viewer" (Postman, SoapUI ect.)
+1) Open your preferred REST API "viewer" (Postman, SoapUI etc.)
 
-2) API url is <http://localhost:8080/Shop/api>
+2) API URL is <http://localhost:8080/Shop/api>
+
+## Additional information
+
+- Module `data-eshop` contains the database entities and a simple hibernate wrapper.
+
+- Module `domain-shop` contains services, where I handle business logic. Moreover it contains interfaces for the EJB classes and a JMS Service that handles the communication with other JavaEE applications.
+
+- Module `api-shop` contains implementations of the EJB interfaces and JAX-RS resources. Since the two APIs are supposed to be the same, I reuse the EJB classes in the JAX-RS.
+
+- Module `web-shop` contains mainly the presentation layer (JSF implementation).
+  - Services manage the stuff such as: flash messages, user sessions etc.
+  - Controllers control the flow of the application. Manage button clicks
+  - Helpers parse more complex entities/models for the JSF pages
+  - The loading of external resources, such as product images, is managed by the servlet `ResourceServlet`
+  - Page filters are located in `utils/filters`
+
+- Module `jms-receiver-eshop` is a simple implementation of the JMS Receiver
+
+- Module `remote-eshop` is the remote stateless EJB implementation. It's a simple console application.
