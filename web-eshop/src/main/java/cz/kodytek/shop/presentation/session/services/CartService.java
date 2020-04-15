@@ -1,17 +1,16 @@
 package cz.kodytek.shop.presentation.session.services;
 
-import cz.kodytek.shop.data.entities.interfaces.goods.IGood;
-import cz.kodytek.shop.domain.services.interfaces.goods.IGoodsService;
+import cz.kodytek.shop.jms.JMSService;
 import cz.kodytek.shop.presentation.controllers.CartController;
-import cz.kodytek.shop.presentation.controllers.CategoryController;
 import cz.kodytek.shop.presentation.session.services.interfaces.ICartService;
+import cz.kodytek.shop.presentation.session.services.interfaces.IUserSessionService;
+import cz.kodytek.shop.presentation.utils.request.interfaces.IRequestUtils;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 
 @Named
 @SessionScoped
@@ -20,12 +19,19 @@ public class CartService implements Serializable, ICartService {
     @Inject
     private CartController cartController;
 
+    @Inject
+    private JMSService jmsService;
+
+    @Inject
+    private IRequestUtils requestUtils;
+
     private HashMap<Long, Integer> cart = new HashMap<>();
 
     @Override
     public void add(long goodId) {
         cart.putIfAbsent(goodId, 0);
         cart.put(goodId, cart.get(goodId) + 1);
+        jmsService.sendMessage(requestUtils.getIp() + " added good, with id" + goodId + ", to the cart.");
     }
 
     @Override
@@ -35,6 +41,8 @@ public class CartService implements Serializable, ICartService {
                 cart.remove(goodId);
             else
                 cart.put(goodId, cart.get(goodId) - 1);
+
+            jmsService.sendMessage(requestUtils.getIp() + " removed good, with id" + goodId + ", from the cart.");
         }
     }
 

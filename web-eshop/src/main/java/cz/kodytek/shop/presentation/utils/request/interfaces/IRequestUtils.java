@@ -29,4 +29,6 @@ public interface IRequestUtils {
 
     Collection<InputStream> getAllPartsAsInputStream(Part part) throws ServletException, IOException;
 
+    String getIp();
+
 }

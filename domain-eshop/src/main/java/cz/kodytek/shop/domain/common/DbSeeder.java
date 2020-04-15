@@ -24,19 +24,23 @@ import cz.kodytek.shop.domain.services.interfaces.users.IUserService;
 import org.javamoney.moneta.Money;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.PostConstruct;
+import javax.ejb.*;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@ApplicationScoped
-@Named
-public class DbSeeder { // TODO: Figure out a better way
+@Startup
+@Singleton
+@TransactionManagement(TransactionManagementType.BEAN)
+public class DbSeeder implements Serializable { // TODO: Figure out a better way
 
     @Inject
     private IUserAuthenticationService userAuthenticationService;
@@ -64,6 +68,7 @@ public class DbSeeder { // TODO: Figure out a better way
 
     private boolean didSeed = false;
 
+    @PostConstruct
     public void seed() {
         if (!didSeed) {
             didSeed = true;

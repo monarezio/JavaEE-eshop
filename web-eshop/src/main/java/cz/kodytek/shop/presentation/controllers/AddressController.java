@@ -3,6 +3,7 @@ package cz.kodytek.shop.presentation.controllers;
 import cz.kodytek.shop.data.entities.interfaces.address.IAddress;
 import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
 import cz.kodytek.shop.domain.services.interfaces.address.IAddressService;
+import cz.kodytek.shop.jms.JMSService;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import cz.kodytek.shop.presentation.session.models.FlashMessageType;
 import cz.kodytek.shop.presentation.session.services.interfaces.IUserSessionService;
@@ -29,9 +30,13 @@ public class AddressController {
     @Inject
     private IAddressService addressService;
 
+    @Inject
+    private JMSService jmsService;
+
     private IAddressWithId address = null;
 
     public void create(IAddress address) {
+        jmsService.sendMessage(requestUtils.getIp() + " attempting to create a address.");
         if(addressService.create(userSessionService.getCurrentUser().getId(), address) != null)
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Address successfully added.", FlashMessageType.success));
         else
@@ -39,6 +44,8 @@ public class AddressController {
     }
 
     public void delete(IAddressWithId address) {
+        jmsService.sendMessage(requestUtils.getIp() + " deleting an address, " + address.getId() + ".");
+
         if(addressService.delete(userSessionService.getCurrentUser().getId(), address.getId()))
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Address deleted successfully.", FlashMessageType.success));
         else
@@ -46,6 +53,8 @@ public class AddressController {
     }
 
     public void edit(IAddressWithId address) {
+        jmsService.sendMessage(requestUtils.getIp() + " attempting to edit a address, " + address.getId() + ".");
+
         if(addressService.edit(userSessionService.getCurrentUser().getId(), address))
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Address was edited successfully.", FlashMessageType.success));
         else

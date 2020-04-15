@@ -3,6 +3,7 @@ package cz.kodytek.shop.presentation.controllers;
 import cz.kodytek.shop.domain.models.interfaces.users.ILoggedInUser;
 import cz.kodytek.shop.domain.models.interfaces.users.IRegisteredUser;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserAuthenticationService;
+import cz.kodytek.shop.jms.JMSService;
 import cz.kodytek.shop.presentation.utils.request.interfaces.IRequestUtils;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import cz.kodytek.shop.presentation.session.models.FlashMessageType;
@@ -29,6 +30,9 @@ public class UserSessionController {
     @Inject()
     private IRequestUtils requestUtils;
 
+    @Inject()
+    private JMSService jmsService;
+
     public void login(ILoggedInUser loggedInUser) {
         userSessionService.login(loggedInUser);
 
@@ -41,6 +45,7 @@ public class UserSessionController {
     }
 
     public void register(IRegisteredUser registeredUser) {
+        jmsService.sendMessage(requestUtils.getIp() + " attempting to register, with email " + registeredUser.getEmail() + ".");
         if (!registeredUser.getPassword().equals(registeredUser.getPasswordConfirmation()))
             flashMessagesService.add(new FlashMessage("Password do not match", FlashMessageType.alert));
         else if (userAuthenticationService.register(registeredUser))

@@ -102,4 +102,14 @@ public class RequestUtils implements IRequestUtils {
         }
         return url;
     }
+
+    @Override
+    public String getIp() {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+        }
+        return ipAddress;
+    }
 }

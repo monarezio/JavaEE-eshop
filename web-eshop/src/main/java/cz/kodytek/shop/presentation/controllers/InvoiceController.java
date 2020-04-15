@@ -11,6 +11,7 @@ import cz.kodytek.shop.domain.services.interfaces.invoices.IDeliveryMethodServic
 import cz.kodytek.shop.domain.services.interfaces.invoices.IInvoicesService;
 import cz.kodytek.shop.domain.services.interfaces.invoices.IPaymentMethodService;
 import cz.kodytek.shop.domain.services.interfaces.users.IUserService;
+import cz.kodytek.shop.jms.JMSService;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import cz.kodytek.shop.presentation.session.models.FlashMessageType;
 import cz.kodytek.shop.presentation.session.services.interfaces.ICartService;
@@ -58,6 +59,9 @@ public class InvoiceController {
     @Inject
     private IFlashMessagesService flashMessagesService;
 
+    @Inject
+    private JMSService jmsService;
+
     private List<IPaymentMethod> paymentMethods;
 
     private List<IDeliveryMethod> deliveryMethods;
@@ -67,6 +71,8 @@ public class InvoiceController {
     private NewInvoice newInvoice;
 
     public void createInvoice() {
+        jmsService.sendMessage(requestUtils.getIp() + " attempting to create invoice.");
+
         boolean valid = true;
         NewInvoice ni = getInvoice();
 

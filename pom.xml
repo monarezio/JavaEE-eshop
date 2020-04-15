@@ -16,6 +16,7 @@
     <module>data-eshop</module>
     <module>domain-eshop</module>
     <module>api-eshop</module>
+    <module>jms-receiver-eshop</module>
   </modules>
 
 </project>

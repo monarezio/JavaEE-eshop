@@ -6,6 +6,7 @@ import cz.kodytek.shop.data.entities.interfaces.company.ICompanyWithId;
 import cz.kodytek.shop.domain.models.interfaces.company.ICreatedCompany;
 import cz.kodytek.shop.domain.services.interfaces.address.IAddressService;
 import cz.kodytek.shop.domain.services.interfaces.company.ICompanyService;
+import cz.kodytek.shop.jms.JMSService;
 import cz.kodytek.shop.presentation.session.models.FlashMessage;
 import cz.kodytek.shop.presentation.session.models.FlashMessageType;
 import cz.kodytek.shop.presentation.session.services.interfaces.IUserSessionService;
@@ -22,25 +23,31 @@ import java.util.List;
 public class CompanyController {
 
     @Inject
-    ICompanyService companyService;
+    private ICompanyService companyService;
 
     @Inject
-    IAddressService addressService;
+    private IAddressService addressService;
 
     @Inject
-    IUserSessionService userSessionService;
+    private IUserSessionService userSessionService;
 
     @Inject
-    IRequestUtils requestUtils;
+    private IRequestUtils requestUtils;
 
     @Inject
-    IFlashMessagesService flashMessagesService;
+    private IFlashMessagesService flashMessagesService;
+
+    @Inject
+    private JMSService jmsService;
+
 
     private List<IAddressWithId> addressesForUser = null;
 
     private ICompanyWithId company;
 
     public void create(ICreatedCompany company) {
+        jmsService.sendMessage(requestUtils.getIp() + " attempting to create a company.");
+
         if (companyService.create(userSessionService.getCurrentUser().getId(), company) != null)
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Company added successfully.", FlashMessageType.success));
         else
@@ -48,6 +55,8 @@ public class CompanyController {
     }
 
     public void edit(ICompanyWithId company) {
+        jmsService.sendMessage(requestUtils.getIp() + " attempting to edit a company, " + company.getId() + ".");
+
         if(companyService.edit(userSessionService.getCurrentUser().getId(), company))
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Company edited successfully.", FlashMessageType.success));
         else
@@ -55,6 +64,7 @@ public class CompanyController {
     }
 
     public void delete(ICompanyWithId company) {
+        jmsService.sendMessage(requestUtils.getIp() + " deleting a company, " + company.getId() + ".");
         companyService.delete(userSessionService.getCurrentUser().getId(), company.getId());
         requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Company deleted successfully.", FlashMessageType.success));
     }
