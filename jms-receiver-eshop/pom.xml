@@ -34,7 +34,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>cz.kodytek.shop.jms.JMSSender</mainClass>
+                    <mainClass>cz.kodytek.shop.jms.JMSReceiver</mainClass>
                 </configuration>
             </plugin>
         </plugins>
