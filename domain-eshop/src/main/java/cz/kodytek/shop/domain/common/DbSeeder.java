@@ -25,10 +25,11 @@ import org.javamoney.moneta.Money;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.*;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -129,8 +130,10 @@ public class DbSeeder implements Serializable { // TODO: Figure out a better way
 
             //Clear the old images, HDD capacity is small...
             File resourceFolder = new File("resources/photos/goods");
-            for (File file : Objects.requireNonNull(resourceFolder.listFiles())) {
-                file.delete();
+            if (resourceFolder.exists()) {
+                for (File file : Objects.requireNonNull(resourceFolder.listFiles())) {
+                    file.delete();
+                }
             }
 
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
