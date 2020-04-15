@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:app="http://kodytek.cz/tags"
+>
+<h:body>
+
+    <ui:composition template="../../../WEB-INF/templates/admin.xhtml">
+        <div class="bg-white p-3 shadow-sm">
+            <h2>Invoices</h2>
+
+            <h:form styleClass="w-50 mb-2">
+                <h3>Filter</h3>
+                <div class="form-group">
+                    <h:outputLabel value="Search" for="search"/>
+                    <h:inputText id="search" styleClass="form-control"
+                                 value="#{invoiceManagementController.entityFilter.searchFilter}"/>
+                </div>
+                <h:commandButton styleClass="btn btn-primary" value="Search"
+                                 action="#{invoiceManagementController.search(invoiceManagementController.entityFilter)}"/>
+            </h:form>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Invoice number</th>
+                    <th>Variable number</th>
+                    <th>Paiment date</th>
+                    <th>Set invoice as paid</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat
+                        value="#{invoiceManagementController.invoicesPage.all}"
+                        var="i">
+                    <tr>
+                        <td class="font-weight-bold">
+                            <h:link outcome="/pages/admin/invoices/detail.xhtml" value="#{i.id}">
+                                <f:param name="id" value="#{i.id}"/>
+                            </h:link>
+                        </td>
+                        <td>#{i.invoiceNumber}</td>
+                        <td>#{i.variableSymbol}</td>
+                        <td>#{i.datePaid}</td>
+                        <td>
+                            <h:form rendered="#{i.datePaid == null}">
+                                <h:commandLink action="#{invoiceManagementController.pay(i)}" value="[Pay]"/>
+                            </h:form>
+                        </td>
+                        <td>
+                            <h:form rendered="#{i.datePaid == null}">
+                                <h:commandLink styleClass="text-danger text-decoration-none"
+                                               value="&times;" action="#{invoiceManagementController.delete(i)}"/>
+                            </h:form>
+                        </td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
+            <div>
+                <h:panelGroup
+                        rendered="#{invoiceManagementController.invoicesPage.pagesCount != 0}">
+                    <app:pagination from="1"
+                                    to="#{invoiceManagementController.invoicesPage.pagesCount}"
+                                    page="#{!param.containsKey('page') ? 0 : param['page']}"/>
+                </h:panelGroup>
+            </div>
+        </div>
+    </ui:composition>
+
+</h:body>
+
+</html>

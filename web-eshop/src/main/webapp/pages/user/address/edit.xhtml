@@ -17,26 +17,26 @@
                 <h:inputText styleClass="form-control"
                              type="text"
                              id="name"
-                             value="#{addressController.getAddress(param['addressId']).city}"/>
+                             value="#{addressController.address.city}"/>
             </div>
             <div class="form-group">
                 <h:outputLabel for="ico">Street*</h:outputLabel>
                 <h:inputText styleClass="form-control"
                              type="email"
                              id="ico"
-                             value="#{addressController.getAddress(param['addressId']).street}"/>
+                             value="#{addressController.address.street}"/>
             </div>
             <div class="form-group">
                 <h:outputLabel for="dic">Post code*</h:outputLabel>
                 <h:inputText styleClass="form-control"
                              type="text"
                              id="dic"
-                             value="#{addressController.getAddress(param['addressId']).postCode}"/>
+                             value="#{addressController.address.postCode}"/>
             </div>
             <!-- TODO: Address -->
             <div class="text-right">
                 <h:commandLink styleClass="btn btn-primary" value="Edit address"
-                               action="#{addressController.edit(addressController.getAddress(param['addressId']))}">
+                               action="#{addressController.edit(addressController.address)}">
                     <f:param name="addressId" value="#{param['addressId']}"/>
                 </h:commandLink>
             </div>

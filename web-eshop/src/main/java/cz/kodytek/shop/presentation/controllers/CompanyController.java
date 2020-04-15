@@ -1,7 +1,6 @@
 package cz.kodytek.shop.presentation.controllers;
 
 import cz.kodytek.shop.data.entities.interfaces.address.IAddressWithId;
-import cz.kodytek.shop.data.entities.interfaces.company.ICompany;
 import cz.kodytek.shop.data.entities.interfaces.company.ICompanyWithId;
 import cz.kodytek.shop.domain.models.interfaces.company.ICreatedCompany;
 import cz.kodytek.shop.domain.services.interfaces.address.IAddressService;
@@ -57,7 +56,7 @@ public class CompanyController {
     public void edit(ICompanyWithId company) {
         jmsService.sendMessage(requestUtils.getIp() + " attempting to edit a company, " + company.getId() + ".");
 
-        if(companyService.edit(userSessionService.getCurrentUser().getId(), company))
+        if (companyService.edit(userSessionService.getCurrentUser().getId(), company))
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Company edited successfully.", FlashMessageType.success));
         else
             flashMessagesService.add(new FlashMessage("There was a unknown error, sorry.", FlashMessageType.alert));
@@ -70,17 +69,27 @@ public class CompanyController {
     }
 
     public List<IAddressWithId> getAddresses() {
-        if(addressesForUser == null)
+        if (addressesForUser == null)
             addressesForUser = addressService.getAllForUser(userSessionService.getCurrentUser().getId());
+        if (addressesForUser == null)
+            requestUtils.redirect("/pages/user/account.xhtml");
         return addressesForUser;
     }
 
-    public ICompanyWithId getCompany(long id) {
-        if(company == null)
-            company = companyService.get(userSessionService.getCurrentUser().getId(), id);
+    public ICompanyWithId getCompany() {
+        try {
+            if (!requestUtils.hasParam("companyId"))
+                requestUtils.redirect("/pages/user/account.xhtml");
+            if (company == null)
+                company = companyService.get(userSessionService.getCurrentUser().getId(), Long.parseLong(requestUtils.getParam("companyId")));
+            if (company == null)
+                requestUtils.redirect("/pages/user/account.xhtml");
+            return company;
+        } catch(Exception e) {
+            requestUtils.redirect("/pages/user/account.xhtml");
+        }
 
-        System.out.println("Company ID: " + company.getId());
-        return company;
+        return null;
     }
 
 }

@@ -15,4 +15,6 @@ public interface IUserSessionService {
 
     boolean isAdmin();
 
+    boolean isEmailInUse(String email);
+
 }

@@ -37,7 +37,7 @@ public class AddressController {
 
     public void create(IAddress address) {
         jmsService.sendMessage(requestUtils.getIp() + " attempting to create a address.");
-        if(addressService.create(userSessionService.getCurrentUser().getId(), address) != null)
+        if (addressService.create(userSessionService.getCurrentUser().getId(), address) != null)
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Address successfully added.", FlashMessageType.success));
         else
             flashMessagesService.add(new FlashMessage("There was a unknown error, sorry.", FlashMessageType.alert));
@@ -46,7 +46,7 @@ public class AddressController {
     public void delete(IAddressWithId address) {
         jmsService.sendMessage(requestUtils.getIp() + " deleting an address, " + address.getId() + ".");
 
-        if(addressService.delete(userSessionService.getCurrentUser().getId(), address.getId()))
+        if (addressService.delete(userSessionService.getCurrentUser().getId(), address.getId()))
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Address deleted successfully.", FlashMessageType.success));
         else
             flashMessagesService.add(new FlashMessage("Deletion failed. Please delete all associated companies with this address before deleting it again.", FlashMessageType.alert));
@@ -55,15 +55,24 @@ public class AddressController {
     public void edit(IAddressWithId address) {
         jmsService.sendMessage(requestUtils.getIp() + " attempting to edit a address, " + address.getId() + ".");
 
-        if(addressService.edit(userSessionService.getCurrentUser().getId(), address))
+        if (addressService.edit(userSessionService.getCurrentUser().getId(), address))
             requestUtils.redirect("/pages/user/account.xhtml", new FlashMessage("Address was edited successfully.", FlashMessageType.success));
         else
             flashMessagesService.add(new FlashMessage("There was a unknown error, sorry.", FlashMessageType.alert));
     }
 
-    public IAddressWithId getAddress(long id) {
-        if(address == null)
-            address = addressService.get(userSessionService.getCurrentUser().getId(), id);
+    public IAddressWithId getAddress() {
+        if(!requestUtils.hasParam("addressId"))
+            requestUtils.redirect("/pages/user/account.xhtml");
+        try {
+            if (address == null)
+                address = addressService.get(userSessionService.getCurrentUser().getId(), Long.parseLong(requestUtils.getParam("addressId")));
+            if (address == null)
+                requestUtils.redirect("/pages/user/account.xhtml");
+        } catch(Exception e) {
+            requestUtils.redirect("/pages/user/account.xhtml");
+        }
+
         return address;
     }
 

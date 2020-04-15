@@ -228,7 +228,7 @@ public class InvoicesService implements IInvoicesService {
             q.setFirstResult(page * perPage);
             q.setMaxResults(perPage);
 
-            result.set(new InvoicesPage(q.getResultList(), page, (int) (Math.ceil(getInvoiceCount(search) / (float) perPage) - 1)));
+            result.set(new InvoicesPage(q.getResultList(), page, (int) (Math.ceil(getInvoiceCount(search) / (float) perPage))));
         });
 
 
@@ -238,18 +238,36 @@ public class InvoicesService implements IInvoicesService {
     private long getTodayInvoiceCount() {
         AtomicLong result = new AtomicLong();
 
-        sessionFactory.createSession(s -> {
-            CriteriaBuilder cb = s.getCriteriaBuilder();
-            CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-            Root<Invoice> root = cq.from(Invoice.class);
+        try {
+            sessionFactory.createSession(s -> {
+                CriteriaBuilder cb = s.getCriteriaBuilder();
+                CriteriaQuery<Invoice> cq = cb.createQuery(Invoice.class);
+                Root<Invoice> root = cq.from(Invoice.class);
 
-            cq.where(
-                    cb.equal(root.get(Invoice_.issued), LocalDate.now())
-            );
+                cq.where(
+                        cb.equal(root.get(Invoice_.issued), LocalDate.now())
+                );
 
-            cq.select(cb.count(root));
-            result.set(s.createQuery(cq).getSingleResult());
-        });
+                cq.orderBy(cb.desc(root.get(Invoice_.id)));
+
+                List<Invoice> tmp = s.createQuery(cq).setMaxResults(1).getResultList();
+
+                long lastInvoice;
+                if (tmp.size() >= 1) {
+                    Invoice i = tmp.get(0);
+                    System.out.println("KOKOT LAST INVOICE: " + i.getInvoiceNumber());
+                    System.out.println("PARSED: " + Long.parseLong(i.getInvoiceNumber().substring(i.getInvoiceNumber().length() - 4)) + 1);
+                    lastInvoice = Long.parseLong(i.getInvoiceNumber().substring(i.getInvoiceNumber().length() - 4)) + 1;
+                } else
+                    lastInvoice = 0;
+
+                System.out.println("MY FUCKING VARIABLE: " + lastInvoice);
+
+                result.set(lastInvoice);
+            });
+        } catch (PersistenceException e) {
+            return 0;
+        }
 
         return result.get();
     }
@@ -346,13 +364,13 @@ public class InvoicesService implements IInvoicesService {
         try {
             sessionFactory.createSession(s -> {
                 Invoice i = s.get(Invoice.class, id);
-                if(i == null)
+                if (i == null)
                     throw new PersistenceException();
 
                 i.setFullName(fullName);
                 i.setEmail(email);
                 i.setPhone(phone);
-                if(paid && i.getDatePaid() == null)
+                if (paid && i.getDatePaid() == null)
                     i.setPaid(LocalDate.now());
 
                 s.save(i);

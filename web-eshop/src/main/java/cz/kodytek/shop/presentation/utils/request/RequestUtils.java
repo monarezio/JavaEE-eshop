@@ -27,8 +27,6 @@ import java.util.stream.Collectors;
 public class RequestUtils implements IRequestUtils {
 
     private FacesContext facesContext = FacesContext.getCurrentInstance();
-    private ExternalContext externalContext = facesContext.getExternalContext();
-    private HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
     @Inject()
     private IFlashMessagesService flashMessagesService;
@@ -40,6 +38,7 @@ public class RequestUtils implements IRequestUtils {
 
     @Override
     public void redirect(String url, FlashMessage message) {
+        ExternalContext externalContext = facesContext.getExternalContext();
         if (!externalContext.isResponseCommitted()) {
             try {
                 if (message != null)
@@ -91,6 +90,8 @@ public class RequestUtils implements IRequestUtils {
     }
 
     private String getAppRootUrl() {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
         String url = null;
         try {
             url = new URL(request.getScheme(),

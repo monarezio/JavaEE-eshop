@@ -37,7 +37,7 @@ public class CategoryController {
         else {
             if (category == null)
                 category = categoryService.getWithGoods(Long.parseLong(requestUtils.getParam("category")));
-            if(category == null)
+            if (category == null)
                 requestUtils.redirect("/");
             return category;
         }
@@ -46,14 +46,18 @@ public class CategoryController {
     }
 
     public IGood getGood() {
-        if(!requestUtils.hasParam("id"))
+        if (!requestUtils.hasParam("id"))
             requestUtils.redirect("/");
         else {
-            if(good == null)
-                good = goodsService.get(Long.parseLong(requestUtils.getParam("id")));
-            if(good == null)
+            try {
+                if (good == null)
+                    good = goodsService.get(Long.parseLong(requestUtils.getParam("id")));
+                if (good == null)
+                    requestUtils.redirect("/");
+                return good;
+            } catch(Exception e) {
                 requestUtils.redirect("/");
-            return good;
+            }
         }
 
         return null;

@@ -15,7 +15,7 @@
     <base href="/Shop/"/>
 </h:head>
 
-<f:event type="preRenderView" listener="#{dbSeeder.seed()}"/>
+<!--<f:event type="preRenderView" listener="#{dbSeeder.seed()}"/>-->
 
 <h:body>
     <div class="position-fixed w-100 z-front">
@@ -49,6 +49,9 @@
                 </li>
                 <li>
                     <app:menu-link outcome="/pages/admin/goods/index.xhtml" value="Goods"/>
+                </li>
+                <li>
+                    <app:menu-link outcome="/pages/admin/invoices/index.xhtml" value="Invoices"/>
                 </li>
             </ul>
         </div>

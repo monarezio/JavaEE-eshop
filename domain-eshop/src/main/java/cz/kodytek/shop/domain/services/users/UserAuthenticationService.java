@@ -72,4 +72,22 @@ public class UserAuthenticationService implements IUserAuthenticationService {
         return true;
     }
 
+    @Override
+    public boolean emailExists(String email) {
+        try {
+            sessionFactory.createSession(s -> {
+                CriteriaBuilder cb = s.getCriteriaBuilder();
+                CriteriaQuery<User> cq = cb.createQuery(User.class);
+                Root<User> root = cq.from(User.class);
+
+                cq = cq.where(cb.like(root.get("email"), email));
+
+                User user = s.createQuery(cq).getSingleResult();
+            });
+        } catch (NoResultException e) {
+            return false;
+        }
+
+        return true;
+    }
 }

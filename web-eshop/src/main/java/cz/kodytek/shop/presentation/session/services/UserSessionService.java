@@ -54,4 +54,9 @@ public class UserSessionService implements IUserSessionService, Serializable {
     public boolean isAdmin() {
         return isLoggedIn() && currentUser.getRights().contains(Right.ADMIN);
     }
+
+    @Override
+    public boolean isEmailInUse(String email) {
+        return userAuthenticationService.emailExists(email);
+    }
 }

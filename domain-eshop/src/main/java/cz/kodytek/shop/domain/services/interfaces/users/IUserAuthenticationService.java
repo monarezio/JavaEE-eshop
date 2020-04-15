@@ -10,4 +10,6 @@ public interface IUserAuthenticationService {
 
     boolean register(IRegisteredUser registeredUser);
 
+    boolean emailExists(String email);
+
 }
