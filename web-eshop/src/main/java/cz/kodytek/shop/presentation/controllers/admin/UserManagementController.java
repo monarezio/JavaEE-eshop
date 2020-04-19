@@ -41,9 +41,21 @@ public class UserManagementController {
 
     private IFullUser cachedUser;
 
-    public IEntityPage<? extends IUserWithRights> getUsers(String search, String page) {
+    public IEntityPage<? extends IUserWithRights> getUsers() {
+        String search = "";
+        int page = 0;
+        try {
+            if(requestUtils.hasParam("search"))
+                search = requestUtils.getParam("search");
+            if(requestUtils.hasParam("page"))
+                page = Integer.parseInt(requestUtils.getParam("page"));
+        } catch(Exception e) {
+            requestUtils.redirect("/pages/admin/users/index.xhtml");
+            return null;
+        }
+
         if (cachedPage == null)
-            cachedPage = userService.getUsers(search, Integer.parseInt(page), 20, userSessionService.getCurrentUser().getId());
+            cachedPage = userService.getUsers(search, page, 20, userSessionService.getCurrentUser().getId());
         return cachedPage;
     }
 
@@ -62,7 +74,7 @@ public class UserManagementController {
     }
 
     public void editUser(IFullUser user) {
-        if(userService.editUser(user.getId(), user))
+        if (userService.editUser(user.getId(), user))
             requestUtils.redirect("/pages/admin/users/index.xhtml", new FlashMessage("User edited successfully.", FlashMessageType.success));
         else
             flashMessagesService.add(new FlashMessage("Unknown error.", FlashMessageType.alert));
@@ -78,16 +90,26 @@ public class UserManagementController {
     }
 
     public IEntityFilter getFilter() {
-        if(cachedFilter == null)
+        if (cachedFilter == null)
             cachedFilter = new EntityFilter(requestUtils.hasParam("search") ? requestUtils.getParam("search") : "");
         return cachedFilter;
     }
 
-    public IFullUser getUserById(long id) {
-        if(cachedUser == null)
+    public IFullUser getUserById() {
+        long id;
+
+        try {
+            id = Integer.parseInt(requestUtils.getParam("id"));
+        } catch(Exception e) {
+            requestUtils.redirect("/pages/admin/users/index.xhtml");
+            return null;
+        }
+
+
+        if (cachedUser == null)
             cachedUser = userService.getUser(id);
 
-        if(cachedUser != null) {
+        if (cachedUser != null) {
             return cachedUser;
         } else {
             requestUtils.redirect("/pages/admin/users/index.xhtml");

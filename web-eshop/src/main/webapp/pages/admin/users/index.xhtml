@@ -33,7 +33,7 @@
                 </thead>
                 <tbody>
                 <ui:repeat
-                        value="#{userManagementController.getUsers(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).all}"
+                        value="#{userManagementController.users.all}"
                         var="u">
                     <tr>
                         <td class="font-weight-bold">
@@ -57,7 +57,7 @@
 
             <div class="text-right">
                 <app:pagination from="1"
-                                to="#{userManagementController.getUsers(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).pagesCount}"
+                                to="#{userManagementController.users.pagesCount}"
                                 page="#{!param.containsKey('page') ? 0 : param['page']}"/>
                 <h:link styleClass="btn btn-primary" outcome="/pages/admin/users/create.xhtml" value="Create"/>
             </div>
