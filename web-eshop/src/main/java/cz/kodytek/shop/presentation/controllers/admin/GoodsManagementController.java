@@ -68,8 +68,13 @@ public class GoodsManagementController {
 
     public IEntityPage<? extends IGood> getGoods() {
         try {
-            int page = Integer.parseInt(requestUtils.getParam("page"));
-            String search = requestUtils.getParam("search");
+            int page = 0;
+            String search = "";
+
+            if (requestUtils.hasParam("page"))
+                page = Integer.parseInt(requestUtils.getParam("page"));
+            if (requestUtils.hasParam("search"))
+                requestUtils.getParam("search");
 
             if (cachedPage == null)
                 cachedPage = goodsService.getGoods(search, 20, page);
@@ -135,8 +140,8 @@ public class GoodsManagementController {
             }
 
             return newGoods;
-        } catch(Exception e) {
-            requestUtils.redirec("/pages/admin/goods/index.xhtml")
+        } catch (Exception e) {
+            requestUtils.redirect("/pages/admin/goods/index.xhtml");
         }
 
         return null;
