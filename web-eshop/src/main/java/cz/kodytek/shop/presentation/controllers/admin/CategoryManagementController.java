@@ -37,13 +37,21 @@ public class CategoryManagementController {
         return categories;
     }
 
-    public ICategory getCategory(long id) {
-        if (category == null)
-            category = categoryService.get(id);
-        if (category == null)
+    public ICategory getCategory() {
+        try {
+            long categoryId = Long.parseLong(requestUtils.getParam("id"));
+
+            if (category == null)
+                category = categoryService.get(categoryId);
+            if (category == null)
+                requestUtils.redirect("/pages/admin/categories/index.xhtml");
+
+            return category;
+        } catch (Exception e) {
             requestUtils.redirect("/pages/admin/categories/index.xhtml");
-        
-        return category;
+        }
+
+        return null;
     }
 
     public void delete(ICategory category) {

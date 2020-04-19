@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <h:outputLabel for="category">Category*</h:outputLabel>
                     <h:selectOneMenu styleClass="form-control" id="category"
-                                     value="#{goodsManagementController.getGood(param['id']).categoryId}">
+                                     value="#{goodsManagementController.good.categoryId}">
                         <f:selectItems value="#{categoryManagementController.all}"
                                        var="c"
                                        itemLabel="#{c.title}"
@@ -28,27 +28,27 @@
                 <h:inputText styleClass="form-control"
                              type="title"
                              id="title"
-                             value="#{goodsManagementController.getGood(param['id']).title}"/>
+                             value="#{goodsManagementController.good.title}"/>
             </div>
             <div class="form-group">
                 <h:outputLabel for="amount">Amount*</h:outputLabel>
                 <h:inputText styleClass="form-control"
                              type="amount"
                              id="amount"
-                             value="#{goodsManagementController.getGood(param['id']).amount}"/>
+                             value="#{goodsManagementController.good.amount}"/>
             </div>
             <div class="form-group">
                 <h:outputLabel for="cost">Cost*</h:outputLabel>
                 <h:inputText styleClass="form-control"
                              type="cost"
                              id="cost"
-                             value="#{goodsManagementController.getGood(param['id']).costStr}"/>
+                             value="#{goodsManagementController.good.costStr}"/>
             </div>
             <div>
                 <label>Current uploaded photos</label>
-                <c:if test="#{!goodsManagementController.getGood(param['id']).imagePaths.isEmpty()}">
+                <c:if test="#{!goodsManagementController.good.imagePaths.isEmpty()}">
                     <div class="d-flex flex-wrap">
-                        <ui:repeat value="#{goodsManagementController.getGood(param['id']).imagePaths}" var="ir">
+                        <ui:repeat value="#{goodsManagementController.good.imagePaths}" var="ir">
                             <div class="mx-1 position-relative">
                                 <a href="/${goodsManagementController.applicationName}/#{ir.hdPath}"
                                    data-lightbox="images">
@@ -65,7 +65,7 @@
                         </ui:repeat>
                     </div>
                 </c:if>
-                <c:if test="#{goodsManagementController.getGood(param['id']).imagePaths.isEmpty()}">
+                <c:if test="#{goodsManagementController.good.imagePaths.isEmpty()}">
                     <h3 class="text-center">This product has no image.</h3>
                 </c:if>
             </div>
@@ -75,7 +75,7 @@
                     <h:inputFile styleClass="custom-file-input"
                                  id="file"
                                  a:multiple="true"
-                                 value="#{goodsManagementController.getGood(param['id']).files}"/>
+                                 value="#{goodsManagementController.good.files}"/>
                     <h:outputLabel for="file" styleClass="custom-file-label">Choose files...</h:outputLabel>
                 </div>
             </div>
@@ -84,11 +84,11 @@
                 <h:inputTextarea styleClass="form-control"
                                  type="description"
                                  id="description"
-                                 value="#{goodsManagementController.getGood(param['id']).description}"/>
+                                 value="#{goodsManagementController.good.description}"/>
             </div>
             <div class="text-right">
                 <h:commandLink styleClass="btn btn-primary" value="Edit"
-                               action="#{goodsManagementController.edit(goodsManagementController.getGood(param['id']))}">
+                               action="#{goodsManagementController.edit(goodsManagementController.good)}">
                     <f:param name="id" value="#{param['id']}"/>
                 </h:commandLink>
             </div>

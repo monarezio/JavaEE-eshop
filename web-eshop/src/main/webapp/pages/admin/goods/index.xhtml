@@ -35,7 +35,7 @@
                 </thead>
                 <tbody>
                 <ui:repeat
-                        value="#{goodsManagementController.getGoods(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).all}"
+                        value="#{goodsManagementController.goods.all}"
                         var="g">
                     <tr>
                         <td class="font-weight-bold">
@@ -59,9 +59,9 @@
 
             <div>
                 <h:panelGroup
-                        rendered="#{goodsManagementController.getGoods(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).pagesCount != 0}">
+                        rendered="#{goodsManagementController.goods.pagesCount != 0}">
                     <app:pagination from="1"
-                                    to="#{goodsManagementController.getGoods(param['search'] == null ? '' : param['search'], param['page'] == null ? '0' : param['page']).pagesCount}"
+                                    to="#{goodsManagementController.goods.pagesCount}"
                                     page="#{!param.containsKey('page') ? 0 : param['page']}"/>
                 </h:panelGroup>
                 <div class="text-right">

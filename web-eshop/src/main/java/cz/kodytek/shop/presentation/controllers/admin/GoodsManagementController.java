@@ -48,7 +48,7 @@ public class GoodsManagementController {
 
     private IEntityFilter entityFilter;
 
-    @Resource(lookup="java:app/AppName")
+    @Resource(lookup = "java:app/AppName")
     private String applicationName;
 
     private NewGoods newGoods;
@@ -66,10 +66,18 @@ public class GoodsManagementController {
         }
     }
 
-    public IEntityPage<? extends IGood> getGoods(String search, String page) {
-        if (cachedPage == null)
-            cachedPage = goodsService.getGoods(search, 20, Integer.parseInt(page));
-        return cachedPage;
+    public IEntityPage<? extends IGood> getGoods() {
+        try {
+            int page = Integer.parseInt(requestUtils.getParam("page"));
+            String search = requestUtils.getParam("search");
+
+            if (cachedPage == null)
+                cachedPage = goodsService.getGoods(search, 20, page);
+            return cachedPage;
+        } catch (Exception e) {
+            requestUtils.redirect("/pages/admin/goods/index.xhtml");
+        }
+        return null;
     }
 
 
@@ -89,7 +97,7 @@ public class GoodsManagementController {
 
     public void edit(NewGoods good) {
         try {
-            if(goodsService.edit(good, requestUtils.getAllPartsAsInputStream(good.getFiles()), good.getCategoryId())) {
+            if (goodsService.edit(good, requestUtils.getAllPartsAsInputStream(good.getFiles()), good.getCategoryId())) {
                 requestUtils.redirect("/pages/admin/goods/index.xhtml", new FlashMessage("Good edited.", FlashMessageType.success));
             } else {
                 flashMessagesService.add(new FlashMessage("File is not a image.", FlashMessageType.alert));
@@ -107,23 +115,31 @@ public class GoodsManagementController {
         return entityFilter;
     }
 
-    public NewGoods getGood(long id) {
-        if (newGoods == null) {
-            newGoods = new NewGoods(id);
-            IGood g = goodsService.get(id);
-            newGoods.setCategoryId(g.getCategory().getId());
-            newGoods.setCategory(g.getCategory());
+    public NewGoods getGood() {
+        try {
+            long id = Long.parseLong(requestUtils.getParam("id"));
 
-            newGoods.setTitle(g.getTitle());
-            newGoods.setAmount(g.getAmount());
-            newGoods.setDescription(g.getDescription());
-            newGoods.setCost(g.getCost());
-            newGoods.setImagePaths(
-                    g.getImageNames().stream().sorted((o1, o2) -> (int) (o1.getId() - o2.getId())).map(i -> new ImageResource(i.getId(), i.getPath())).collect(Collectors.toList())
-            );
+            if (newGoods == null) {
+                newGoods = new NewGoods(id);
+                IGood g = goodsService.get(id);
+                newGoods.setCategoryId(g.getCategory().getId());
+                newGoods.setCategory(g.getCategory());
+
+                newGoods.setTitle(g.getTitle());
+                newGoods.setAmount(g.getAmount());
+                newGoods.setDescription(g.getDescription());
+                newGoods.setCost(g.getCost());
+                newGoods.setImagePaths(
+                        g.getImageNames().stream().sorted((o1, o2) -> (int) (o1.getId() - o2.getId())).map(i -> new ImageResource(i.getId(), i.getPath())).collect(Collectors.toList())
+                );
+            }
+
+            return newGoods;
+        } catch(Exception e) {
+            requestUtils.redirec("/pages/admin/goods/index.xhtml")
         }
 
-        return newGoods;
+        return null;
     }
 
     public String getApplicationName() {
